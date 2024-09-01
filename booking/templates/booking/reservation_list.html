@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations List</title>
+</head>
+
+<body>
+    <h1>Reservations List</h1>
+    {% for reservation in object_list %}
+        <h2>Reservation for {{ reservation.guest_count }} guests</h2>
+        <p>Reservation Date: {{ reservation.reservation_date }}</p>
+        <p>Customer: {{ reservation.user.username }}</p>
+        <p>Status: {{ reservation.get_status_display }}</p>
+
+        {% if reservation.tables.exists %}
+            <p>Tables Reserved:</p>
+            <ul>
+                {% for table in reservation.tables.all %}
+                    <li>Table {{ table.table_number }} ({{ table.capacity }} seats)</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if reservation.note %}
+            <p>Note: {{ reservation.note }}</p>
+        {% endif %}
+
+        <p>Created On: {{ reservation.created_on }}</p>
+        <p>Last Updated: {{ reservation.updated_on }}</p>
+
+        {% if reservation.created_by %}
+            <p>Created By: {{ reservation.created_by.username }}</p>
+        {% endif %}
+
+        {% if reservation.edited_by %}
+            <p>Last Edited By: {{ reservation.edited_by.username }}</p>
+        {% endif %}
+
+        {% if reservation.payment_status %}
+            <p>Payment Status: {{ reservation.get_payment_status_display }}</p>
+        {% endif %}
+        
+        <hr>
+    {% endfor %}
+</body>
+
+</html>

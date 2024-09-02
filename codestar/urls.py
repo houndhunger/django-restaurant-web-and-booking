@@ -17,10 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 #from booking.views import my_booking
+#from booking.views import PostList 
+from django.views.generic import RedirectView
+from booking.views import PostList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
     #path('booking/', my_booking, name='booking'),
     path("", include("booking.urls"), name='booking-urls'),
+    path('', PostList.as_view(), name='home'), 
+    # path('', RedirectView.as_view(url='booking/', permanent=True)),
+    # path('booking/', include('booking.urls')),
 ]

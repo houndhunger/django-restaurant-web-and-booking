@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservations List</title>
-</head>
+{% block content %}
 
-<body>
+<!-- index.html content starts here -->
     <h1>Reservations List</h1>
     {% for reservation in object_list %}
         <h2>Reservation for {{ reservation.guest_count }} guests</h2>
@@ -16,14 +10,14 @@
         <p>Customer: {{ reservation.user.username }}</p>
         <p>Status: {{ reservation.get_status_display }}</p>
 
-        {% if reservation.tables.exists %}
+        <!--{% if reservation.tables.exists %}
             <p>Tables Reserved:</p>
             <ul>
                 {% for table in reservation.tables.all %}
                     <li>Table {{ table.table_number }} ({{ table.capacity }} seats)</li>
                 {% endfor %}
             </ul>
-        {% endif %}
+        {% endif %}-->
 
         {% if reservation.note %}
             <p>Note: {{ reservation.note }}</p>
@@ -46,6 +40,5 @@
         
         <hr>
     {% endfor %}
-</body>
-
-</html>
+<!-- index.html content ends here -->
+{% endblock %}

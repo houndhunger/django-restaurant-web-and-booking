@@ -19,14 +19,16 @@ from django.urls import path, include
 #from booking.views import my_booking
 #from booking.views import PostList 
 from django.views.generic import RedirectView
-from booking.views import PostList
+from booking.views import PostList, restaurant_menu
 
 urlpatterns = [
+    path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
-    #path('booking/', my_booking, name='booking'),
+    path('', PostList.as_view(), name='home'),
+    path('menu/', restaurant_menu, name='restaurant_menu'),
     path("", include("booking.urls"), name='booking-urls'),
-    path('', PostList.as_view(), name='home'), 
-    # path('', RedirectView.as_view(url='booking/', permanent=True)),
-    # path('booking/', include('booking.urls')),
+    #path('booking/', my_booking, name='booking'),
+    #path('', RedirectView.as_view(url='booking/', permanent=True)),
+    #path('booking/', include('booking.urls')),
 ]

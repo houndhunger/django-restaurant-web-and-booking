@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Preview Reservation</h1>
+    <p><strong>Guest Count:</strong> {{ form.guest_count.value }}</p>
+    <p><strong>Reservation Date:</strong> {{ form.reservation_date.value }}</p>
+
+    {% if form.tables %}
+        <p>Tables Reserved:</p>
+        <ul>
+            {% for table in form.tables.value %}
+                <li>Table {{ table }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if form.note.value %}
+        <p><strong>Note:</strong> {{ form.note.value }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+    </form>
+
+    <a href="{% url 'make_reservation' reservation.id %}" class="btn btn-secondary">Edit Reservation</a>
+{% endblock %}

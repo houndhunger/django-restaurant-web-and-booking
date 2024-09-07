@@ -12,9 +12,11 @@ body {
 .btn-edit,
 .btn-primary,
 .link,
-.card-title,
 .reservation-title {
     color: #bd7b3a; /* Updated orange color */
+}
+.card-title {
+    font-size: 1.6rem;
 }
 
 .thin {
@@ -117,7 +119,8 @@ body {
 .btn-edit,
 .btn-primary,
 .btn-view,
-.btn-delete {
+.btn-delete,
+.btn-cancel {
     text-decoration: none;
     border-radius: 0; /* Remove rounded corners */
 }
@@ -132,9 +135,9 @@ body {
 .btn-primary {
     background-color: #bd7b3a; /* Updated orange color */
     color: #fff;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border: 1px solid #bd7b3a; /* Matching border color */
-    font-weight: 700;
+    /*font-weight: 700;*/
 }
 
 .btn-signup:hover,
@@ -143,6 +146,8 @@ body {
     background-color: #fff;
     color: #bd7b3a;
 }
+
+
 
 .btn-view {
     background-color: #c17334; /* Updated orange color */
@@ -156,10 +161,12 @@ body {
     border: 1px solid #c17334; /* Updated orange color */
 }
 
-.btn-delete {
+.btn-delete,
+.btn-cancel {
     background-color: #E76F51; /* Darker terracotta */
     color: #fff;
     padding: 5px 10px;
+    border: 1px solid #E76F51; /* Matching border color */
 }
 
 .btn-delete:hover {

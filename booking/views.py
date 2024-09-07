@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import Reservation
 from .forms import ReservationForm
 
@@ -37,15 +37,6 @@ class UserReservationsView(generic.ListView):
     def get_queryset(self):
         return Reservation.objects.filter(user=self.request.user)
 
-# View to review a single reservation
-# class ReviewReservationView(DetailView):
-#     model = Reservation
-#     template_name = 'booking/reservation_preview.html'
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['reservation'] = get_object_or_404(Reservation, id=self.kwargs['pk'])
-#         return context
 
 # View to make a new reservation
 class MakeReservationView(TemplateView):
@@ -58,37 +49,17 @@ class MakeReservationView(TemplateView):
     def post(self, request, *args, **kwargs):
         form = ReservationForm(request.POST)
         if form.is_valid():
-            reservation = form.save()
-            return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
-        return render(request, self.template_name, {'form': form})
-
-# View to preview a reservation before confirmation (you can use this before actual submission)
-class PreviewReservationView(TemplateView):
-    template_name = 'booking/reservation_preview.html'
-    context_object_name = 'reservation'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')
-        context['reservation'] = Reservation.objects.get(pk=pk)
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = ReservationForm(request.POST)
-        if form.is_valid():
             reservation = form.save(commit=False)
-            # Process the reservation as needed (e.g., save it to the database)
+            reservation.user = request.user  # Associate the logged-in user
             reservation.save()
-            context = {'form': form, 'reservation': reservation}
-            return render(request, self.template_name, context)
-        # If the form is invalid, re-render the form with errors
-        return self.render_to_response(self.get_context_data(form=form))
+            return redirect(reverse('user_reservations'))
+        return render(request, self.template_name, {'form': form})
 
 # View to edit reservation
 class EditReservationView(UpdateView):
     model = Reservation
     form_class = ReservationForm
-    template_name = 'edit_reservation.html'
+    template_name = 'booking/reservation_edit.html'
     success_url = reverse_lazy('user_reservations')  # Redirect after successful update
 
     def get_object(self, queryset=None):

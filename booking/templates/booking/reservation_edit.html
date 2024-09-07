@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1 class="mb-4">Make a Reservation</h1>
+    <h1 class="mb-4">Amend a Reservation</h1>
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card mb-4">
@@ -12,7 +12,7 @@
                         {{ form.as_p }}
                         <div class="text-center mt-3">
                             <button type="submit" class="btn btn-primary">Submit</button> |
-                            <a href="{% url 'user_reservations' %}" class="btn btn-cancel">Cancel Changes</a>
+                            <a href="{% url 'user_reservations' %}" class="btn btn-delete">Cancel Changes</a>
                         </div>
                     </form>
                 </div>

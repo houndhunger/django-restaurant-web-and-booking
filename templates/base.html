@@ -49,7 +49,7 @@
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ make_reservation_url }}">Make a Reservation</a>
+                        <a class="nav-link" href="{% url 'make_reservation' %}">Make a Reservation</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ user_reservations_url }}">My Reservations</a>

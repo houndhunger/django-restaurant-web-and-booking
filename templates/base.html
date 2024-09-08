@@ -1,9 +1,11 @@
 {% load static %}
 {% url 'home' as home_url %}
+{% url 'restaurant_menu' as restaurant_menu_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
-{% url 'reservations_list' as reservations_list_url %}
+{% url 'manage_reservations' as manage_reservations_url %}
+{% url 'manage_tables' as manage_tables_url %}
 {% url 'make_reservation' as make_reservation_url %}
 {% url 'user_reservations' as user_reservations_url %}
 
@@ -36,7 +38,8 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ home_url }}"><span class="brand">My<span class="red-o">Booking</span>System</span></a>
+            <a class="navbar-brand" href="{{ home_url }}"><span class="brand">My<span
+                        class="red-o">Booking</span>System</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -47,19 +50,34 @@
                         <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page"
                             href="{{ home_url }}">Home</a>
                     </li>
-                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'make_reservation' %}">Make a Reservation</a>
+                        <a class="nav-link {% if request.path == restaurant_menu_url %}active{% endif %}"
+                            href="{% url 'restaurant_menu' %}">Menu</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    {% if is_staff %}
+                    <li><a class="nav-link {% if request.path == manage_tables_url %}active{% endif %}"
+                            href="{% url 'manage_reservations' %}">Manage Reservations</a></li>
+                    <li><a class="nav-link  {% if request.path == manage_tables_url %}active{% endif %}"
+                            href="{% url 'manage_tables' %}">Manage Tables</a></li>
+                    {% else %}
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == make_reservation_url %}active{% endif %}"
+                            href="{% url 'make_reservation' %}">Make a Reservation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ user_reservations_url }}">My Reservations</a>
+                        <a class="nav-link {% if request.path == user_reservations_url %}active{% endif %}"
+                            href="{{ user_reservations_url }}">My Reservations</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == login_url %}active{% endif %}" href="{{ login_url }}">Make a Reservation</a>
+                        <a class="nav-link {% if request.path == login_url %}active{% endif %}"
+                            href="{{ login_url }}">Make a Reservation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}" href="{{ signup_url }}">Register</a>
+                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}"
+                            href="{{ signup_url }}">Register</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -90,7 +108,7 @@
             {% endblock copyright %}
         </p>
         <p class="m-0 text-center text-white">
-            Follow us: 
+            Follow us:
             <i class="fab fa-facebook-square ms-3"></i>
             <i class="fab fa-twitter-square ms-3"></i>
             <i class="fab fa-instagram-square ms-3"></i>

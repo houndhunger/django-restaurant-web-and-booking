@@ -2,6 +2,11 @@ from django import forms
 from .models import Reservation
 
 class ReservationForm(forms.ModelForm):
+    quiet = forms.BooleanField(required=False)
+    outside = forms.BooleanField(required=False)
+    bench_seating = forms.BooleanField(required=False)
+    disabled_access = forms.BooleanField(required=False)
+
     class Meta:
         model = Reservation
         exclude = ['user']  # Exclude user from the form

@@ -3,42 +3,56 @@
 {% block content %}
 
 <!-- index.html content starts here -->
-    <h1>Reservations List</h1>
-    {% for reservation in object_list %}
-        <h2>Reservation for {{ reservation.guest_count }} guests</h2>
-        <p>Reservation Date: {{ reservation.reservation_date }}</p>
-        <p>Customer: {{ reservation.user.username }}</p>
-        <p>Status: {{ reservation.get_status_display }}</p>
+<div class="container-fluid">
+    <div class="row">
 
-        <!--{% if reservation.tables.exists %}
-            <p>Tables Reserved:</p>
-            <ul>
-                {% for table in reservation.tables.all %}
-                    <li>Table {{ table.table_number }} ({{ table.capacity }} seats)</li>
+        <!-- Booking Entries Column -->
+        <div class="col-12 mt-3 left">
+            <div class="row">
+                {% for reservation in reservation_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="image-container">
+                                <div class="image-flash">
+                                    <p class="author">Customer: {{ reservation.user.username }}</p>
+                                </div>
+                            </div>
+                            <a href="#" class="post-link">
+                                <h2 class="card-title">Reservation for {{ reservation.guest_count }} Guests</h2>
+                            </a>
+
+                            <hr />
+                            <p class="card-text"><strong>Date:</strong> {{ reservation.reservation_date|date:"F j, Y, g:i a" }}</p>
+                            <p class="card-text text-muted h6"><strong>Status:</strong> {{ reservation.get_status_display }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row">
+                {% endif %}
                 {% endfor %}
-            </ul>
-        {% endif %}-->
 
-        {% if reservation.note %}
-            <p>Note: {{ reservation.note }}</p>
-        {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREVIOUS </a></li>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
 
-        <p>Created On: {{ reservation.created_on }}</p>
-        <p>Last Updated: {{ reservation.updated_on }}</p>
-
-        {% if reservation.created_by %}
-            <p>Created By: {{ reservation.created_by.username }}</p>
-        {% endif %}
-
-        {% if reservation.edited_by %}
-            <p>Last Edited By: {{ reservation.edited_by.username }}</p>
-        {% endif %}
-
-        {% if reservation.payment_status %}
-            <p>Payment Status: {{ reservation.get_payment_status_display }}</p>
-        {% endif %}
-        
-        <hr>
-    {% endfor %}
 <!-- index.html content ends here -->
+{% endblock %}
+{% block copyright %}
+    © 2024 BookingSystem by Daniel Pribula
 {% endblock %}

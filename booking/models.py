@@ -1,10 +1,26 @@
 from django.db import models
+from datetime import timedelta
 from django.contrib.auth.models import User
 
-# Create your models here.
+# Table model
+class Table(models.Model):
+    table_number = models.IntegerField(unique=True)
+    zone = models.IntegerField()
+    capacity = models.IntegerField()
+    vip_category = models.IntegerField(choices=[(1, 'Standard'), (2, 'Premium'), (3, 'VIP')])
+    is_quiet = models.BooleanField(default=False)
+    is_outside = models.BooleanField(default=False)
+    has_bench_seating = models.BooleanField(default=False)
+    has_disabled_access = models.BooleanField(default=False)
+    note = models.CharField(max_length=255, blank=True, null=True)
+    adjacent_tables = models.ManyToManyField('self', blank=True, symmetrical=True)  # Removed related_name
 
+    def __str__(self):
+        return f"Table {self.table_number} (Zone {self.zone})"
+
+# Reservation status choices
 RESERVATION_STATUS_CHOICES = (
-    (0, "Pending"), # add settings for resturant booking - reservation_auto_approve T/F
+    (0, "Pending"),  # add settings for restaurant booking - reservation_auto_approve T/F
     (1, "Confirmed"),
     (2, "Cancelled"),
 )
@@ -12,33 +28,50 @@ RESERVATION_STATUS_CHOICES = (
 # Reservation model
 class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    guest_count = models.PositiveIntegerField()
     reservation_date = models.DateTimeField()
-    guest_count = models.IntegerField()
-    # tables = models.ManyToManyField(Table, related_name='reservations') # TablesId (List of FK)
-    # 
-    # on_delete=models.CASCADE - not good idea, table deletion 
-    # sholud be allowed only if there are no reservations related to it. 
-    # First all related reservations sholud moved to different tables.
-    note = models.TextField(blank=True, null=True)  # Note
-    status = models.IntegerField(choices=RESERVATION_STATUS_CHOICES, default=0) 
+    duration = models.DurationField(default=timedelta(hours=2))
+    reservation_end = models.DateTimeField(editable=False, null=True)
+    tables = models.ManyToManyField(Table)  # Multiple tables can be reserved for one reservation
+    note = models.TextField(blank=True, null=True)
+    status = models.IntegerField(choices=RESERVATION_STATUS_CHOICES, default=0)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-    #created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_reservations')
-    #edited_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='edited_reservations')
-
     created_by = models.ForeignKey(User, related_name='created_%(class)s_set', on_delete=models.SET_NULL, null=True, editable=False)
     edited_by = models.ForeignKey(User, related_name='edited_%(class)s_set', on_delete=models.SET_NULL, null=True, editable=False)
 
-    # reservation can have payment related to it payment("Pending","Received","Cancelled")
-
     def save(self, *args, **kwargs):
-        if not self.pk:  # If the object is new (being created)
-            self.created_by = kwargs.pop('user', None)
-        self.edited_by = kwargs.pop('user', None)
-        super(Reservation, self).save(*args, **kwargs)
+        if not self.pk:  # Check if the object is being created
+            self.reservation_end = self.reservation_date + self.duration
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["-created_on"]
+
+    @property
+    def reservation_end(self):
+        """Calculate the end time of the reservation."""
+        return self.reservation_date + self.duration  # Ensure you define 'duration' in your form or model
+
+    def is_conflicting(self, new_reservation):
+        """
+        Check if the new reservation conflicts with this reservation.
+        """
+        new_end_time = new_reservation.reservation_date + new_reservation.duration
+        return (self.reservation_date < new_end_time) and (self.reservation_end > new_reservation.reservation_date)
+
+    @staticmethod
+    def check_table_availability(tables, start_time, end_time):
+        """
+        Check if any of the given tables are available for the specified time range.
+        """
+        overlapping_reservations = Reservation.objects.filter(
+            tables__in=tables,
+            reservation_date__lt=end_time,
+            reservation_end__gt=start_time,
+            status='confirmed'
+        ).exists()
+        return not overlapping_reservations
 
     def __str__(self):
         return f"Reservation by {self.user.username} on {self.reservation_date}"

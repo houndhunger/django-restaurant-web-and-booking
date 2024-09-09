@@ -96,7 +96,7 @@ class UserReservationsView(generic.ListView):
 #         return render(request, self.template_name, {'form': form})
 
 
-# # View to make a new reservation
+# View to make a new reservation
 class MakeReservationView(TemplateView):
     template_name = 'booking/reservation_make.html'
 
@@ -125,18 +125,33 @@ class MakeReservationView(TemplateView):
             half_full = reserved_tables_count >= total_tables / 2
 
             # Extract preferences from the form
-            quiet = form.cleaned_data.get('quiet')
-            outside = form.cleaned_data.get('outside')
-            bench_seating = form.cleaned_data.get('bench_seating')
-            disabled_access = form.cleaned_data.get('disabled_access')
+            is_quiet = form.cleaned_data.get('is_quiet')
+            is_outside = form.cleaned_data.get('is_outside')
+            has_bench_seating = form.cleaned_data.get('has_bench_seating')
+            has_disabled_access = form.cleaned_data.get('has_disabled_access')
 
             # Filter tables based on preferences
-            tables = Table.objects.filter(
-                is_quiet=quiet,
-                is_outside=outside,
-                has_bench_seating=bench_seating,
-                has_disabled_access=disabled_access,
-            )
+            tables = Table.objects.all()  # Start with all tables
+
+            if is_quiet == 1:  # True
+                tables = tables.filter(is_quiet=True)
+            elif is_quiet == 2:  # False
+                tables = tables.filter(is_quiet=False)
+
+            if is_outside == 1:  # True
+                tables = tables.filter(is_outside=True)
+            elif is_outside == 2:  # False
+                tables = tables.filter(is_outside=False)
+
+            if has_bench_seating == 1:  # True
+                tables = tables.filter(has_bench_seating=True)
+            elif has_bench_seating == 2:  # False
+                tables = tables.filter(has_bench_seating=False)
+
+            if has_disabled_access == 1:  # True
+                tables = tables.filter(has_disabled_access=True)
+            elif has_disabled_access == 2:  # False
+                tables = tables.filter(has_disabled_access=False)
 
             # Apply odd/even logic based on reservation date
             if half_full:
@@ -148,11 +163,30 @@ class MakeReservationView(TemplateView):
                 else:
                     available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 != 0])
 
-            # Check for available tables within the filtered set
-            available_tables = available_tables.filter(
-                ~Q(reservation__reservation_date__lt=reservation.reservation_end) &
-                ~Q(reservation__reservation_end__gt=reservation.reservation_date)
-            ).distinct()
+            # # Check for overlapping reservations
+            # available_tables = available_tables.filter(
+            #     ~Q(reservation__reservation_date__lt=reservation_date + timedelta(hours=2)) &
+            #     ~Q(reservation__reservation_date__gt=reservation_date)
+            # ).distinct()
+
+            # # Calculate the reservation end dynamically instead of querying the database
+            # reserved_table_ids = Reservation.objects.filter(
+            #     Q(reservation_date__lt=reservation_date + timedelta(hours=2)) &  # Calculate the dynamic end time
+            #     Q(reservation_date__gt=reservation_date - timedelta(hours=2))  # Adjust this for overlap checking
+            # ).values_list('tables', flat=True)
+
+            # Check for overlapping reservations
+            overlapping_reservations = Reservation.objects.filter(
+                Q(reservation_date__lt=reservation_end) &
+                Q(reservation_date__gt=reservation_date - timedelta(hours=2))
+            )
+            reserved_table_ids = overlapping_reservations.values_list('tables', flat=True)
+
+            available_tables = available_tables.exclude(pk__in=reserved_table_ids)
+
+            # Debugging: Show available tables
+            table_details = ', '.join([str(table) for table in available_tables])
+            form.add_error(None, f'Available tables: {table_details}')  
 
             # Assign tables if available
             if available_tables.exists():

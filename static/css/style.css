@@ -245,3 +245,34 @@ body {
 hr {
     border: 1px solid #5A6B58; /* Lighter border color */
 }
+
+.no-break {
+    white-space: nowrap; /* Prevents text from breaking to a new line */
+    overflow: hidden; /* Hides any overflow text */
+    text-overflow: ellipsis; /* Adds ellipsis (...) if the text is too long */
+}
+
+.preferences {
+    margin-top: 10px;
+}
+
+.preference-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.preference-item {
+    display: flex;
+    flex: 1 1 50%; /* Adjust the width to fit in two columns */
+    padding: 5px 0;
+    box-sizing: border-box;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.value {
+    white-space: nowrap; /* Prevents text from wrapping to a new line */
+}

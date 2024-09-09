@@ -2,10 +2,16 @@ from django import forms
 from .models import Reservation
 
 class ReservationForm(forms.ModelForm):
-    quiet = forms.BooleanField(required=False)
-    outside = forms.BooleanField(required=False)
-    bench_seating = forms.BooleanField(required=False)
-    disabled_access = forms.BooleanField(required=False)
+    PREFERENCE_CHOICES = [
+        (0, 'No Preference'),
+        (1, 'Yes'),
+        (2, 'No'),
+    ]
+    
+    quiet = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial=0)
+    outside = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial=0)
+    bench_seating = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial=0)
+    disabled_access = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial=0)
 
     class Meta:
         model = Reservation

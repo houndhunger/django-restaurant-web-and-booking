@@ -12,7 +12,6 @@
                         <div class="card-body">
                             <div class="image-container">
                                 <div class="image-flash">
-                                    <!-- Removed Customer field -->
                                     <!-- Display "Reservation for ## Guests" -->
                                     <h2 class="card-title">Reservation for {{ reservation.guest_count }} Guests</h2>
                                 </div>
@@ -30,6 +29,28 @@
                             
                             <!-- Display the note under Status -->
                             <p class="card-text"><strong>Note:</strong> {{ reservation.note }}</p>
+
+                            <!-- Display Preferences -->
+                            <div class="preferences">
+                                <div class="preference-container">
+                                    <div class="preference-item">
+                                        <div class="label">Quiet:</div>
+                                        <div class="value">{% if reservation.quiet == 1 %} Yes {% elif reservation.quiet == 2 %} No {% else %} No Preference {% endif %}</div>
+                                    </div>
+                                    <div class="preference-item">
+                                        <div class="label">Outside:</div>
+                                        <div class="value">{% if reservation.outside == 1 %} Yes {% elif reservation.outside == 2 %} No {% else %} No Preference {% endif %}</div>
+                                    </div>
+                                    <div class="preference-item">
+                                        <div class="label">Bench Seating:</div>
+                                        <div class="value">{% if reservation.bench_seating == 1 %} Yes {% elif reservation.bench_seating == 2 %} No {% else %} No Preference {% endif %}</div>
+                                    </div>
+                                    <div class="preference-item">
+                                        <div class="label">Disabled Access:</div>
+                                        <div class="value">{% if reservation.disabled_access == 1 %} Yes {% elif reservation.disabled_access == 2 %} No {% else %} No Preference {% endif %}</div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <p>
                                 <a href="{% url 'edit_reservation' reservation.id %}" class="btn btn-view">Amend Reservation</a> |

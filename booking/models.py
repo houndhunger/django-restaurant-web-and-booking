@@ -27,11 +27,23 @@ RESERVATION_STATUS_CHOICES = (
 
 # Reservation model
 class Reservation(models.Model):
+    PREFERENCE_CHOICES = [
+        (0, 'No Preference'),
+        (1, 'Yes'),
+        (2, 'No'),
+    ]
+
+    is_quiet = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
+    is_outside = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
+    has_bench_seating = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
+    has_disabled_access = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
+
+    preference = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     guest_count = models.PositiveIntegerField()
     reservation_date = models.DateTimeField()
     duration = models.DurationField(default=timedelta(hours=2))
-    reservation_end = models.DateTimeField(editable=False, null=True)
+    #reservation_end = models.DateTimeField(editable=False, null=True)
     tables = models.ManyToManyField(Table)  # Multiple tables can be reserved for one reservation
     note = models.TextField(blank=True, null=True)
     status = models.IntegerField(choices=RESERVATION_STATUS_CHOICES, default=0)
@@ -41,17 +53,17 @@ class Reservation(models.Model):
     edited_by = models.ForeignKey(User, related_name='edited_%(class)s_set', on_delete=models.SET_NULL, null=True, editable=False)
 
     def save(self, *args, **kwargs):
-        if not self.pk:  # Check if the object is being created
-            self.reservation_end = self.reservation_date + self.duration
+        # if not self.pk:  # Check if the object is being created
+        #     self.reservation_end = self.reservation_date + self.duration
         super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["-created_on"]
 
-    @property
-    def reservation_end(self):
-        """Calculate the end time of the reservation."""
-        return self.reservation_date + self.duration  # Ensure you define 'duration' in your form or model
+    # @property
+    # def reservation_end(self):
+    #     """Calculate the end time of the reservation."""
+    #     return getattr(self, '_reservation_end', self.reservation_date + self.duration)  # Ensure you define 'duration' in your form or model
 
     def is_conflicting(self, new_reservation):
         """

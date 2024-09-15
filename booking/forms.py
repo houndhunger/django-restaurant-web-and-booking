@@ -35,16 +35,16 @@ class ReservationForm(forms.ModelForm):
         ('no', 'No'),
     ]
 
-    quiet = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
-    outside = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
-    bench_seating = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
-    disabled_access = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
+    is_quiet = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
+    us_outside = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
+    has_bench_seating = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
+    has_disabled_access = forms.ChoiceField(choices=PREFERENCE_CHOICES, required=False, initial='no_preference')
 
 
     class Meta:
         model = Reservation
         exclude = ['user']  # Exclude user from the form
-        fields = ['reservation_date', 'guest_count', 'note', 'quiet', 'outside', 'bench_seating', 'disabled_access']
+        fields = ['reservation_date', 'guest_count', 'note', 'is_quiet', 'is_outside', 'has_bench_seating', 'has_disabled_access']
         # No 'tables' yet
         widgets = {
             'reservation_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),

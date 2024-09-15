@@ -120,37 +120,46 @@ class ReservationUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ReservationForm
     template_name = 'booking/reservation_make_edit.html'
 
+    # Overrides the method to pass the reservation instance to the form
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         # Ensure that the form is initialized with the reservation instance
         kwargs['instance'] = self.get_object()
         return kwargs
 
+    # Handles form submission and reservation logic
     def form_valid(self, form):
+        print("Form cleaned data:", form.cleaned_data)
+        # Process reservation and available tables based on user input
         reservation, available_tables = handle_reservation_logic(form, self.request.user)
         print("Form is valid. Reservation data:", reservation)
         print("Available tables:", available_tables)
 
+        # If tables are available, save the reservation and assign tables
         if available_tables.exists():
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
             print("Reservation saved with tables:", reservation.tables.all())
             return redirect(reverse('user_reservations'))
         else:
+            # If no tables are available, show an error on the form
             form.add_error(None, 'No available tables for the selected date and preferences.')
             return self.form_invalid(form)
 
+    # Adds custom data to the context for rendering the template
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = 'Edit Reservation'
         print("Context data:", context)
         return context
 
+    # Retrieves the reservation object that is being edited
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         print("Loaded reservation object:", obj)
         return obj
 
+    # Handles form submission errors and logs them
     def form_invalid(self, form):
         print("Form errors:", form.errors)
         return super().form_invalid(form)

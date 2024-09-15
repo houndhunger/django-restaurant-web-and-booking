@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">{{ header }}</h1>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_reservation_date">Reservation Date:</label>
+                            <input type="text" id="id_reservation_date" name="reservation_date" class="form-control" placeholder="YYYY-MM-DD" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_guest_count">Guest Count:</label>
+                            <input type="number" id="id_guest_count" name="guest_count" class="form-control" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_note">Note:</label>
+                            <textarea id="id_note" name="note" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_quiet">Quiet:</label>
+                            <select id="id_quiet" name="is_quiet" class="form-control">
+                                <option value="no_preference">No Preference</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_outside">Outside:</label>
+                            <select id="id_outside" name="is_outside" class="form-control">
+                                <option value="no_preference">No Preference</option>
+                                <option value="yes">Outside</option>
+                                <option value="no">Inside</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_bench_seating">Bench Seating:</label>
+                            <select id="id_bench_seating" name="has_bench_seating" class="form-control">
+                                <option value="no_preference">No Preference</option>
+                                <option value="yes">Bench</option>
+                                <option value="no">Chairs only</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_disabled_access">Disabled Access:</label>
+                            <select id="id_disabled_access" name="has_disabled_access" class="form-control">
+                                <option value="no_preference">No Preference</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary">Submit</button> |
+                            <a href="{% url 'user_reservations' %}" class="btn btn-cancel">Cancel Changes</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

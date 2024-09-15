@@ -28,17 +28,16 @@ RESERVATION_STATUS_CHOICES = (
 # Reservation model
 class Reservation(models.Model):
     PREFERENCE_CHOICES = [
-        (0, 'No Preference'),
-        (1, 'Yes'),
-        (2, 'No'),
+        ('no_preference', 'No Preference'),
+        ('yes', 'Yes'),
+        ('no', 'No'),
     ]
 
-    is_quiet = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
-    is_outside = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
-    has_bench_seating = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
-    has_disabled_access = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
+    is_quiet = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    is_outside = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    has_bench_seating = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    has_disabled_access = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
 
-    preference = models.IntegerField(choices=PREFERENCE_CHOICES, default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     guest_count = models.PositiveIntegerField()
     reservation_date = models.DateTimeField()

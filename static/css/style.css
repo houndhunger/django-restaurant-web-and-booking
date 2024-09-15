@@ -180,6 +180,7 @@ body {
     color: #E76F51; /* Darker terracotta */
 }
 
+
 /* Forms */
 .login-form {
     max-width: 600px;
@@ -191,6 +192,8 @@ body {
 }
 
 .form-group {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1.5rem;
 }
 
@@ -201,7 +204,9 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #5A6B58; /* Lighter border color */
@@ -211,68 +216,20 @@ body {
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: #bd7b3a; /* Highlight border color on focus */
     outline: none;
 }
 
-/* Additional Alignment and Spacing */
-.right {
-    float: right;
+.form-group .form-control {
+    margin-top: 0.5rem;
 }
 
-/* Reservations List and User Reservations */
-.reservations-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.reservations-heading {
-    color: #EDEDED;
-    margin-bottom: 20px;
-}
-
-.tables-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.tables-list li {
-    padding: 5px 0;
-}
-
-hr {
-    border: 1px solid #5A6B58; /* Lighter border color */
-}
-
-.no-break {
-    white-space: nowrap; /* Prevents text from breaking to a new line */
-    overflow: hidden; /* Hides any overflow text */
-    text-overflow: ellipsis; /* Adds ellipsis (...) if the text is too long */
-}
-
-.preferences {
-    margin-top: 10px;
-}
-
-.preference-container {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.preference-item {
-    display: flex;
-    flex: 1 1 50%; /* Adjust the width to fit in two columns */
-    padding: 5px 0;
-    box-sizing: border-box;
-}
-
-.label {
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.value {
-    white-space: nowrap; /* Prevents text from wrapping to a new line */
+/* Remove default styles for form controls to prevent double borders */
+.form-control {
+    border: none; /* Remove default border if needed */
+    border-radius: 0; /* Remove rounded corners if needed */
+    box-shadow: none; /* Remove default shadow */
 }

@@ -1,0 +1,15 @@
+{% extends "account/email/base.html" %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}
+<p>Hello {{ user_display }},</p>
+
+<p>Thank you for registering at <strong>{{ site_name }}</strong>!</p>
+
+<p>Please confirm your email by clicking on the link below:</p>
+
+<a href="{{ activate_url }}">Confirm my email</a>
+
+<p>Best regards,<br>{{ site_name }} Team</p>
+{% endblock %}

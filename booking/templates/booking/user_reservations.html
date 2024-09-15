@@ -5,6 +5,7 @@
     <div class="row">
         <!-- Booking Entries Column -->
         <div class="col-12 mt-3 left">
+            {% if object_list %}
             <div class="row">
                 {% for reservation in object_list %}
                 <div class="col-md-4">
@@ -35,22 +36,43 @@
                                 <div class="preference-container">
                                     <div class="preference-item">
                                         <div class="label">Quiet:</div>
-                                        <div class="value">{% if reservation.quiet == 1 %} Yes {% elif reservation.quiet == 2 %} No {% else %} No Preference {% endif %}</div>
+                                        <div class="value">
+                                            {% if reservation.is_quiet == 'yes' %} Yes
+                                            {% elif reservation.is_quiet == 'no' %} No
+                                            {% else %} No Preference
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="preference-item">
                                         <div class="label">Outside:</div>
-                                        <div class="value">{% if reservation.outside == 1 %} Yes {% elif reservation.outside == 2 %} No {% else %} No Preference {% endif %}</div>
+                                        <div class="value">
+                                            {% if reservation.is_outside == 'yes' %} Yes
+                                            {% elif reservation.is_outside == 'no' %} No
+                                            {% else %} No Preference
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="preference-item">
                                         <div class="label">Bench Seating:</div>
-                                        <div class="value">{% if reservation.bench_seating == 1 %} Yes {% elif reservation.bench_seating == 2 %} No {% else %} No Preference {% endif %}</div>
+                                        <div class="value">
+                                            {% if reservation.has_bench_seating == 'yes' %} Yes
+                                            {% elif reservation.has_bench_seating == 'no' %} No
+                                            {% else %} No Preference
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="preference-item">
                                         <div class="label">Disabled Access:</div>
-                                        <div class="value">{% if reservation.disabled_access == 1 %} Yes {% elif reservation.disabled_access == 2 %} No {% else %} No Preference {% endif %}</div>
+                                        <div class="value">
+                                            {% if reservation.has_disabled_access == 'yes' %} Yes
+                                            {% elif reservation.has_disabled_access == 'no' %} No
+                                            {% else %} No Preference
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                           
 
                             <p>
                                 <a href="{% url 'edit_reservation' reservation.id %}" class="btn btn-view">Amend Reservation</a> |
@@ -65,6 +87,12 @@
                 {% endif %}
                 {% endfor %}
             </div>
+            {% else %}
+            <!-- Display a message when there are no reservations -->
+            <div class="alert alert-info mt-5">
+                You don't have any reservations at the moment. <a href="{% url 'make_reservation' %}">Make a reservation now</a>.
+            </div>
+            {% endif %}
         </div>
     </div>
     

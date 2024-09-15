@@ -15,11 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-#from booking.views import my_booking
-#from booking.views import PostList 
+from django.urls import include, path
 from django.views.generic import RedirectView
 from booking.views import restaurant_menu, HomeView
+
+# for debug toolbar
+from django.conf import settings
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -32,4 +34,10 @@ urlpatterns = [
     #path('booking/', my_booking, name='booking'),
     #path('', RedirectView.as_view(url='booking/', permanent=True)),
     #path('booking/', include('booking.urls')),
+    #path('accounts/', include('allauth.urls')),
 ]
+
+if settings.DEBUG and not settings.TESTING:
+    urlpatterns = [
+        *urlpatterns,
+    ] + debug_toolbar_urls()

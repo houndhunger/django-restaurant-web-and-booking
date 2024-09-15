@@ -2,6 +2,13 @@ from django.db.models import Q
 from booking.models import Table, Reservation  # Use absolute imports
 from datetime import timedelta
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
+"""
+Handels reservation logic
+"""
 def handle_reservation_logic(form, user):
     reservation = form.save(commit=False)
     reservation.user = user
@@ -56,3 +63,14 @@ def handle_reservation_logic(form, user):
     available_tables = available_tables.exclude(pk__in=reserved_table_ids)
 
     return reservation, available_tables
+
+"""
+Check email
+"""
+@csrf_exempt
+def check_email_unique(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        is_unique = not User.objects.filter(email=email).exists()
+        return JsonResponse({'is_unique': is_unique})
+    return JsonResponse({'error': 'Invalid request'}, status=400)

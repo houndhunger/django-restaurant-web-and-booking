@@ -1,11 +1,27 @@
+/* Define CSS Variables */
+:root {
+    --page-bg-colour: #2e3d30;                    /* page-bg-colour */
+    --light-txt-colour: #ededed;                  /* light-txt-colour */
+    --accent-1-colour: #C9A25F;                   /* accent-1-colour */
+    --head-bg-colour: #CCE6E3;                    /* head-bg-colour */
+    --content-bg-colour: #3e5141;                 /* content-bg-colour */
+    --accent-2-colour: #C9C0AA;                   /* accent-2-colour */
+    --main-border: #5a6b58;                       /* main-border */
+
+    --hover-1-colour: var(--accent-1-colour);       /* hover-1-colour */
+    --hover-2-colour: var(--accent-2-colour);      /* hover-2-colour */
+    --form-bg-colour: var(--page-bg-colour);        /* form-bg-colour */
+    --form-border: var(--main-border);              /* form-border-colour */
+    --form-focus-border: var(--accent-1-colour);    /* form-focus-border */
+}
+
 /* General Styles */
 body {
-    background-color: #2E3D30; /* Dark olive green */
-    color: #EDEDED; /* Light text for contrast */
+    background-color: var(--page-bg-colour);
+    color: var(--light-txt-colour);
 }
 
 /* Brand and Text Colors */
-.brand,
 .post-link,
 .red-o,
 .btn-signup,
@@ -13,8 +29,14 @@ body {
 .btn-primary,
 .link,
 .reservation-title {
-    color: #bd7b3a; /* Updated orange color */
+    color: var(--accent-1-colour);
 }
+
+.brand {
+    color: var(--accent-2-colour);
+}
+
+
 .card-title {
     font-size: 1.6rem;
 }
@@ -34,23 +56,34 @@ body {
 /* Backgrounds */
 .light-bg,
 .masthead-text {
-    background-color: #3F5242; /* Slightly lighter olive */
+    background-color: var(--content-bg-colour);
 }
 
 .dark-bg,
 .main-bg {
-    background-color: #2E3D30; /* Dark olive green */
+    background-color: var(--page-bg-colour);
+}
+
+.navbar {
+    background-color: var(--head-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.footer {
+    border: 1px solid var(--content-bg-colour);
+    background-color: var(--content-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Cards */
 .card,
 .reservation-card {
-    border: 1px solid #3F5242; /* Slightly lighter olive for border */
-    background-color: #3F5242; /* Slightly lighter olive */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Darker shadow for depth */
+    border: 1px solid var(--content-bg-colour);
+    background-color: var(--content-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 15px;
     margin-bottom: 20px;
-    border-radius: 0; /* Remove rounded corners */
+    border-radius: 0;
 }
 
 /* Image and Flash */
@@ -63,9 +96,9 @@ body {
     bottom: 5%;
     min-width: 30%;
     left: -2px;
-    background-color: #bd7b3a; /* Updated orange color */
+    background-color: var(--accent-1-colour);
     padding: 5px 10px;
-    border-radius: 0; /* Remove rounded corners */
+    border-radius: 0;
 }
 
 .scale {
@@ -91,7 +124,7 @@ body {
 }
 
 .masthead-text {
-    background-color: #3F5242; /* Slightly lighter olive */
+    background-color: var(--content-bg-colour);
     color: white;
 }
 
@@ -107,7 +140,7 @@ body {
     right: 90%;
     height: 100%;
     width: 150%;
-    background: #3F5242;
+    background: var(--content-bg-colour);
     transform: skew(15deg);
     z-index: 100;
 }
@@ -122,73 +155,72 @@ body {
 .btn-delete,
 .btn-cancel {
     text-decoration: none;
-    border-radius: 0; /* Remove rounded corners */
+    border-radius: 0;
 }
 
 .post-link:hover,
 .page-link {
-    color: #bd7b3a; /* Updated orange color */
+    color: var(--accent-1-colour);
 }
 
 .btn-primary {
-    background-color: #bd7b3a; /* Updated orange color */
+    background-color: var(--accent-1-colour);
     color: #fff;
     padding: 5px 10px;
-    border: 1px solid #bd7b3a; /* Matching border color */
-    /*font-weight: 700;*/
+    border: 1px solid var(--accent-1-colour);
 }
 
 .btn-signup:hover,
 .btn-signup:active,
 .btn-primary:hover {
     background-color: #fff;
-    color: #bd7b3a;
+    color: var(--accent-1-colour);
 }
 
 .btn-view {
-    background-color: #c17334; /* Updated orange color */
+    background-color: var(--hover-1-colour);
     color: #fff;
     padding: 5px 10px;
 }
 
 .btn-view:hover {
     background-color: #fff;
-    color: #c17334;
-    border: 1px solid #c17334; /* Updated orange color */
+    color: var(--hover-1-colour);
+    border: 1px solid var(--hover-1-colour);
 }
 
 .btn-delete,
 .btn-cancel {
-    background-color: #E76F51; /* Darker terracotta */
+    background-color: var(--accent-2-colour);
     color: #fff;
     padding: 5px 10px;
-    border: 1px solid #E76F51; /* Matching border color */
+    border: 1px solid var(--accent-2-colour);
 }
 
 .btn-delete:hover {
     background-color: #fff;
-    color: #E76F51;
-    border: 1px solid #E76F51; /* Darker terracotta */
+    color: var(--accent-2-colour);
+    border: 1px solid var(--accent-2-colour);
 }
 
 /* Pagination */
 .pagination .page-link {
-    color: #bd7b3a; /* Updated orange color */
+    color: var(--accent-1-colour);
 }
 
 .pagination .page-link:hover {
-    color: #E76F51; /* Darker terracotta */
+    color: var(--accent-2-colour);
 }
 
-
 /* Forms */
-.login-form {
+.login-form,
+.signup-form {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #3F5242; /* Slightly lighter olive */
-    border: 1px solid #5A6B58; /* Lighter border color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    background-color: var(--content-bg-colour);
+    border: 1px solid var(--form-border);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .form-group {
@@ -200,7 +232,7 @@ body {
 .form-group label {
     display: block;
     font-weight: 600;
-    color: #EDEDED;
+    color: var(--light-txt-colour);
     margin-bottom: 0.5rem;
 }
 
@@ -209,17 +241,22 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #5A6B58; /* Lighter border color */
-    background-color: #2E3D30; /* Dark olive background */
-    color: #EDEDED; /* Light text color */
-    border-radius: 0; /* Remove rounded corners */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    border: 1px solid var(--form-border);
+    background-color: var(--form-bg-colour);
+    color: var(--light-txt-colour);
+    border-radius: 0;
+    box-sizing: border-box;
 }
+
+.form-group input[type="checkbox"] {
+    width: auto;
+}
+
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #bd7b3a; /* Highlight border color on focus */
+    border-color: var(--form-focus-border);
     outline: none;
 }
 
@@ -227,9 +264,31 @@ body {
     margin-top: 0.5rem;
 }
 
-/* Remove default styles for form controls to prevent double borders */
 .form-control {
-    border: none; /* Remove default border if needed */
-    border-radius: 0; /* Remove rounded corners if needed */
-    box-shadow: none; /* Remove default shadow */
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.preferences {
+    margin-top: 20px;
+}
+
+.preference-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.preference-item {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.preference-item:last-child {
+    margin-right: 0;
+}
+
+.label {
+    font-weight: bold;
 }

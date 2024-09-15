@@ -245,3 +245,34 @@ body {
 hr {
     border: 1px solid #5A6B58; /* Lighter border color */
 }
+
+.preferences {
+    margin-top: 20px;
+}
+
+.preference-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.preference-item {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.preference-item:last-child {
+    margin-right: 0;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.value {
+    font-style: italic;
+}
+
+div {
+color: #fff;
+}

@@ -40,7 +40,7 @@
 <body class="d-flex flex-column h-100 main-bg">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ home_url }}"><span class="brand">My<span
                         class="red-o">Booking</span>System</span></a>
@@ -103,15 +103,7 @@
         <!-- Page-specific content goes here -->
         {% endblock content %}
         {% if form.errors %}
-    <div class="alert alert-danger">
-        <ul>
-            {% for field, errors in form.errors.items %}
-                {% for error in errors %}
-                    <li>{{ field }}: {{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    </div>
+    
 {% endif %}
     </main>
 

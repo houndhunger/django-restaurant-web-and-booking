@@ -69,12 +69,28 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+# Redirect URL after successful login
+LOGIN_REDIRECT_URL = '/welcome/'
+
+# Redirect URL after successful email confirmation
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATE = True
+
+# URL where users are redirected to confirm their email
+ACCOUNT_EMAIL_CONFIRMATION_URL = '/accounts/confirm-email/'
+
+# URL to redirect to after a successful email confirmation, in case no user is logged in.
+# URL where users are redirected after email confirmation
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/welcome/'
+
+# Determines the expiration date of email confirmation mails (# of days)
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+
+
 ACCOUNT_FORMS = {
     'signup': 'booking.forms.CustomSignupForm',
 }
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

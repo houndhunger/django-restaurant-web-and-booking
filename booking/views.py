@@ -10,12 +10,15 @@ from django.urls import reverse_lazy, reverse
 from .models import Reservation, Table
 from .forms import ReservationForm, CustomSignupForm
 #CustomUserCreationForm
-from allauth.account.views import SignupView
 from datetime import timedelta
+
+# Check email unique
+from .utils.reservation_utils import check_email_unique
+
 
 # Home view...
 class HomeView(TemplateView):
-    template_name = 'booking/index.html'
+    template_name = 'index.html'
 
 def restaurant_menu(request):
     return render(request, 'restaurant/restaurant_menu.html')
@@ -315,11 +318,42 @@ class DeleteReservationView(DeleteView):
 #     success_url = reverse_lazy('login')
 #     template_name = 'account/signup.html'
 
+
+#from django.shortcuts import redirect
 from allauth.account.views import SignupView
+from django.contrib import messages
+from django.contrib.auth.models import User
+#from django.urls import reverse_lazy
 
 class CustomSignupView(SignupView):
     form_class = CustomSignupForm
     template_name = 'signup.html'
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            # If email is not unique, add an error message
+            form.add_error('email', 'The email address is already in use.')
+            return self.form_invalid(form)
+        
+        # If email is unique, proceed with form processing
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect to a success page or home page after successful signup
+        return reverse_lazy('home')  # Adjust 'home' to the appropriate URL name
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['email_feedback'] = self.request.GET.get('email_feedback', '')
+        return context
+    
+    def non_field_errors(self):
+        # Customize non-field errors to remove `__all__:` prefix.
+        errors = super().non_field_errors()
+        if errors:
+            return errors.replace('__all__: ', '')
+        return errors
 
 
 # # View to user login

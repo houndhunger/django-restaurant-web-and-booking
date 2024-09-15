@@ -1,5 +1,9 @@
 from . import views
 from django.urls import path, include
+
+from django.urls import path
+from .views import check_email_unique
+
 from .views import (
     HomeView,
     RestaurantMenuView,
@@ -19,6 +23,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('check-email-unique/', check_email_unique, name='check_email_unique'),
     path('menu/', RestaurantMenuView.as_view(), name='restaurant_menu'),
     path('reservations/', UserReservationsView.as_view(), name='user_reservations'),
     path('manage-reservations/', ManageReservationsView.as_view(), name='manage_reservations'),

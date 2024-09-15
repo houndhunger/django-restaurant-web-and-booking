@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="container-fluid">
@@ -33,7 +33,7 @@
 
                             <!-- Display Preferences -->
                             <div class="preferences">
-                                <div class="preference-container">
+                                <div class="preference-row">
                                     <div class="preference-item">
                                         <div class="label">Quiet:</div>
                                         <div class="value">
@@ -52,6 +52,8 @@
                                             {% endif %}
                                         </div>
                                     </div>
+                                </div>
+                                <div class="preference-row">
                                     <div class="preference-item">
                                         <div class="label">Bench Seating:</div>
                                         <div class="value">
@@ -72,8 +74,6 @@
                                     </div>
                                 </div>
                             </div>
-                           
-
                             <p>
                                 <a href="{% url 'edit_reservation' reservation.id %}" class="btn btn-view">Amend Reservation</a> |
                                 <a href="{% url 'delete_reservation' reservation.id %}" class="btn btn-delete">Delete Reservation</a>

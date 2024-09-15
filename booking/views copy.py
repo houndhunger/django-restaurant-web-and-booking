@@ -10,11 +10,11 @@ class PostList(generic.ListView):
     queryset = Reservation.objects.all()
     # template_name = "reservation_list.html"
     #queryset = Reservation.objects.filter(status=1)
-    template_name = "booking/index.html"
+    template_name = "index.html"
     paginate_by = 6
 
 # class HomePageView(TemplateView):
-#     template_name = "booking/index.html"
+#     template_name = "index.html"
 
 class HomeView(TemplateView):
     template_name = 'restaurant/restaurant_menu.html'

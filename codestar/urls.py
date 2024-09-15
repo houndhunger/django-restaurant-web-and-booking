@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
 from booking.views import restaurant_menu, HomeView
+from . import views
 
 # for debug toolbar
 from django.conf import settings
@@ -28,9 +29,9 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
-    #path('', PostList.as_view(), name='home'),
-    path('menu/', restaurant_menu, name='restaurant_menu'),
     path("", include("booking.urls"), name='booking-urls'),
+    path('welcome/', views.welcome_view, name='welcome'),
+    path('menu/', restaurant_menu, name='restaurant_menu'),
     #path('booking/', my_booking, name='booking'),
     #path('', RedirectView.as_view(url='booking/', permanent=True)),
     #path('booking/', include('booking.urls')),

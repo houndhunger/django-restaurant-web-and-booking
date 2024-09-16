@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
-from booking.views import restaurant_menu, HomeView
+from .views import RestaurantMenuView, HomeView
 from . import views
 
 # for debug toolbar
@@ -31,7 +31,7 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     path("", include("booking.urls"), name='booking-urls'),
     path('welcome/', views.welcome_view, name='welcome'),
-    path('menu/', restaurant_menu, name='restaurant_menu'),
+    path('menu/', RestaurantMenuView.as_view(), name='restaurant_menu'),
     #path('booking/', my_booking, name='booking'),
     #path('', RedirectView.as_view(url='booking/', permanent=True)),
     #path('booking/', include('booking.urls')),

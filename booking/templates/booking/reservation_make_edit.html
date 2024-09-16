@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container-fluid">
@@ -9,39 +10,89 @@
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
+
+                        <div id="available-tables" style="display:none;"></div>
+
+                        <!-- Display non-field errors -->
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Reservation date field -->
                         <div class="form-group">
                             {{ form.reservation_date.label_tag }}
                             {{ form.reservation_date }}
+                            <!-- Display field-specific errors -->
+                            {% if form.reservation_date.errors %}
+                            <div class="text-danger">
+                                {{ form.reservation_date.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
+                        <!-- Guest count field -->
                         <div class="form-group">
                             {{ form.guest_count.label_tag }}
                             {{ form.guest_count }}
+                            {% if form.guest_count.errors %}
+                            <div class="text-danger">
+                                {{ form.guest_count.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
+                        <!-- Note field -->
                         <div class="form-group">
                             {{ form.note.label_tag }}
                             {{ form.note }}
+                            {% if form.note.errors %}
+                            <div class="text-danger">
+                                {{ form.note.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
+                        <!-- Other preference fields -->
                         <div class="form-group">
                             {{ form.is_quiet.label_tag }}
                             {{ form.is_quiet }}
+                            {% if form.is_quiet.errors %}
+                            <div class="text-danger">
+                                {{ form.is_quiet.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
                         <div class="form-group">
                             {{ form.is_outside.label_tag }}
                             {{ form.is_outside }}
+                            {% if form.is_outside.errors %}
+                            <div class="text-danger">
+                                {{ form.is_outside.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
                         <div class="form-group">
                             {{ form.has_bench_seating.label_tag }}
                             {{ form.has_bench_seating }}
+                            {% if form.has_bench_seating.errors %}
+                            <div class="text-danger">
+                                {{ form.has_bench_seating.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
                         <div class="form-group">
                             {{ form.has_disabled_access.label_tag }}
                             {{ form.has_disabled_access }}
+                            {% if form.has_disabled_access.errors %}
+                            <div class="text-danger">
+                                {{ form.has_disabled_access.errors }}
+                            </div>
+                            {% endif %}
                         </div>
 
                         <div class="text-center mt-3">
@@ -54,4 +105,13 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    var getAvailableTablesUrl = "{% url 'get_available_tables' %}";
+</script>
+<script src="{% static 'js/reservation.js' %}"></script>
+<script>
+    var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
 {% endblock %}

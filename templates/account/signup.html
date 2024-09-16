@@ -9,7 +9,7 @@
         <!-- Email feedback alert -->
         <div id="email-feedback" class="alert d-none" role="alert"></div>
 
-      <form class="signup-form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      <form method="post" action="{% url 'account_signup' %}" class="signup-form" id="signup_form" >
         {% csrf_token %}
 
         <div class="form-group">

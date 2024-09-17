@@ -121,7 +121,7 @@ class MakeReservationView(LoginRequiredMixin, CreateView):
         context['header'] = 'Make a Reservation'
         return context
 
-class ReservationUpdateView(LoginRequiredMixin, UpdateView):
+class EditReservationView(LoginRequiredMixin, UpdateView):
     model = Reservation
     form_class = ReservationForm
     template_name = 'booking/reservation_make_edit.html'

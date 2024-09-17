@@ -1,34 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-#from allauth.account.forms import SignupForm
-from django.db.models import Q
-from django.views import generic
-from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy, reverse
-from .models import Reservation, Table
-from .forms import ReservationForm, CustomSignupForm
-from datetime import timedelta
-
-# Check email unique
-from .utils.reservation_utils import check_email_unique
-from .utils.reservation_utils import handle_reservation_logic 
-
-# for Custom Signup View
-from allauth.account.views import SignupView
-from django.contrib import messages
-from django.contrib.auth.models import User
-
-
-
-
-
-
-
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -119,10 +90,27 @@ class MakeReservationView(LoginRequiredMixin, CreateView):
         context['header'] = 'Make a Reservation'
         return context
 
+
+"""
+View to preview reservation
+"""
+class ReservationPreviewView(DetailView):
+    model = Reservation
+    template_name = 'booking/reservation_preview.html'
+    context_object_name = 'reservation'
+
+    def get_object(self, queryset=None):
+        # Get the reservation ID from the query parameters
+        reservation_id = self.kwargs.get('pk')
+        # Retrieve the reservation object
+        reservation = get_object_or_404(Reservation, pk=reservation_id)
+        return reservation
+
+
 """
 View edit existing reservation
 """
-class ReservationUpdateView(LoginRequiredMixin, UpdateView):
+class EditReservationView(LoginRequiredMixin, UpdateView):
     model = Reservation
     form_class = ReservationForm
     template_name = 'booking/reservation_make_edit.html'
@@ -147,7 +135,7 @@ class ReservationUpdateView(LoginRequiredMixin, UpdateView):
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
             print("Reservation saved with tables:", reservation.tables.all())
-            return redirect(reverse('user_reservations'))
+            return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
         else:
             # If no tables are available, show an error on the form
             form.add_error(None, 'No available tables for the selected date and preferences.')

@@ -1,27 +1,31 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-    <h1>Preview Reservation</h1>
-    <p><strong>Guest Count:</strong> {{ form.guest_count.value }}</p>
-    <p><strong>Reservation Date:</strong> {{ form.reservation_date.value }}</p>
+<div class="container-fluid">
+    <h1 class="mb-4">Reservation Preview</h1>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- Display reservation details -->
+                    <p><strong>Date:</strong> {{ reservation.reservation_date|date:"Y-m-d H:i" }}</p>
+                    <p><strong>Guest Count:</strong> {{ reservation.guest_count }}</p>
+                    <p><strong>Note:</strong> {{ reservation.note }}</p>
+                    <p><strong>Quiet:</strong> {{ reservation.is_quiet }}</p>
+                    <p><strong>Outside:</strong> {{ reservation.is_outside }}</p>
+                    <p><strong>Bench Seating:</strong> {{ reservation.has_bench_seating }}</p>
+                    <p><strong>Disabled Access:</strong> {{ reservation.has_disabled_access }}</p>
+                    
+                    <!-- Display other details as needed -->
+                    
+                    <div class="text-center mt-3">
+                        <a href="{% url 'edit_reservation' reservation.pk %}" class="btn btn-primary">Amend Reservation</a>
+                        <a href="{% url 'user_reservations' %}" class="btn btn-secondary">My Reservations</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    {% if form.tables %}
-        <p>Tables Reserved:</p>
-        <ul>
-            {% for table in form.tables.value %}
-                <li>Table {{ table }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {% if form.note.value %}
-        <p><strong>Note:</strong> {{ form.note.value }}</p>
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Confirm Reservation</button>
-    </form>
-
-    <a href="{% url 'make_reservation' %}" class="btn btn-secondary">Edit Reservation</a>
 {% endblock %}

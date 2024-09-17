@@ -8,16 +8,12 @@ from .views import (
     #RestaurantMenuView,
     UserReservationsView,
     MakeReservationView, # ss?
-    #EditReservationView, # ss?  
+    EditReservationView, # previously ReservationUpdateView,
+    ReservationPreviewView, 
     DeleteReservationView,
     ManageReservationsView,
     ManageTablesView,
-    #SignUpView,
-    CustomSignupView, # rename?
-    #LogInView,
-    #CustomLoginView,
-    #signup_view
-    ReservationUpdateView, #ss?
+    CustomSignupView,
 )
 
 urlpatterns = [
@@ -30,11 +26,13 @@ urlpatterns = [
 
     # guest reservations
     path('reservations/', UserReservationsView.as_view(), name='user_reservations'),
-    path('reserve/', MakeReservationView.as_view(), name='make_reservation'),
-    path('reserve/<int:pk>/edit/', ReservationUpdateView.as_view(), name='edit_reservation'),
-    path('delete-reservation/<int:pk>/', DeleteReservationView.as_view(), name='delete_reservation'),
+    path('reservation/make/', MakeReservationView.as_view(), name='make_reservation'),
     
-    #AJAX
+    path('reservation/<int:pk>/edit/', EditReservationView.as_view(), name='edit_reservation'),
+    path('reservation/<int:pk>/preview/', ReservationPreviewView.as_view(), name='preview_reservation'),
+    path('delete-reservation/<int:pk>/', DeleteReservationView.as_view(), name='delete_reservation'),
+
+    #AJAX - WIP
     path('signup/', CustomSignupView.as_view(), name='signup'),
     path('get-available-tables/', get_available_tables, name='get_available_tables'),
 ]

@@ -130,16 +130,51 @@
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
     <script>
-        flatpickr("#id_reservation_date", {
-            enableTime: true,
-            dateFormat: "Y/m/d H:i",
-            time_24hr: true,
-            minuteIncrement: 5, // Set minute increments to 5 minutes
-            allowInput: true, // Allow manual input
-            minTime: "09:00",
-            maxTime: "22:00",
-            inline: true,
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Flatpickr
+            const flatpickrInstance = flatpickr("#id_reservation_date", {
+                enableTime: true,
+                dateFormat: "Y/m/d H:i",
+                time_24hr: true,
+                minuteIncrement: 5,
+                allowInput: true,
+                minTime: "09:00",
+                maxTime: "22:00",
+                inline: true,
+                onReady: function(selectedDates, dateStr, instance) {
+                    handleCalendarVisibility(); // Call this on initialization
+                }
+            });
+
+            // Function to hide/show flatpickr calendar based on screen width
+            function handleCalendarVisibility() {
+                const screenWidth = window.innerWidth;
+                const calendar = document.querySelector('.flatpickr-calendar');
+
+                if (calendar) {
+                    if (screenWidth < 425) {
+                        calendar.style.display = 'none'; // Hide calendar on small screens
+                    } else {
+                        calendar.style.display = 'inline'; // Show calendar on larger screens
+                    }
+                } else {
+                    console.error('flatpickr-calendar not found!');
+                }
+            }
+
+            // Add event listener for window resize
+            window.addEventListener('resize', function() {
+                handleCalendarVisibility(); // Recheck on window resize
+            });
         });
     </script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+    <style>
+        /* Flatpickr calendar */
+        .flatpickr-calendar {
+            background: rgba(255, 255, 255, 0.9); /* Set background color */
+            border-radius: 0;
+        }
+    </style>
 </body>
 </html>

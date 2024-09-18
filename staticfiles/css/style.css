@@ -276,3 +276,11 @@ hr {
 div {
 color: #fff;
 }
+
+
+/* Flatpickr calendar */
+.flatpickr-calendar {
+    width: 100%; /* Make it fully responsive */
+    max-width: 300px; /* Control the max-width */
+    background: #555;
+}

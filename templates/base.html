@@ -1,6 +1,7 @@
 {% load static %}
 {% url 'home' as home_url %}
 {% url 'restaurant_menu' as restaurant_menu_url %}
+{% url 'contact' as contact_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
@@ -16,7 +17,7 @@
 <head>
     <title>DINO BAR & Restaurant</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Google Fonts CSS -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
@@ -35,7 +36,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
 
@@ -81,15 +82,21 @@
                             href="{% url 'account_login' %}">Make a Reservation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}"
-                            href="{% url 'account_signup' %}">Register</a>
+                        <a class="nav-link {% if request.path == contact_url %}active{% endif %}"
+                            href="{% url 'contact_account_signup' %}">Register</a>
                     </li>
                     {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}"
+                            href="{% url 'contact' %}">Contact</a>
+                    </li>
                 </ul>
                 <div class="text-end">
                     <span class="navbar-text text-muted">
                         {% if user.is_authenticated %}
-                        Logged in as {{ user }}. <a href="{% url 'account_logout' %}">Logout</a>
+                        Logged in as {{ user }}.
+                        <a href="{% url 'account_logout' %}">Logout</a>
+                        <a href="">Profile</a>
                         {% else %}
                         <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                         {% endif %}
@@ -104,8 +111,8 @@
         <!-- Page-specific content goes here -->
         {% endblock content %}
         {% if form.errors %}
-    
-{% endif %}
+
+        {% endif %}
     </main>
 
     <!-- Footer -->
@@ -113,11 +120,15 @@
         <p class="m-0 text-center text-white">
             {% block copyright %}
             © 2024 Daniel Pribula - Dino's Restaurant Booking System
-            {% endblock copyright %}            
+            {% endblock copyright %}
         </p>
         <p class="m-0 text-center text-white">
             Follow us:
             <a href="https://www.facebook.com/DinoNottingham/"><i class="fab fa-facebook-square ms-3"></i></a>
+            <a href="https://www.tripadvisor.co.uk/Restaurant_Review-g186356-d2589057-Reviews-Dino-Nottingham_Nottinghamshire_England.html/"
+                target="_blank" rel="noopener" aria-label="Visit our TripAdvisor page (opens in a new tab)">
+                <i class="fab fa-tripadvisor ms-3"></i>
+            </a>
         </p>
     </footer>
 
@@ -125,5 +136,6 @@
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
     {% block javascript %}{% endblock %}
-    </body>
+</body>
+
 </html>

@@ -31,8 +31,8 @@ Restaurant Booking System is a Django web application designed for managing rest
 
 ## TODO - Supported screens and browsers
 The website was developed and tested on Google Chrome. It's working correctly for Small screen sizes, like Galaxy Fold, as well as for large screens.
-![Responsive design](readmedocs/responsive-design.png)
-*Image was generated using this [blog](https://ui.dev/amiresponsive?url=https%3A%2F%2Fusersnap.com%2Fblog)
+![Responsive design](docs/images/responsive-design.png)
+*Image was generated using this [techsini.com website](https://techsini.com/multi-mockup/index.php)
 
 ## OK - Installation
 ### Prerequisites
@@ -222,7 +222,7 @@ The development process for this project involved several stages, each addressin
 ## Testing
 ### Code validation 
 - **HTML**: No errors were found when passing through the [W3C validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fyour-site-url.com).
-- **CSS**: No errors were found when passing through the [Jigsaw validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fyour-site-url.com&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en#css).
+- **CSS**: No errors were found when passing through the [Jigsaw validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fdjango-restaurant-web-and-book-565ecd4fe61b.herokuapp.com%2Fstatic%2Fcss%2Fstyle.css&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en).
 
 ### TODO - Test Cases
 ...

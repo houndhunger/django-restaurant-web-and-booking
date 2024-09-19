@@ -1,11 +1,39 @@
+/* Define CSS Variables */
+:root {
+    /* colour palete */
+    --colour-1: #2E3D30; /* hsl(128, 14%, 21%) */
+    --colour-1B: #3d5140; /* hsl(128, 14%, 28%) */
+    --colour-3B: #576b5a; /* hsl(128, 10%, 38%) */
+    --colour-2: #ce845f; /* hsl(20, 53%, 59%) */
+    --colour-3: #bd3c2e; /* hsl(6, 61%, 46%) */
+    --colour-4: #e0bea4; /* hsl(26, 49%, 76%) */
+    --colour-4B: #51463d; /* hsl(27, 14%, 28%) */  
+    --colour-5: #ab9b59; /* hsl(48, 33%, 51%) */
+
+    /* colour variables */
+    --page-bg-colour: var(--colour-1); 
+    --light-txt-colour: #ededed;
+    --accent-1-colour: var(--colour-2);
+    --accent-2-colour: var(--colour-3);
+    --head-bg-colour: var(--colour-4);;
+    --content-bg-colour: var(--colour-1B);
+    --content-bg-colour-alt1: var(--colour-4B);
+    --main-border: var(--colour-3B);                     
+
+    --hover-1-colour: var(--accent-1-colour);      
+    --hover-2-colour: var(--accent-2-colour);     
+    --form-bg-colour: var(--page-bg-colour);       
+    --form-border: var(--main-border);             
+    --form-focus-border: var(--accent-1-colour);    
+}
+
 /* General Styles */
 body {
-    background-color: #2E3D30; /* Dark olive green */
-    color: #EDEDED; /* Light text for contrast */
+    background-color: var(--page-bg-colour);
+    color: var(--light-txt-colour);
 }
 
 /* Brand and Text Colors */
-.brand,
 .post-link,
 .red-o,
 .btn-signup,
@@ -13,8 +41,14 @@ body {
 .btn-primary,
 .link,
 .reservation-title {
-    color: #bd7b3a; /* Updated orange color */
+    color: var(--accent-1-colour);
 }
+
+.brand {
+    color: var(--accent-2-colour);
+}
+
+
 .card-title {
     font-size: 1.6rem;
 }
@@ -34,23 +68,46 @@ body {
 /* Backgrounds */
 .light-bg,
 .masthead-text {
-    background-color: #3F5242; /* Slightly lighter olive */
+    background-color: var(--content-bg-colour);
 }
 
 .dark-bg,
 .main-bg {
-    background-color: #2E3D30; /* Dark olive green */
+    background-color: var(--page-bg-colour);
+}
+
+.navbar {
+    background-color: var(--head-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.footer {
+    border: 1px solid var(--content-bg-colour);
+    background-color: var(--content-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Cards */
-.card,
-.reservation-card {
-    border: 1px solid #3F5242; /* Slightly lighter olive for border */
-    background-color: #3F5242; /* Slightly lighter olive */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Darker shadow for depth */
+.card {
+    border: 1px solid var(--content-bg-colour);
+    background-color: var(--content-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 15px;
     margin-bottom: 20px;
-    border-radius: 0; /* Remove rounded corners */
+    border-radius: 0;
+}
+
+.reservation-card {
+    border: 1px solid var(--content-bg-colour-alt1);
+    background-color: var(--content-bg-colour-alt1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0;
+}
+
+.row {
+    padding: 0 5px;
 }
 
 /* Image and Flash */
@@ -63,9 +120,9 @@ body {
     bottom: 5%;
     min-width: 30%;
     left: -2px;
-    background-color: #bd7b3a; /* Updated orange color */
+    background-color: var(--accent-1-colour);
     padding: 5px 10px;
-    border-radius: 0; /* Remove rounded corners */
+    border-radius: 0;
 }
 
 .scale {
@@ -91,7 +148,7 @@ body {
 }
 
 .masthead-text {
-    background-color: #3F5242; /* Slightly lighter olive */
+    background-color: var(--content-bg-colour);
     color: white;
 }
 
@@ -107,7 +164,7 @@ body {
     right: 90%;
     height: 100%;
     width: 150%;
-    background: #3F5242;
+    background: var(--content-bg-colour);
     transform: skew(15deg);
     z-index: 100;
 }
@@ -122,128 +179,121 @@ body {
 .btn-delete,
 .btn-cancel {
     text-decoration: none;
-    border-radius: 0; /* Remove rounded corners */
+    border-radius: 0;
+    margin: 5px;
 }
+
 
 .post-link:hover,
 .page-link {
-    color: #bd7b3a; /* Updated orange color */
+    color: var(--accent-1-colour);
 }
 
 .btn-primary {
-    background-color: #bd7b3a; /* Updated orange color */
+    background-color: var(--accent-1-colour);
     color: #fff;
     padding: 5px 10px;
-    border: 1px solid #bd7b3a; /* Matching border color */
-    /*font-weight: 700;*/
+    border: 1px solid var(--accent-1-colour);
 }
 
 .btn-signup:hover,
 .btn-signup:active,
 .btn-primary:hover {
     background-color: #fff;
-    color: #bd7b3a;
+    color: var(--accent-1-colour);
 }
 
 .btn-view {
-    background-color: #c17334; /* Updated orange color */
+    background-color: var(--hover-1-colour);
     color: #fff;
     padding: 5px 10px;
 }
 
 .btn-view:hover {
     background-color: #fff;
-    color: #c17334;
-    border: 1px solid #c17334; /* Updated orange color */
+    color: var(--hover-1-colour);
+    border: 1px solid var(--hover-1-colour);
 }
 
 .btn-delete,
 .btn-cancel {
-    background-color: #E76F51; /* Darker terracotta */
+    background-color: var(--accent-2-colour);
     color: #fff;
     padding: 5px 10px;
-    border: 1px solid #E76F51; /* Matching border color */
+    border: 1px solid var(--accent-2-colour);
 }
 
 .btn-delete:hover {
     background-color: #fff;
-    color: #E76F51;
-    border: 1px solid #E76F51; /* Darker terracotta */
+    color: var(--accent-2-colour);
+    border: 1px solid var(--accent-2-colour);
 }
 
 /* Pagination */
 .pagination .page-link {
-    color: #bd7b3a; /* Updated orange color */
+    color: var(--accent-1-colour);
 }
 
 .pagination .page-link:hover {
-    color: #E76F51; /* Darker terracotta */
+    color: var(--accent-2-colour);
 }
 
 /* Forms */
-.login-form {
+.login-form,
+.signup-form {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #3F5242; /* Slightly lighter olive */
-    border: 1px solid #5A6B58; /* Lighter border color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    background-color: var(--content-bg-colour);
+    border: 1px solid var(--form-border);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .form-group {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1.5rem;
 }
 
 .form-group label {
     display: block;
     font-weight: 600;
-    color: #EDEDED;
+    color: var(--light-txt-colour);
     margin-bottom: 0.5rem;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #5A6B58; /* Lighter border color */
-    background-color: #2E3D30; /* Dark olive background */
-    color: #EDEDED; /* Light text color */
-    border-radius: 0; /* Remove rounded corners */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    border: 1px solid var(--form-border);
+    background-color: var(--form-bg-colour);
+    color: var(--light-txt-colour);
+    border-radius: 0;
+    box-sizing: border-box;
 }
 
-.form-group input:focus {
-    border-color: #bd7b3a; /* Highlight border color on focus */
+.form-group input[type="checkbox"] {
+    width: auto;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--form-focus-border);
     outline: none;
 }
 
-/* Additional Alignment and Spacing */
-.right {
-    float: right;
+.form-group .form-control {
+    margin-top: 0.5rem;
 }
 
-/* Reservations List and User Reservations */
-.reservations-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.reservations-heading {
-    color: #EDEDED;
-    margin-bottom: 20px;
-}
-
-.tables-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.tables-list li {
-    padding: 5px 0;
-}
-
-hr {
-    border: 1px solid #5A6B58; /* Lighter border color */
+.form-control {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .preferences {
@@ -267,20 +317,4 @@ hr {
 
 .label {
     font-weight: bold;
-}
-
-.value {
-    font-style: italic;
-}
-
-div {
-color: #fff;
-}
-
-
-/* Flatpickr calendar */
-.flatpickr-calendar {
-    width: 100%; /* Make it fully responsive */
-    max-width: 300px; /* Control the max-width */
-    background: #555;
 }

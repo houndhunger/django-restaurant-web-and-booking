@@ -1,18 +1,30 @@
 /* Define CSS Variables */
 :root {
-    --page-bg-colour: #2e3d30;                    /* page-bg-colour */
-    --light-txt-colour: #ededed;                  /* light-txt-colour */
-    --accent-1-colour: #CE845F;                   /* accent-1-colour */
-    --accent-2-colour: #BC3D2E;                   /* accent-2-colour */
-    --head-bg-colour: #b8c6c6;                    /* head-bg-colour */
-    --content-bg-colour: #3e5141;                 /* content-bg-colour */
-    --main-border: #5a6b58;                       /* main-border */
+    /* colour palete */
+    --colour-1: #2E3D30; /* hsl(128, 14%, 21%) */
+    --colour-1B: #3d5140; /* hsl(128, 14%, 28%) */
+    --colour-3B: #576b5a; /* hsl(128, 10%, 38%) */
+    --colour-2: #ce845f; /* hsl(20, 53%, 59%) */
+    --colour-3: #bd3c2e; /* hsl(6, 61%, 46%) */
+    --colour-4: #e0bea4; /* hsl(26, 49%, 76%) */
+    --colour-4B: #51463d; /* hsl(27, 14%, 28%) */  
+    --colour-5: #ab9b59; /* hsl(48, 33%, 51%) */
 
-    --hover-1-colour: var(--accent-1-colour);       /* hover-1-colour */
-    --hover-2-colour: var(--accent-2-colour);      /* hover-2-colour */
-    --form-bg-colour: var(--page-bg-colour);        /* form-bg-colour */
-    --form-border: var(--main-border);              /* form-border-colour */
-    --form-focus-border: var(--accent-1-colour);    /* form-focus-border */
+    /* colour variables */
+    --page-bg-colour: var(--colour-1); 
+    --light-txt-colour: #ededed;
+    --accent-1-colour: var(--colour-2);
+    --accent-2-colour: var(--colour-3);
+    --head-bg-colour: var(--colour-4);;
+    --content-bg-colour: var(--colour-1B);
+    --content-bg-colour-alt1: var(--colour-4B);
+    --main-border: var(--colour-3B);                     
+
+    --hover-1-colour: var(--accent-1-colour);      
+    --hover-2-colour: var(--accent-2-colour);     
+    --form-bg-colour: var(--page-bg-colour);       
+    --form-border: var(--main-border);             
+    --form-focus-border: var(--accent-1-colour);    
 }
 
 /* General Styles */
@@ -76,10 +88,18 @@ body {
 }
 
 /* Cards */
-.card,
-.reservation-card {
+.card {
     border: 1px solid var(--content-bg-colour);
     background-color: var(--content-bg-colour);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 0;
+}
+
+.reservation-card {
+    border: 1px solid var(--content-bg-colour-alt1);
+    background-color: var(--content-bg-colour-alt1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 15px;
     margin-bottom: 20px;

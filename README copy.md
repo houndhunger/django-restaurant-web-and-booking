@@ -30,7 +30,7 @@ Restaurant Booking System is a Django web application designed for managing rest
 - **TODO - MAYBE** - **jQuery**: For front-end interaction and user interface elements.
 
 ## TODO - Supported screens and browsers
-The website was developed and tested on Google Chrome. It's working correctly for Small screen sizes, like Galaxy Fold, as well as for large screens. File style.css optimizes web for these screen width changes: 365px and 487px.
+The website was developed and tested on Google Chrome. It's working correctly for Small screen sizes, like Galaxy Fold, as well as for large screens.
 ![Responsive design](readmedocs/responsive-design.png)
 *Image was generated using this [blog](https://ui.dev/amiresponsive?url=https%3A%2F%2Fusersnap.com%2Fblog)
 
@@ -58,8 +58,8 @@ The Restaurant Booking System can be hosted on a web server to provide online ac
 5. I refreshed the website to reflect the changes.
 
 ### Via Heroku
-- The website repository is hosted at: [Restaruant booknig system repository](https://github.com/houndhunger/2048)
-- The project is deployed to Heroku and publicly accessible. [Restaruant booknig system app](https://houndhunger.github.io/2048/)
+- The website repository is hosted at: [Restaruant booknig system repository](https://github.com/houndhunger/django-restaurant-web-and-booking/)
+- The project is deployed to Heroku and publicly accessible. [Restaruant booknig system app](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/)
 
 To deploy the project, follow these steps:
 
@@ -196,6 +196,11 @@ The development process for this project involved several stages, each addressin
   - **Issue**: The `reservation_preview` view was not correctly set up in the URL patterns.  
   - **Solution**: Created the `reservation_preview` view and linked it properly in the URL patterns. Fixed the redirect by ensuring the correct path and `pk` argument were passed.
 
+- **Flatpickr is too large for small screens**  
+  - **Problem**: The Flatpickr datepicker appears oversized and doesn't fit well on smaller screens, making the user experience cumbersome.  
+  - **Issue**: The cause is likely due to Flatpickr’s default styling, which isn’t fully responsive out of the box.  
+  - **Solution**: The Flatpickr calendar is now hidden on smaller screens. Future plans include implementing responsive adjustments or integrating a mobile-friendly datepicker.
+
 ### KEEP UPDATING - Unsolved Bugs
 - **Handling simultaneous reservations with the same table**  
   - **Problem**: There's currently no mechanism in place to prevent two users from reserving the same table at the same time.  
@@ -213,7 +218,6 @@ The development process for this project involved several stages, each addressin
   - **Problem**: AJAX functionality for checking table availability on reservation date was not working.  
   - **Issue**: The implementation was incomplete and needed further development.  
   - **Solution**: Finalized the AJAX functionality to correctly check table availability and integrate it into the reservation process.
-
 
 ## Testing
 ### Code validation 

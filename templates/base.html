@@ -15,7 +15,7 @@
 
 <head>
     <title>DINO BAR & Restaurant</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- Google Fonts CSS -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -25,9 +25,7 @@
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <!-- flatpickr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    {% block styles %}{% endblock %}
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -114,67 +112,18 @@
     <footer class="footer mt-auto py-3 dark-bg">
         <p class="m-0 text-center text-white">
             {% block copyright %}
-            © 2024
-            {% endblock copyright %}
+            © 2024 Daniel Pribula - Dino's Restaurant Booking System
+            {% endblock copyright %}            
         </p>
         <p class="m-0 text-center text-white">
             Follow us:
-            <i class="fab fa-facebook-square ms-3"></i>
-            <i class="fab fa-twitter-square ms-3"></i>
-            <i class="fab fa-instagram-square ms-3"></i>
-            <i class="fab fa-youtube-square ms-3"></i>
+            <a href="https://www.facebook.com/DinoNottingham/"><i class="fab fa-facebook-square ms-3"></i></a>
         </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Flatpickr
-            const flatpickrInstance = flatpickr("#id_reservation_date", {
-                enableTime: true,
-                dateFormat: "Y/m/d H:i",
-                time_24hr: true,
-                minuteIncrement: 5,
-                allowInput: true,
-                minTime: "09:00",
-                maxTime: "22:00",
-                inline: true,
-                onReady: function(selectedDates, dateStr, instance) {
-                    handleCalendarVisibility(); // Call this on initialization
-                }
-            });
-
-            // Function to hide/show flatpickr calendar based on screen width
-            function handleCalendarVisibility() {
-                const screenWidth = window.innerWidth;
-                const calendar = document.querySelector('.flatpickr-calendar');
-
-                if (calendar) {
-                    if (screenWidth < 425) {
-                        calendar.style.display = 'none'; // Hide calendar on small screens
-                    } else {
-                        calendar.style.display = 'inline'; // Show calendar on larger screens
-                    }
-                } else {
-                    console.error('flatpickr-calendar not found!');
-                }
-            }
-
-            // Add event listener for window resize
-            window.addEventListener('resize', function() {
-                handleCalendarVisibility(); // Recheck on window resize
-            });
-        });
-    </script>
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
-    <style>
-        /* Flatpickr calendar */
-        .flatpickr-calendar {
-            background: rgba(255, 255, 255, 0.9); /* Set background color */
-            border-radius: 0;
-        }
-    </style>
-</body>
+    {% block javascript %}{% endblock %}
+    </body>
 </html>

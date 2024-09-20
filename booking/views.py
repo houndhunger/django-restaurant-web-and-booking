@@ -139,17 +139,17 @@ class EditReservationView(LoginRequiredMixin, UpdateView):
 
     # Handles form submission and reservation logic
     def form_valid(self, form):
-        print("Form cleaned data:", form.cleaned_data)
+        #print("Form cleaned data:", form.cleaned_data)
         # Process reservation and available tables based on user input
         reservation, available_tables = handle_reservation_logic(form, self.request.user)
-        print("Form is valid. Reservation data:", reservation)
-        print("Available tables:", available_tables)
+        #print("Form is valid. Reservation data:", reservation)
+        #print("Available tables:", available_tables)
 
         # If tables are available, save the reservation and assign tables
         if available_tables.exists():
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
-            print("Reservation saved with tables:", reservation.tables.all())
+            #print("Reservation saved with tables:", reservation.tables.all())
             return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
         else:
             # If no tables are available, show an error on the form
@@ -160,18 +160,18 @@ class EditReservationView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = 'Edit Reservation'
-        print("Context data:", context)
+        #print("Context data:", context)
         return context
 
     # Retrieves the reservation object that is being edited
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
-        print("Loaded reservation object:", obj)
+        #print("Loaded reservation object:", obj)
         return obj
 
     # Handles form submission errors and logs them
     def form_invalid(self, form):
-        print("Form errors:", form.errors)
+        #print("Form errors:", form.errors)
         return super().form_invalid(form)
 
 """

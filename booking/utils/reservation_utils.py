@@ -57,7 +57,8 @@ def handle_reservation_logic(form, user):
     overlapping_reservations = Reservation.objects.filter(
         Q(reservation_date__lt=reservation_end) &
         Q(reservation_date__gt=reservation_date - timedelta(hours=2))
-    )
+    ).exclude(pk=reservation.pk)  # Exclude the current reservation
+
     reserved_table_ids = overlapping_reservations.values_list('tables', flat=True)
 
     available_tables = available_tables.exclude(pk__in=reserved_table_ids)
@@ -96,7 +97,7 @@ def get_available_tables(request):
             
             return JsonResponse({'error': 'Date is required'}, status=400)
         except Exception as e:
-            print(f"Error: {e}")  # Log the error
+            #print(f"Error: {e}")  # Log the error
             return JsonResponse({'error': 'Internal Server Error'}, status=500)
     
     return JsonResponse({'error': 'Invalid request method'}, status=405)

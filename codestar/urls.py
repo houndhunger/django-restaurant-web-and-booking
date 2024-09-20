@@ -33,10 +33,6 @@ urlpatterns = [
     path('welcome/', views.welcome_view, name='welcome'),
     path('menu/', RestaurantMenuView.as_view(), name='restaurant_menu'),
     path('contact/', views.contact, name='contact'),
-    #path('booking/', my_booking, name='booking'),
-    #path('', RedirectView.as_view(url='booking/', permanent=True)),
-    #path('booking/', include('booking.urls')),
-    #path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG and not settings.TESTING:

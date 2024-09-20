@@ -3,7 +3,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-
+#from .models import SiteSettings
+from booking.models import SiteSettings
 
 """
 View to welcome which is now home - index.html
@@ -17,6 +18,12 @@ Home view - index.html
 class HomeView(TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        site_settings = SiteSettings.objects.first()  # Ensure the site settings exist
+        context['site_settings'] = site_settings
+        return context
+
 """
 View to display restaurant menu
 """
@@ -26,25 +33,22 @@ class RestaurantMenuView(TemplateView):
 # def restaurant_menu(request):
 #     return render(request, 'restaurant/restaurant_menu.html')
 
-
-"""
-View to Contact Page
-"""
-from django.core.mail import send_mail
-from django.conf import settings
-from django.http import HttpResponse
-from django.shortcuts import render
-
 def contact(request):
+    site_settings = SiteSettings.objects.first()
+
+    if not site_settings:
+        return HttpResponse("Site settings are not configured.")
+
     if request.method == 'POST':
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         email = request.POST['email']
         message = request.POST['message']
         
-        # Add a custom prefix to the message
+        # Prepare the message
         full_message = f"From Dino Restaurant Booking System:\n\nMessage from {first_name} {last_name}, Email: {email}\n\n{message}"
         
+        # Send the email
         send_mail(
             'Contact Form Submission',
             full_message,
@@ -53,6 +57,7 @@ def contact(request):
         )
         
         return HttpResponse('Thank you for your message!')
-    
-    return render(request, 'restaurant/contact.html')
 
+    return render(request, 'restaurant/contact.html', {
+        'site_settings': site_settings,
+    })

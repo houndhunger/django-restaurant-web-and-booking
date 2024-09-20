@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Reservation
 from django_summernote.admin import SummernoteModelAdmin
+from .models import SiteSettings
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
@@ -16,5 +17,6 @@ class ReservationAdmin(admin.ModelAdmin):
         obj.edited_by = request.user
         super().save_model(request, obj, form, change)
 
-# Register your models here.
-# admin.site.register(Reservation)
+@admin.register(SiteSettings)
+class SiteSettingsAdmin(admin.ModelAdmin):
+    list_display = ['site', 'contact_email', 'phone_number']

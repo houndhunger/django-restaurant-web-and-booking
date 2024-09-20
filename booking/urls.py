@@ -5,10 +5,9 @@ from .views import check_email_unique
 from booking.utils.reservation_utils import get_available_tables
 
 from .views import (
-    #RestaurantMenuView,
     UserReservationsView,
-    MakeReservationView, # ss?
-    EditReservationView, # previously ReservationUpdateView,
+    MakeReservationView,
+    EditReservationView,
     ReservationPreviewView, 
     DeleteReservationView,
     ManageReservationsView,

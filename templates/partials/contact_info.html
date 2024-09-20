@@ -2,8 +2,8 @@
 <div class="row justify-content-center text-center my-5">
     <div class="col-md-8">
         <h2 class="mb-3">Contact Us</h2>
-        <p>Phone: <a href="tel:+4401632960000" class="link">0115 950 4455</a></p>
-        <p>Email: <a href="mailto:info@example.org" class="link">info@dinobar.co.uk</a></p>
+        <p>Phone: <a href="tel:{{ site_settings.phone_number }}" class="link">{{ site_settings.phone_number }}</a></p>
+        <p>Email: <a href="mailto:{{ site_settings.contact_email }}" class="link">{{ site_settings.contact_email }}</a></p>
         <p>Address: 9 Warser Gate, Nottingham, NG1 1NU</p>
     </div>
 </div>

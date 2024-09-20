@@ -1,8 +1,21 @@
 from django.db import models
 from datetime import timedelta
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 
-# Table model
+"""
+Site Settings model
+"""
+class SiteSettings(models.Model):
+    site = models.OneToOneField(Site, on_delete=models.CASCADE)
+    contact_email = models.EmailField(max_length=254)
+    phone_number = models.CharField(max_length=15, default='0000000000') # Assuming a 15-character limit for the phone number
+    def __str__(self):
+        return f"{self.site.domain} Settings"
+
+"""
+Table model
+"""
 class Table(models.Model):
     table_number = models.IntegerField(unique=True)
     zone = models.IntegerField()
@@ -25,7 +38,9 @@ RESERVATION_STATUS_CHOICES = (
     (2, "Cancelled"),
 )
 
-# Reservation model
+"""
+Reservation model
+"""
 class Reservation(models.Model):
     PREFERENCE_CHOICES = [
         ('no_preference', 'No Preference'),

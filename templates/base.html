@@ -85,8 +85,13 @@
                             href="{% url 'account_login' %}">Login</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.path == contact_url %}active{% endif %}"
+                            href="{% url 'contact_account_signup' %}">Register</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
                         <a class="nav-link {% if request.path == signup_url %}active{% endif %}"
-                            href="{% url 'account_signup' %}">Register</a>
+                            href="{% url 'contact' %}">Contact</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
@@ -126,6 +131,8 @@
         {% if form.errors %}
 
         {% endif %}
+
+        {% endif %}
     </main>
 
     <!-- Footer -->
@@ -134,10 +141,15 @@
             {% block copyright %}
             © 2024 Daniel Pribula - Dino's Restaurant Booking System
             {% endblock copyright %}
+            {% endblock copyright %}
         </p>
         <p class="m-0 text-center text-white">
             Follow us:
             <a href="https://www.facebook.com/DinoNottingham/"><i class="fab fa-facebook-square ms-3"></i></a>
+            <a href="https://www.tripadvisor.co.uk/Restaurant_Review-g186356-d2589057-Reviews-Dino-Nottingham_Nottinghamshire_England.html/"
+                target="_blank" rel="noopener" aria-label="Visit our TripAdvisor page (opens in a new tab)">
+                <i class="fab fa-tripadvisor ms-3"></i>
+            </a>
             <a href="https://www.tripadvisor.co.uk/Restaurant_Review-g186356-d2589057-Reviews-Dino-Nottingham_Nottinghamshire_England.html/"
                 target="_blank" rel="noopener" aria-label="Visit our TripAdvisor page (opens in a new tab)">
                 <i class="fab fa-tripadvisor ms-3"></i>
@@ -149,6 +161,8 @@
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
     {% block javascript %}{% endblock %}
+</body>
+
 </body>
 
 </html>

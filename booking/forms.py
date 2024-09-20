@@ -4,6 +4,8 @@ from .models import Reservation
 from allauth.account.forms import SignupForm # switching to this allauth
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+
 
 
 """
@@ -62,3 +64,31 @@ class ReservationForm(forms.ModelForm):
             'reservation_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'note': forms.Textarea(attrs={'rows': 3}),
         }
+    
+    def clean_reservation_date(self):
+        reservation_date = self.cleaned_data.get('reservation_date')
+        # Check if the minutes are a multiple of 5
+        if reservation_date.minute % 5 != 0:
+            raise ValidationError('Reservation time must be in 5-minute increments.')
+        return reservation_date
+
+    def clean_reservation_date(self):
+        reservation_date = self.cleaned_data.get('reservation_date')
+        if reservation_date:
+            # Set bounds for reservation time
+            if reservation_date < timezone.now().replace(hour=9, minute=0) or reservation_date > timezone.now().replace(hour=22, minute=0):
+                raise ValidationError("Reservations can only be made between 09:00 and 22:00.")
+        return reservation_date
+
+    def clean_guest_count(self):
+        guest_count = self.cleaned_data.get('guest_count')
+        max_guests = 12
+        if guest_count > max_guests:
+            raise forms.ValidationError(
+                f"For reservations of more than {max_guests} guests, please contact the restaurant directly."
+            )
+        return guest_count
+    
+    def form_invalid(self, form):
+        return self.render_to_response({'form': form})
+

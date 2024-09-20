@@ -87,6 +87,9 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.footer i {
+    color: var(--accent-1-colour);
+}
 /* Cards */
 .card {
     border: 1px solid var(--content-bg-colour);
@@ -104,6 +107,19 @@ body {
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 0;
+}
+
+/* Target card directly and adjust height */
+.contact-card {
+    height: 680px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Target card-body inside card for overflow handling */
+.contact-card .card-body {
+    flex: 1;
+    overflow-y: auto;
 }
 
 .row {
@@ -317,4 +333,27 @@ body {
 
 .label {
     font-weight: bold;
+}
+
+
+/* Ensure the navigation items are aligned properly */
+.navbar-nav {
+    flex-direction: row;
+}
+
+/* Align the .text-end content to the right */
+.text-end {
+    margin-left: auto;
+}
+
+.navbar-text {
+    margin-bottom: 0; /* Ensure there is no extra margin */
+}
+
+.navbar-nav {
+    margin-bottom: 0; /* Ensure there is no extra margin */
+}
+
+.navbar-nav .nav-item {
+    margin-left: 1rem; /* Space out the items */
 }

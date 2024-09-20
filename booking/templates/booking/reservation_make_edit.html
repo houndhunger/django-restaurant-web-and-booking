@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block styles %}
-    <!-- flatpickr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 {% endblock %}
 
 {% block content %}
@@ -14,6 +14,8 @@
         <div class="col-md-8 offset-md-2">
             <div class="card mb-4">
                 <div class="card-body">
+
+
                     <form method="post">
                         {% csrf_token %}
 
@@ -112,7 +114,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     var getAvailableTablesUrl = "{% url 'get_available_tables' %}";
 </script>
@@ -121,53 +122,58 @@
     var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 </script>
 {% endblock %}
+
 {% block javascript %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Flatpickr
-            const flatpickrInstance = flatpickr("#id_reservation_date", {
-                enableTime: true,
-                dateFormat: "Y/m/d H:i",
-                time_24hr: true,
-                minuteIncrement: 5,
-                allowInput: true,
-                minTime: "09:00",
-                maxTime: "22:00",
-                inline: true,
-                onReady: function(selectedDates, dateStr, instance) {
-                    handleCalendarVisibility(); // Call this on initialization
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const flatpickrInstance = flatpickr("#id_reservation_date", {
+            enableTime: true,
+            dateFormat: "Y/m/d H:i",
+            time_24hr: true,
+            minuteIncrement: 15, // Set minute increment to 15
+            allowInput: false, // Disallow manual input
+            onChange: function(selectedDates, dateStr, instance) {
+                const selectedDate = selectedDates[0];
+                const minutes = selectedDate.getMinutes();
+
+                // Custom validation for 15-minute increments
+                if (minutes % 15 !== 0) {
+                    alert("Please select a time in 15-minute increments.");
+                    instance.clear(); // Clear the input if invalid
                 }
-            });
-
-            // Function to hide/show flatpickr calendar based on screen width
-            function handleCalendarVisibility() {
-                const screenWidth = window.innerWidth;
-                const calendar = document.querySelector('.flatpickr-calendar');
-
-                if (calendar) {
-                    if (screenWidth < 425) {
-                        calendar.style.display = 'none'; // Hide calendar on small screens
-                    } else {
-                        calendar.style.display = 'inline'; // Show calendar on larger screens
-                    }
-                } else {
-                    console.error('flatpickr-calendar not found!');
-                }
-            }
-
-            // Add event listener for window resize
-            window.addEventListener('resize', function() {
-                handleCalendarVisibility(); // Recheck on window resize
-            });
+            },
         });
-    </script>
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
-    <style>
+
+        // Function to hide/show flatpickr calendar based on screen width
+        function handleCalendarVisibility() {
+            const screenWidth = window.innerWidth;
+            const calendar = document.querySelector('.flatpickr-calendar');
+
+            if (calendar) {
+                if (screenWidth < 425) {
+                    calendar.style.display = 'none'; // Hide calendar on small screens
+                } else {
+                    calendar.style.display = 'inline'; // Show calendar on larger screens
+                }
+            } else {
+                console.error('flatpickr-calendar not found!');
+            }
+        }
+
+        // Add event listener for window resize
+        window.addEventListener('resize', function () {
+            handleCalendarVisibility(); // Recheck on window resize
+        });
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+<style>
     /* Flatpickr calendar */
     .flatpickr-calendar {
         margin: 5px;
-        background: #abbaad; /* Set background color */
+        background: #abbaad;
+        /* Set background color */
         border-radius: 0;
     }
-    </style>
+</style>
 {% endblock %}

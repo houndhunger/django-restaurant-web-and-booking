@@ -80,7 +80,7 @@ class MakeReservationView(LoginRequiredMixin, CreateView):
         if available_tables.exists():
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
-            return redirect(reverse('user_reservations'))
+            return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
         else:
             form.add_error(None, 'No available tables for the selected date and preferences.')
             return self.form_invalid(form)

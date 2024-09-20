@@ -1,11 +1,4 @@
 {% extends 'base.html' %}
-
-{% block styles %}
-    <!-- flatpickr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-{% endblock %}
-
 {% block content %}
 <div class="container-fluid">
     <h1 class="mb-4">Reservation Preview</h1>
@@ -33,55 +26,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block javascript %}
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Initialize Flatpickr
-                const flatpickrInstance = flatpickr("#id_reservation_date", {
-                    enableTime: true,
-                    dateFormat: "Y/m/d H:i",
-                    time_24hr: true,
-                    minuteIncrement: 5,
-                    allowInput: true,
-                    minTime: "09:00",
-                    maxTime: "22:00",
-                    inline: true,
-                    onReady: function(selectedDates, dateStr, instance) {
-                        handleCalendarVisibility(); // Call this on initialization
-                    }
-                });
-
-                // Function to hide/show flatpickr calendar based on screen width
-                function handleCalendarVisibility() {
-                    const screenWidth = window.innerWidth;
-                    const calendar = document.querySelector('.flatpickr-calendar');
-
-                    if (calendar) {
-                        if (screenWidth < 425) {
-                            calendar.style.display = 'none'; // Hide calendar on small screens
-                        } else {
-                            calendar.style.display = 'inline'; // Show calendar on larger screens
-                        }
-                    } else {
-                        console.error('flatpickr-calendar not found!');
-                    }
-                }
-
-                // Add event listener for window resize
-                window.addEventListener('resize', function() {
-                    handleCalendarVisibility(); // Recheck on window resize
-                });
-            });
-        </script>
-        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
-        </body>
-        <style>
-        /* Flatpickr calendar */
-        .flatpickr-calendar {
-            background: rgba(255, 255, 255, 0.9); /* Set background color */
-            border-radius: 0;
-        }
-        </style>
 {% endblock %}

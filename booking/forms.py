@@ -68,17 +68,30 @@ class ReservationForm(forms.ModelForm):
     def clean_reservation_date(self):
         reservation_date = self.cleaned_data.get('reservation_date')
         # Check if the minutes are a multiple of 5
-        if reservation_date.minute % 5 != 0:
-            raise ValidationError('Reservation time must be in 5-minute increments.')
+        if reservation_date.minute % 15 != 0:
+            raise ValidationError('Reservation time must be in 15-minute increments.')
         return reservation_date
 
     def clean_reservation_date(self):
         reservation_date = self.cleaned_data.get('reservation_date')
         if reservation_date:
-            # Set bounds for reservation time
-            if reservation_date < timezone.now().replace(hour=9, minute=0) or reservation_date > timezone.now().replace(hour=22, minute=0):
-                raise ValidationError("Reservations can only be made between 09:00 and 22:00.")
+            # Extract only the time part from the reservation date
+            reservation_time = reservation_date.time()
+            
+            # Define the allowed time range
+            start_time = timezone.now().replace(hour=9, minute=0, second=0, microsecond=0).time()
+            end_time = timezone.now().replace(hour=22, minute=0, second=0, microsecond=0).time()
+            
+            # Check if the reservation time is within the allowed range
+            if reservation_time < start_time or reservation_time > end_time:
+                raise ValidationError(f"Reservations can only be made between 09:00 and 22:00.")
+            
+            # Check if the minutes are a multiple of 15
+            if reservation_date.minute % 15 != 0:
+                raise ValidationError('Reservation time must be in 15-minute increments.')
+        
         return reservation_date
+
 
     def clean_guest_count(self):
         guest_count = self.cleaned_data.get('guest_count')

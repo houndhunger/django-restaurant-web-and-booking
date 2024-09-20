@@ -84,15 +84,7 @@
                         <a class="nav-link {% if request.path == login_url %}active{% endif %}"
                             href="{% url 'account_login' %}">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == contact_url %}active{% endif %}"
-                            href="{% url 'contact_account_signup' %}">Register</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == signup_url %}active{% endif %}"
-                            href="{% url 'contact' %}">Contact</a>
-                    </li>
+
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == contact_url %}active{% endif %}"
@@ -115,10 +107,15 @@
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
 
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == account_login_url %}active{% endif %}"
+                            href="{% url 'account_login' %}">Login</a> </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == account_signup_url %}active{% endif %}"
+                            href="{% url 'account_signup' %}">Sign up</a> </li>
+                    {% endif %}
                 </ul>
-                {% else %}
-                <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                {% endif %}
             </div>
         </div>
         </div>
@@ -129,9 +126,6 @@
         <!-- Page-specific content goes here -->
         {% endblock content %}
         {% if form.errors %}
-
-        {% endif %}
-
         {% endif %}
     </main>
 
@@ -140,7 +134,6 @@
         <p class="m-0 text-center text-white">
             {% block copyright %}
             © 2024 Daniel Pribula - Dino's Restaurant Booking System
-            {% endblock copyright %}
             {% endblock copyright %}
         </p>
         <p class="m-0 text-center text-white">

@@ -40,8 +40,10 @@ Reservation Form
 """
 class ReservationForm(forms.ModelForm):
     reservation_date = forms.DateTimeField(
-        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-        input_formats=['%Y/%m/%d %H:%M']
+        widget=forms.DateTimeInput(
+            attrs={'class': 'form-ctrl', 'placeholder': 'YYYY/MM/DD HH:MM'}
+        ),
+        input_formats=['%Y/%m/%d %H:%M']  # Keep your preferred format
     )
 
     PREFERENCE_CHOICES = [
@@ -89,7 +91,6 @@ class ReservationForm(forms.ModelForm):
             # Check if the minutes are a multiple of 15
             if reservation_date.minute % 15 != 0:
                 raise ValidationError('Reservation time must be in 15-minute increments.')
-        
         return reservation_date
 
 
@@ -103,5 +104,16 @@ class ReservationForm(forms.ModelForm):
         return guest_count
     
     def form_invalid(self, form):
-        return self.render_to_response({'form': form})
+        # Log the raw date and time inputs
+        reservation_date = self.request.POST.get('reservation_date', '')
+        time = self.request.POST.get('time', '')
+        print('Reservation Date:', reservation_date)
+        print('Time:', time)
+        
+        context = self.get_context_data(form=form)
+        context['reservation_date'] = reservation_date
+        context['time'] = time
+        return self.render_to_response(context)
+
+
 

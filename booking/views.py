@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView, CreateView
-from datetime import timedelta
+from datetime import datetime, timedelta
 from django.contrib import messages
 
 # Models and forms
@@ -84,6 +84,21 @@ class MakeReservationView(LoginRequiredMixin, CreateView):
         else:
             form.add_error(None, 'No available tables for the selected date and preferences.')
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        # Retain the submitted date value for Flatpickr
+        form.data = form.data.copy()  # Copy the form data to modify it
+        if 'reservation_date' in form.data:
+            # Format the date to match 'Y/m/d H:i'
+            try:
+                date_str = form.data['reservation_date']
+                # Ensure it's in the correct format (adjust as needed)
+                formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
+                form.data['reservation_date'] = formatted_date
+            except ValueError:
+                pass  # In case the date format is not what we expect
+
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

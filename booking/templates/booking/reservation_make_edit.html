@@ -122,10 +122,10 @@
     var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 </script>
 {% endblock %}
-
 {% block javascript %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+
         const flatpickrInstance = flatpickr("#id_reservation_date", {
             enableTime: true,
             dateFormat: "Y/m/d H:i",
@@ -134,15 +134,27 @@
             allowInput: false, // Disallow manual input
             onChange: function(selectedDates, dateStr, instance) {
                 const selectedDate = selectedDates[0];
-                const minutes = selectedDate.getMinutes();
-
+                //console.log('Selected Date Object:', selectedDate);
+                //console.log('Selected Date String:', dateStr);
+                
+                const formattedDate = selectedDate ? selectedDate.toISOString() : '';
+                //console.log('Formatted Date (ISO):', formattedDate);
+                
                 // Custom validation for 15-minute increments
+                const minutes = selectedDate.getMinutes();
                 if (minutes % 15 !== 0) {
                     alert("Please select a time in 15-minute increments.");
                     instance.clear(); // Clear the input if invalid
                 }
             },
         });
+
+        // Set the initial date value from the form
+        const initialDateValue = reservationDateInput.value;
+        if (initialDateValue) {
+            console.log('Setting Date Value:', initialDateValue);
+            flatpickrInstance.setDate(initialDateValue, false);
+        }
 
         // Function to hide/show flatpickr calendar based on screen width
         function handleCalendarVisibility() {

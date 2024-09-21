@@ -1,7 +1,8 @@
 from django import forms
 from django.db.models import Q
-from booking.models import Table, Reservation  # Use absolute imports
 from datetime import timedelta
+
+from booking.models import Table, Reservation
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -32,20 +33,36 @@ def handle_reservation_logic(form, user, original_reservation):
         if value:
             tables = tables.filter(**{key: True})
 
-    # Find overlapping reservations considering a 2-hour overlap
-    overlapping_reservations = Reservation.objects.filter(
-        Q(reservation_date__lt=reservation_end) &
-        Q(reservation_date__gt=reservation_date - timedelta(hours=2)) &
-        Q(status=1)  # Only consider confirmed reservations
-    ).values_list('tables', flat=True)
+    # #
+    # # ALLOW overlapping by using an empty queryset
+    # overlapping_reservations = Reservation.objects.none() 
+    # #
+    """
+    Comment out above and uncommet bellow to FORBID overlapping reservations
+    Uncommet above and comment out bellow to ALLOW overlapping reservations
 
-    print(f"overlapping_reservations: {list(overlapping_reservations)}")  # Convert to list for easier viewing
+    """
+    # #
+    # FORBID Find overlapping reservations considering a 2-hour overlap
+    overlapping_reservations = Reservation.objects.filter(
+        Q(reservation_date__lt=reservation_end) & 
+        Q(reservation_date__gt=reservation_date - timedelta(hours=2)) & 
+        Q(user=user) & 
+        Q(status=1)  # Only consider confirmed reservations
+    ).exclude(pk=original_reservation.pk if original_reservation else None)
+    # #
+
+    if overlapping_reservations.exists():
+        form.add_error(None, 'You already have an overlapping reservation for this time. '
+                             'Please submit again to confirm or, for larger groups, it is recommended to contact the restaurant staff directly.')
+        return None, None  # Return early to display the form error
 
     # Exclude already booked tables from available tables
-    available_tables = tables.exclude(pk__in=overlapping_reservations)
-    # Initialize assigned_tables
+    overlapping_tables = overlapping_reservations.values_list('tables', flat=True)
+    available_tables = tables.exclude(pk__in=overlapping_tables)
+
+    # Initialize assigned_tables and create a dictionary to track available capacity by zone
     assigned_tables = []
-    # Create a dictionary to track available capacity by zone
     zone_capacity = {}
 
     # If editing an existing reservation, include original assigned tables
@@ -99,21 +116,26 @@ def handle_reservation_logic(form, user, original_reservation):
                 assigned_tables.append(table)
                 remaining_guests -= table.capacity  # Reduce remaining guest count
 
+    # # If guests remain unseated after checking all available tables
+    # if remaining_guests > 0:
+    #     raise forms.ValidationError("Not enough available tables for the selected date and preferences.")
+
     # If guests remain unseated after checking all available tables
     if remaining_guests > 0:
-        raise forms.ValidationError("Not enough available tables for the selected date and preferences.")
+        form.add_error(None, "Not enough available tables for the selected date and preferences.")
+        return None, None  # Return early to display the form error
 
     # Save the reservation and assign tables
     reservation.save()
     reservation.tables.set(assigned_tables)
 
-    print(f"assigned_tables: {assigned_tables}")
+    # print(f"assigned_tables: {assigned_tables}")
 
-    print(f"AAA reservation id: {reservation.id}")
-    print(f"AAA reservation date: {reservation.reservation_date}")
-    print(f"AAA reservation status: {reservation.status}")
-    print(f"AAA reservation guest_count: {reservation.guest_count}")
-    print(f"AAA reservation tables: {reservation.tables.all()}")  # This will list associated tables
+    # print(f"AAA reservation id: {reservation.id}")
+    # print(f"AAA reservation date: {reservation.reservation_date}")
+    # print(f"AAA reservation status: {reservation.status}")
+    # print(f"AAA reservation guest_count: {reservation.guest_count}")
+    # print(f"AAA reservation tables: {reservation.tables.all()}")  # This will list associated tables
 
     return reservation, assigned_tables
 

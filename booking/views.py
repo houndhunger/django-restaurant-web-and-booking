@@ -79,12 +79,22 @@ class BaseReservationView(LoginRequiredMixin):
     template_name = 'booking/reservation_make_edit.html'
 
     def handle_form(self, form, original_reservation=None):
-        # Shared logic for handling reservation form submission
+        # # Check for existing errors in the form
+        # if not form.is_valid():
+        #     return self.form_invalid(form)
+
         try:
             reservation, available_tables = handle_reservation_logic(form, self.request.user, original_reservation)
+            
+            # If reservation is None, form has an error (e.g., overlapping reservation)
+            if reservation is None:
+                return self.form_invalid(form)  # Return the form with the error displayed
+            
+            # Save the reservation and assigned tables
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
             return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
+
         except forms.ValidationError as e:
             form.add_error(None, str(e))  # Add the error message to the form
             return self.form_invalid(form)
@@ -92,6 +102,7 @@ class BaseReservationView(LoginRequiredMixin):
     def form_invalid(self, form):
         # Retain the submitted date value for Flatpickr
         form.data = form.data.copy()  # Copy the form data to modify it
+
         if 'reservation_date' in form.data:
             # Format the date to match 'Y/m/d H:i'
             try:
@@ -103,10 +114,10 @@ class BaseReservationView(LoginRequiredMixin):
 
         return self.render_to_response(self.get_context_data(form=form))
 
+    # to display coresponding header
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = self.header  # Use a header value from child classes
-        print("Header2:", context['header'])  # Add this for debugging
         return context
 
 
@@ -136,104 +147,6 @@ class EditReservationView(BaseReservationView, UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs['instance'] = self.get_object()  # Pass reservation instance to the form
         return kwargs
-
-
-# """
-# View to make a new reservation
-# """
-# class MakeReservationView(LoginRequiredMixin, CreateView):
-#     print("RUNS MakeReservationView")
-#     model = Reservation
-#     form_class = ReservationForm
-#     template_name = 'booking/reservation_make_edit.html'
-
-#     def form_valid(self, form):
-#         reservation, available_tables = handle_reservation_logic(form, self.request.user)
-#         if available_tables.exists():
-#             print("AVAILABLE TABLES")
-#             reservation.save()
-#             reservation.tables.set(available_tables[:reservation.guest_count])
-#             return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
-#         else:
-#             form.add_error(None, 'No available tables for the selected date and preferences.')
-#             print("NOT AVAILABLE TABLES")
-#             return self.form_invalid(form)
-
-#     def form_invalid(self, form):
-#         # Retain the submitted date value for Flatpickr
-#         form.data = form.data.copy()  # Copy the form data to modify it
-#         if 'reservation_date' in form.data:
-#             # Format the date to match 'Y/m/d H:i'
-#             try:
-#                 date_str = form.data['reservation_date']
-#                 # Ensure it's in the correct format (adjust as needed)
-#                 formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
-#                 form.data['reservation_date'] = formatted_date
-#             except ValueError:
-#                 pass  # In case the date format is not what we expect
-
-#         return self.render_to_response(self.get_context_data(form=form))
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['header'] = 'Make a Reservation'
-#         return context
-
-
-# """
-# View edit existing reservation
-# """
-# class EditReservationView(LoginRequiredMixin, UpdateView):
-#     print("RUNS EditReservationView")
-#     model = Reservation
-#     form_class = ReservationForm
-#     template_name = 'booking/reservation_make_edit.html'
-
-#     # Overrides the method to pass the reservation instance to the form
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         # Ensure that the form is initialized with the reservation instance
-#         kwargs['instance'] = self.get_object()
-#         return kwargs
-    
-#     print("befotre form_valid...")
-#     # Handles form submission and reservation logic
-#     def form_valid(self, form):
-#         print("after form_valid...")
-#         #print("Form cleaned data:", form.cleaned_data)
-#         # Process reservation and available tables based on user input
-#         reservation, available_tables = handle_reservation_logic(form, self.request.user)
-#         #print("Form is valid. Reservation data:", reservation)
-#         #print("Available tables:", available_tables)
-
-#         # If tables are available, save the reservation and assign tables
-#         if available_tables.exists():
-#             reservation.save()
-#             reservation.tables.set(available_tables[:reservation.guest_count])
-#             #print("Reservation saved with tables:", reservation.tables.all())
-#             return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
-#         else:
-#             # If no tables are available, show an error on the form
-#             form.add_error(None, 'No available tables for the selected date and preferences.')
-#             return self.form_invalid(form)
-
-#     # Adds custom data to the context for rendering the template
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['header'] = 'Edit Reservation'
-#         #print("Context data:", context)
-#         return context
-
-#     # Retrieves the reservation object that is being edited
-#     def get_object(self, queryset=None):
-#         obj = super().get_object(queryset)
-#         #print("Loaded reservation object:", obj)
-#         return obj
-
-#     # Handles form submission errors and logs them
-#     def form_invalid(self, form):
-#         #print("Form errors:", form.errors)
-#         return super().form_invalid(form)
 
 
 """

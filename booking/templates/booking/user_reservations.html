@@ -17,13 +17,7 @@
                                     <h2 class="card-title">Reservation for {{ reservation.guest_count }} Guests</h2>
                                 </div>
                             </div>
-                            <a href="{% url 'edit_reservation' reservation.id %}" class="post-link">
-                                <!-- Removed duplicate Reservation for Guests in the anchor tag -->
-                            </a>
-
                             <p class="card-text mt-3"><strong>Date:</strong> {{ reservation.reservation_date|date:"F j, Y, g:i a" }}</p>
-                            
-                            <!-- Move the horizontal line under the Date -->
                             <hr />
                             
                             <p class="card-text h6"><strong>Status:</strong> {{ reservation.get_status_display }}</p>

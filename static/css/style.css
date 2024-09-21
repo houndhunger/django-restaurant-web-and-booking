@@ -39,6 +39,7 @@ body {
 .btn-signup,
 .btn-edit,
 .btn-primary,
+a,
 .link,
 .reservation-title {
     color: var(--accent-1-colour);
@@ -96,7 +97,7 @@ body {
     border: 1px solid var(--content-bg-colour);
     background-color: var(--content-bg-colour);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 20px;
     border-radius: 0;
 }
@@ -187,8 +188,8 @@ body {
 }
 
 /* Links and Buttons */
+button,
 .post-link,
-.link,
 .btn-signup,
 .btn-create,
 .btn-primary,
@@ -196,34 +197,25 @@ body {
 .btn-delete,
 .btn-cancel {
     text-decoration: none;
+    color: #fff;
+    background-color: var(--accent-1-colour);
+    border: 1px solid var(--accent-1-colour);
     border-radius: 0;
     margin: 5px;
+    padding: 5px 10px;
 }
-
 
 .post-link:hover,
 .page-link {
     color: var(--accent-1-colour);
 }
 
-.btn-primary {
-    background-color: var(--accent-1-colour);
-    color: #fff;
-    padding: 5px 10px;
-    border: 1px solid var(--accent-1-colour);
-}
 
 .btn-signup:hover,
 .btn-signup:active,
 .btn-primary:hover {
     background-color: #fff;
     color: var(--accent-1-colour);
-}
-
-.btn-view {
-    background-color: var(--hover-1-colour);
-    color: #fff;
-    padding: 5px 10px;
 }
 
 .btn-view:hover {
@@ -257,10 +249,11 @@ body {
 
 /* Forms */
 .login-form,
-.signup-form {
+.signup-form,
+.reservation-form {
     max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+    margin-bottom: 20px;
+    padding: 30px;
     background-color: var(--content-bg-colour);
     border: 1px solid var(--form-border);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

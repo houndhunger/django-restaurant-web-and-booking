@@ -61,7 +61,7 @@
                             href="{% url 'restaurant_menu' %}">Menu</a>
                     </li>
                     {% if user.is_authenticated %}
-                    {% if is_staff %}
+                        {% if is_staff %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == manage_reservations_url %}active{% endif %}"
                             href="{% url 'manage_reservations' %}">Manage Reservations</a>
@@ -70,7 +70,11 @@
                         <a class="nav-link {% if request.path == manage_tables_url %}active{% endif %}"
                             href="{% url 'manage_tables' %}">Manage Tables</a>
                     </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == make_reservation_url %}active{% endif %}"
+                            href="{% url 'make_reservation' %}">Make a Reservation</a>
+                    </li>
+                        {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == make_reservation_url %}active{% endif %}"
                             href="{% url 'make_reservation' %}">Make a Reservation</a>
@@ -78,6 +82,12 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == user_reservations_url %}active{% endif %}"
                             href="{{ user_reservations_url }}">My Reservations</a>
+                    </li>
+                        {% endif %}
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == account_login_url %}active{% endif %}"
+                            href="{% url 'account_login' %}">Make a Reservation</a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
@@ -87,9 +97,9 @@
                 </ul>
 
                 <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <div class="text-end ms-auto">
-                            {% if user.is_authenticated %}
                             <div class="navbar-text text-muted">
                                 Logged in as {{ user }}.
                             </div>
@@ -98,16 +108,18 @@
                         <a class="nav-link" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                        <a class="nav-link" href="{% url 'account_logout' %}">Sign out</a>
                     </li>
 
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == account_login_url %}active{% endif %}"
-                            href="{% url 'account_login' %}">Login</a> </li>
+                            href="{% url 'account_login' %}">Sign in</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == account_signup_url %}active{% endif %}"
-                            href="{% url 'account_signup' %}">Sign up</a> </li>
+                            href="{% url 'account_signup' %}">Sign up</a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>

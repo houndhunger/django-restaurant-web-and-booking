@@ -89,24 +89,25 @@ class BaseReservationView(LoginRequiredMixin):
             form.add_error(None, str(e))  # Add the error message to the form
             return self.form_invalid(form)
 
-        def form_invalid(self, form):
-            # Retain the submitted date value for Flatpickr
-            form.data = form.data.copy()  # Copy the form data to modify it
-            if 'reservation_date' in form.data:
-                # Format the date to match 'Y/m/d H:i'
-                try:
-                    date_str = form.data['reservation_date']
-                    formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
-                    form.data['reservation_date'] = formatted_date
-                except ValueError:
-                    pass  # In case the date format is not what we expect
+    def form_invalid(self, form):
+        # Retain the submitted date value for Flatpickr
+        form.data = form.data.copy()  # Copy the form data to modify it
+        if 'reservation_date' in form.data:
+            # Format the date to match 'Y/m/d H:i'
+            try:
+                date_str = form.data['reservation_date']
+                formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
+                form.data['reservation_date'] = formatted_date
+            except ValueError:
+                pass  # In case the date format is not what we expect
 
-            return self.render_to_response(self.get_context_data(form=form))
+        return self.render_to_response(self.get_context_data(form=form))
 
-        def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            context['header'] = self.header  # Use a header value from child classes
-            return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header'] = self.header  # Use a header value from child classes
+        print("Header2:", context['header'])  # Add this for debugging
+        return context
 
 
 

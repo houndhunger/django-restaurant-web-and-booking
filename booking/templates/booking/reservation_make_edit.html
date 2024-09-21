@@ -9,107 +9,101 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1 class="mb-4">{{ header }}</h1>
     <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card mb-4">
-                <div class="card-body">
+        <div class="col-md-8 mt-3 offset-md-2">
+            <h1 class="mb-4">{{ header }}</h1>
+            <form method="post" class="reservation-form">
+                {% csrf_token %}
 
+                <div id="available-tables" style="display:none;"></div>
 
-                    <form method="post">
-                        {% csrf_token %}
-
-                        <div id="available-tables" style="display:none;"></div>
-
-                        <!-- Display non-field errors -->
-                        {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {{ form.non_field_errors }}
-                        </div>
-                        {% endif %}
-
-                        <!-- Reservation date field -->
-                        <div class="form-group">
-                            {{ form.reservation_date.label_tag }}
-                            {{ form.reservation_date }}
-                            <!-- Display field-specific errors -->
-                            {% if form.reservation_date.errors %}
-                            <div class="text-danger">
-                                {{ form.reservation_date.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Guest count field -->
-                        <div class="form-group">
-                            {{ form.guest_count.label_tag }}
-                            {{ form.guest_count }}
-                            {% if form.guest_count.errors %}
-                            <div class="text-danger">
-                                {{ form.guest_count.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Note field -->
-                        <div class="form-group">
-                            {{ form.note.label_tag }}
-                            {{ form.note }}
-                            {% if form.note.errors %}
-                            <div class="text-danger">
-                                {{ form.note.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Other preference fields -->
-                        <div class="form-group">
-                            {{ form.is_quiet.label_tag }}
-                            {{ form.is_quiet }}
-                            {% if form.is_quiet.errors %}
-                            <div class="text-danger">
-                                {{ form.is_quiet.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.is_outside.label_tag }}
-                            {{ form.is_outside }}
-                            {% if form.is_outside.errors %}
-                            <div class="text-danger">
-                                {{ form.is_outside.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.has_bench_seating.label_tag }}
-                            {{ form.has_bench_seating }}
-                            {% if form.has_bench_seating.errors %}
-                            <div class="text-danger">
-                                {{ form.has_bench_seating.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.has_disabled_access.label_tag }}
-                            {{ form.has_disabled_access }}
-                            {% if form.has_disabled_access.errors %}
-                            <div class="text-danger">
-                                {{ form.has_disabled_access.errors }}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{% url 'user_reservations' %}" class="btn btn-cancel">Cancel Changes</a>
-                        </div>
-                    </form>
+                <!-- Display non-field errors -->
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
                 </div>
-            </div>
+                {% endif %}
+
+                <!-- Reservation date field -->
+                <div class="form-group">
+                    {{ form.reservation_date.label_tag }}
+                    {{ form.reservation_date }}
+                    <!-- Display field-specific errors -->
+                    {% if form.reservation_date.errors %}
+                    <div class="text-danger">
+                        {{ form.reservation_date.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Guest count field -->
+                <div class="form-group">
+                    {{ form.guest_count.label_tag }}
+                    {{ form.guest_count }}
+                    {% if form.guest_count.errors %}
+                    <div class="text-danger">
+                        {{ form.guest_count.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Note field -->
+                <div class="form-group">
+                    {{ form.note.label_tag }}
+                    {{ form.note }}
+                    {% if form.note.errors %}
+                    <div class="text-danger">
+                        {{ form.note.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Other preference fields -->
+                <div class="form-group">
+                    {{ form.is_quiet.label_tag }}
+                    {{ form.is_quiet }}
+                    {% if form.is_quiet.errors %}
+                    <div class="text-danger">
+                        {{ form.is_quiet.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.is_outside.label_tag }}
+                    {{ form.is_outside }}
+                    {% if form.is_outside.errors %}
+                    <div class="text-danger">
+                        {{ form.is_outside.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.has_bench_seating.label_tag }}
+                    {{ form.has_bench_seating }}
+                    {% if form.has_bench_seating.errors %}
+                    <div class="text-danger">
+                        {{ form.has_bench_seating.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.has_disabled_access.label_tag }}
+                    {{ form.has_disabled_access }}
+                    {% if form.has_disabled_access.errors %}
+                    <div class="text-danger">
+                        {{ form.has_disabled_access.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{% url 'user_reservations' %}" class="btn btn-cancel">Cancel Changes</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -132,14 +126,14 @@
             time_24hr: true,
             minuteIncrement: 15, // Set minute increment to 15
             allowInput: false, // Disallow manual input
-            onChange: function(selectedDates, dateStr, instance) {
+            onChange: function (selectedDates, dateStr, instance) {
                 const selectedDate = selectedDates[0];
                 //console.log('Selected Date Object:', selectedDate);
                 //console.log('Selected Date String:', dateStr);
-                
+
                 const formattedDate = selectedDate ? selectedDate.toISOString() : '';
                 //console.log('Formatted Date (ISO):', formattedDate);
-                
+
                 // Custom validation for 15-minute increments
                 const minutes = selectedDate.getMinutes();
                 if (minutes % 15 !== 0) {

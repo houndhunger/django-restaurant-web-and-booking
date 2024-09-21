@@ -1,3 +1,4 @@
+from django import forms
 from django.db.models import Q
 from booking.models import Table, Reservation  # Use absolute imports
 from datetime import timedelta
@@ -8,88 +9,113 @@ from django.contrib.auth.models import User
 
 
 """
-Handels reservation logic
+Handles reservation logic
 """
-def handle_reservation_logic(form, user):
-    print("reservation logic")
+def handle_reservation_logic(form, user, original_reservation):
     reservation = form.save(commit=False)
     reservation.user = user
-
-    # Set the reservation status to 'Confirmed'
-    # reservation can beset to 'Pending' manually by staff
     reservation.status = 1  # Set status to 'Confirmed'
 
-    # Reservation end time calculation
     reservation_date = reservation.reservation_date
     reservation_end = reservation_date + timedelta(hours=2)
 
-    # Table preferences
-    is_quiet = form.cleaned_data.get('is_quiet')
-    is_outside = form.cleaned_data.get('is_outside')
-    has_bench_seating = form.cleaned_data.get('has_bench_seating')
-    has_disabled_access = form.cleaned_data.get('has_disabled_access')
-
-    # Filter tables based on preferences
-    tables = Table.objects.all()
     preferences = {
-        'is_quiet': is_quiet,
-        'is_outside': is_outside,
-        'has_bench_seating': has_bench_seating,
-        'has_disabled_access': has_disabled_access
+        'is_quiet': form.cleaned_data.get('is_quiet') == 'yes',
+        'is_outside': form.cleaned_data.get('is_outside') == 'yes',
+        'has_bench_seating': form.cleaned_data.get('has_bench_seating') == 'yes',
+        'has_disabled_access': form.cleaned_data.get('has_disabled_access') == 'yes'
     }
+
+    # Start with all tables and filter based on preferences
+    tables = Table.objects.all()
     for key, value in preferences.items():
-        if value == 'yes':
+        if value:
             tables = tables.filter(**{key: True})
-        elif value == 'no':
-            tables = tables.filter(**{key: False})
 
-
-    # Find IDs of tables that are already booked during the desired time
+    # Find overlapping reservations considering a 2-hour overlap
     overlapping_reservations = Reservation.objects.filter(
-        reservation_date__lt=reservation_end,
-        reservation_date__gt=reservation_date,
-        status=1  # Only consider confirmed reservations
+        Q(reservation_date__lt=reservation_end) &
+        Q(reservation_date__gt=reservation_date - timedelta(hours=2)) &
+        Q(status=1)  # Only consider confirmed reservations
     ).values_list('tables', flat=True)
+
+    print(f"overlapping_reservations: {list(overlapping_reservations)}")  # Convert to list for easier viewing
 
     # Exclude already booked tables from available tables
     available_tables = tables.exclude(pk__in=overlapping_reservations)
+    # Initialize assigned_tables
+    assigned_tables = []
+    # Create a dictionary to track available capacity by zone
+    zone_capacity = {}
 
-    # If there aren't enough available tables, raise an error
-    if available_tables.count() < reservation.guest_count:
+    # If editing an existing reservation, include original assigned tables
+    if original_reservation:
+        original_tables = original_reservation.tables.all()
+        original_table_ids = original_tables.values_list('pk', flat=True)
+
+        # Re-add original tables to available tables pool
+        available_tables = available_tables | original_tables
+
+        # Add original tables' guest count to their corresponding zone
+        for table in original_tables:
+            if table.zone in zone_capacity:
+                zone_capacity[table.zone] += table.capacity
+            else:
+                zone_capacity[table.zone] = table.capacity
+
+        # Add original tables to assigned_tables
+        assigned_tables.extend(original_tables)
+
+        # Update the remaining guest count based on already assigned tables
+        if assigned_tables:
+            total_capacity_assigned = sum(table.capacity for table in assigned_tables)
+            remaining_guests = max(0, reservation.guest_count - total_capacity_assigned)
+        else:
+            remaining_guests = reservation.guest_count
+    else:
+        remaining_guests = reservation.guest_count
+
+    # Calculate available capacity for each zone (including original reservation's tables)
+    for table in available_tables:
+        if table.zone not in zone_capacity:
+            zone_capacity[table.zone] = 0
+        zone_capacity[table.zone] += table.capacity
+
+    # Select the zone with the most available capacity
+    if zone_capacity:
+        optimal_zone = max(zone_capacity, key=zone_capacity.get)
+
+        # Filter available tables within the selected zone
+        zone_tables = available_tables.filter(zone=optimal_zone)
+
+        # Assign additional tables within the optimal zone
+        for table in zone_tables:
+            if remaining_guests <= 0:
+                break
+            if table.capacity >= remaining_guests:
+                assigned_tables.append(table)
+                remaining_guests = 0  # All guests are seated
+            else:
+                assigned_tables.append(table)
+                remaining_guests -= table.capacity  # Reduce remaining guest count
+
+    # If guests remain unseated after checking all available tables
+    if remaining_guests > 0:
         raise forms.ValidationError("Not enough available tables for the selected date and preferences.")
 
-    print(f"available_tables.count():{available_tables.count()}")
+    # Save the reservation and assign tables
+    reservation.save()
+    reservation.tables.set(assigned_tables)
 
-    # Select tables based on the guest count
-    assigned_tables = available_tables[:reservation.guest_count]
+    print(f"assigned_tables: {assigned_tables}")
 
-    # # Determine if the restaurant is more than half full
-    # total_tables = Table.objects.count()
-    # reserved_tables_count = Reservation.objects.filter(
-    #     reservation_date__date=reservation_date.date(),
-    #     status=1
-    # ).count()
-    # half_full = reserved_tables_count >= total_tables / 2
+    print(f"AAA reservation id: {reservation.id}")
+    print(f"AAA reservation date: {reservation.reservation_date}")
+    print(f"AAA reservation status: {reservation.status}")
+    print(f"AAA reservation guest_count: {reservation.guest_count}")
+    print(f"AAA reservation tables: {reservation.tables.all()}")  # This will list associated tables
 
-    # if half_full:
-    #     available_tables = tables
-    # else:
-    #     if reservation_date.day % 2 == 0:
-    #         available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 == 0])
-    #     else:
-    #         available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 != 0])
-
-    # Check for overlapping reservations
-    # overlapping_reservations = Reservation.objects.filter(
-    #     Q(reservation_date__lt=reservation_end) &
-    #     Q(reservation_date__gt=reservation_date - timedelta(hours=2))
-    # ).exclude(pk=reservation.pk)  # Exclude the current reservation
-
-    #reserved_table_ids = overlapping_reservations.values_list('tables', flat=True)
-
-    #available_tables = available_tables.exclude(pk__in=reserved_table_ids)
-
-    return reservation, available_tables
+    return reservation, assigned_tables
 
 
 """

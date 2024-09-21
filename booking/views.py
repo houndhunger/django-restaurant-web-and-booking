@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
@@ -6,6 +7,7 @@ from django.views import generic
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView, CreateView
 from datetime import datetime, timedelta
 from django.contrib import messages
+from .models import Reservation 
 
 # Models and forms
 from .models import Reservation, Table
@@ -76,35 +78,35 @@ class BaseReservationView(LoginRequiredMixin):
     form_class = ReservationForm
     template_name = 'booking/reservation_make_edit.html'
 
-    def handle_form(self, form):
+    def handle_form(self, form, original_reservation=None):
         # Shared logic for handling reservation form submission
-        reservation, available_tables = handle_reservation_logic(form, self.request.user)
-        if available_tables.exists():
+        try:
+            reservation, available_tables = handle_reservation_logic(form, self.request.user, original_reservation)
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
             return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
-        else:
-            form.add_error(None, 'No available tables for the selected date and preferences.')
+        except forms.ValidationError as e:
+            form.add_error(None, str(e))  # Add the error message to the form
             return self.form_invalid(form)
 
-    def form_invalid(self, form):
-        # Retain the submitted date value for Flatpickr
-        form.data = form.data.copy()  # Copy the form data to modify it
-        if 'reservation_date' in form.data:
-            # Format the date to match 'Y/m/d H:i'
-            try:
-                date_str = form.data['reservation_date']
-                formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
-                form.data['reservation_date'] = formatted_date
-            except ValueError:
-                pass  # In case the date format is not what we expect
+        def form_invalid(self, form):
+            # Retain the submitted date value for Flatpickr
+            form.data = form.data.copy()  # Copy the form data to modify it
+            if 'reservation_date' in form.data:
+                # Format the date to match 'Y/m/d H:i'
+                try:
+                    date_str = form.data['reservation_date']
+                    formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
+                    form.data['reservation_date'] = formatted_date
+                except ValueError:
+                    pass  # In case the date format is not what we expect
 
-        return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['header'] = self.header  # Use a header value from child classes
-        return context
+        def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['header'] = self.header  # Use a header value from child classes
+            return context
 
 
 
@@ -126,7 +128,8 @@ class EditReservationView(BaseReservationView, UpdateView):
     header = 'Edit Reservation'
 
     def form_valid(self, form):
-        return self.handle_form(form)
+        original_reservation = self.get_object()  # Retrieve the original reservation
+        return self.handle_form(form, original_reservation)  # Pass it to handle_form
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

@@ -1,10 +1,11 @@
 from django import forms
-from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from django.views import generic
-from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView, CreateView
+from django.views.generic import View, TemplateView, DetailView, UpdateView, DeleteView, CreateView
 from datetime import datetime, timedelta
 from django.contrib import messages
 from .models import Reservation 
@@ -27,7 +28,7 @@ class ManageReservationsView(UserPassesTestMixin, generic.ListView):
     model = Reservation
     queryset = Reservation.objects.all()
     template_name = "booking/reservations_list.html"
-    paginate_by = 6
+    paginate_by = 3
 
     def test_func(self):
         # Ensure that the user is staff
@@ -64,10 +65,15 @@ View to list the reservations for the currently logged-in user
 class UserReservationsView(generic.ListView):
     model = Reservation
     template_name = 'booking/user_reservations.html'
-    paginate_by = 6
+    paginate_by = 3
 
     def get_queryset(self):
-        return Reservation.objects.filter(user=self.request.user)
+        now = timezone.now()
+        # Filter for future reservations and exclude those with status 2 or 3
+        return Reservation.objects.filter(
+            user=self.request.user,
+            reservation_date__gt=now
+        ).exclude(status__in=[2, 3])
 
 
 """
@@ -168,12 +174,22 @@ class ReservationPreviewView(DetailView):
 """
 View to delete a reservation
 """
-class DeleteReservationView(DeleteView):
-    model = Reservation
+class DeleteReservationView(View):
     template_name = 'booking/reservation_delete.html'
     success_url = reverse_lazy('user_reservations')
-    
-    def get_object(self, queryset=None):
+
+    def get(self, request, *args, **kwargs):
+        reservation = self.get_object()
+        return render(request, self.template_name, {'reservation': reservation})
+
+    def post(self, request, *args, **kwargs):
+        reservation = self.get_object()
+        # Change the status to 3 (indicating it's "deleted" but not actually removed)
+        reservation.status = 3
+        reservation.save()
+        return redirect(self.success_url)
+
+    def get_object(self):
         return get_object_or_404(Reservation, id=self.kwargs['pk'], user=self.request.user)
 
 """

@@ -53,8 +53,8 @@ def handle_reservation_logic(form, user, original_reservation):
     # #
 
     if overlapping_reservations.exists():
-        form.add_error(None, 'You already have an overlapping reservation for this time. '
-                             'Please submit again to confirm or, for larger groups, it is recommended to contact the restaurant staff directly.')
+        form.add_error(None, 'You already have an overlapping reservation for this time.'
+                             'Please, for larger groups, contact the restaurant staff directly.')
         return None, None  # Return early to display the form error
 
     # Exclude already booked tables from available tables

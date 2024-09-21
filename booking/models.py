@@ -33,9 +33,10 @@ class Table(models.Model):
 
 # Reservation status choices
 RESERVATION_STATUS_CHOICES = (
-    (0, "Pending"),  # add settings for restaurant booking - reservation_auto_approve T/F
+    (0, "Pending"),
     (1, "Confirmed"),
     (2, "Cancelled"),
+    (3, "Deleted"),
 )
 
 """
@@ -89,7 +90,7 @@ class Reservation(models.Model):
     @staticmethod
     def check_table_availability(tables, start_time, end_time):
         """
-        Check if any of the given tables are available for the specified time range.
+        # Check if any of the given tables are available for the specified time range.
         """
         overlapping_reservations = Reservation.objects.filter(
             tables__in=tables,

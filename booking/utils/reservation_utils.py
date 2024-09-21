@@ -6,12 +6,18 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
+
 """
 Handels reservation logic
 """
 def handle_reservation_logic(form, user):
+    print("reservation logic")
     reservation = form.save(commit=False)
     reservation.user = user
+
+    # Set the reservation status to 'Confirmed'
+    # reservation can beset to 'Pending' manually by staff
+    reservation.status = 1  # Set status to 'Confirmed'
 
     # Reservation end time calculation
     reservation_date = reservation.reservation_date
@@ -37,31 +43,51 @@ def handle_reservation_logic(form, user):
         elif value == 'no':
             tables = tables.filter(**{key: False})
 
-    # Determine if the restaurant is more than half full
-    total_tables = Table.objects.count()
-    reserved_tables_count = Reservation.objects.filter(
-        reservation_date__date=reservation_date.date(),
-        status=1
-    ).count()
-    half_full = reserved_tables_count >= total_tables / 2
 
-    if half_full:
-        available_tables = tables
-    else:
-        if reservation_date.day % 2 == 0:
-            available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 == 0])
-        else:
-            available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 != 0])
+    # Find IDs of tables that are already booked during the desired time
+    overlapping_reservations = Reservation.objects.filter(
+        reservation_date__lt=reservation_end,
+        reservation_date__gt=reservation_date,
+        status=1  # Only consider confirmed reservations
+    ).values_list('tables', flat=True)
+
+    # Exclude already booked tables from available tables
+    available_tables = tables.exclude(pk__in=overlapping_reservations)
+
+    # If there aren't enough available tables, raise an error
+    if available_tables.count() < reservation.guest_count:
+        raise forms.ValidationError("Not enough available tables for the selected date and preferences.")
+
+    print(f"available_tables.count():{available_tables.count()}")
+
+    # Select tables based on the guest count
+    assigned_tables = available_tables[:reservation.guest_count]
+
+    # # Determine if the restaurant is more than half full
+    # total_tables = Table.objects.count()
+    # reserved_tables_count = Reservation.objects.filter(
+    #     reservation_date__date=reservation_date.date(),
+    #     status=1
+    # ).count()
+    # half_full = reserved_tables_count >= total_tables / 2
+
+    # if half_full:
+    #     available_tables = tables
+    # else:
+    #     if reservation_date.day % 2 == 0:
+    #         available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 == 0])
+    #     else:
+    #         available_tables = tables.filter(pk__in=[t.pk for t in Table.objects.all() if t.pk % 2 != 0])
 
     # Check for overlapping reservations
-    overlapping_reservations = Reservation.objects.filter(
-        Q(reservation_date__lt=reservation_end) &
-        Q(reservation_date__gt=reservation_date - timedelta(hours=2))
-    ).exclude(pk=reservation.pk)  # Exclude the current reservation
+    # overlapping_reservations = Reservation.objects.filter(
+    #     Q(reservation_date__lt=reservation_end) &
+    #     Q(reservation_date__gt=reservation_date - timedelta(hours=2))
+    # ).exclude(pk=reservation.pk)  # Exclude the current reservation
 
-    reserved_table_ids = overlapping_reservations.values_list('tables', flat=True)
+    #reserved_table_ids = overlapping_reservations.values_list('tables', flat=True)
 
-    available_tables = available_tables.exclude(pk__in=reserved_table_ids)
+    #available_tables = available_tables.exclude(pk__in=reserved_table_ids)
 
     return reservation, available_tables
 
@@ -78,6 +104,7 @@ def check_email_unique(request):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
     # In reservation_utils.py
+
 
 """
 Get avaialable tables

@@ -79,12 +79,6 @@
                         <a class="nav-link {% if request.path == user_reservations_url %}active{% endif %}"
                             href="{{ user_reservations_url }}">My Reservations</a>
                     </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == login_url %}active{% endif %}"
-                            href="{% url 'account_login' %}">Login</a>
-                    </li>
-
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == contact_url %}active{% endif %}"

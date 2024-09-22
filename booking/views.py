@@ -124,14 +124,12 @@ class BaseReservationView(LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = self.header  # Use a header value from child classes
-        context['opening_times'] = self.get_queryset() # Get opening times
+       
+        # Retrieve OpeningTime objects and add to the context
+        context['opening_times'] = OpeningTime.objects.all().order_by('day_of_week')
         context['show_opening_time_table'] = context['opening_times']  # Control visibility
+
         return context
-
-    def get_queryset(self):
-        return OpeningTime.objects.all().order_by('day_of_week')
-
-
 
 
 """

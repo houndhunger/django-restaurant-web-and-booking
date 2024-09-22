@@ -106,7 +106,7 @@ a,
     border: 1px solid var(--content-bg-colour);
     background-color: var(--content-bg-colour);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 30px 20px;
     margin-bottom: 20px;
     border-radius: 0;
 }
@@ -149,6 +149,7 @@ a,
     left: -2px;
     background-color: var(--accent-1-colour);
     padding: 5px 10px;
+    margin: 10px 0px;
     border-radius: 0;
 }
 
@@ -258,8 +259,7 @@ button,
 
 /* Forms */
 .login-form,
-.signup-form,
-.reservation-form {
+.signup-form {
     margin-bottom: 20px;
     padding: 30px;
     background-color: var(--content-bg-colour);

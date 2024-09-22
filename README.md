@@ -2,7 +2,7 @@
 
 ## Purpose of the Project
 
-Restaurant Booking System is a Django web application designed for managing restaurant reservations. The application provides features for both customers and staff to handle reservations, manage tables, and ensure a smooth dining experience.
+Restaurant Booking System is a Django web application created for Dino Bar and Restaurant, designed for managing restaurant reservations. The application provides features for both customers and staff to handle reservations, manage tables, and ensure a smooth dining experience.
 
 ![Restaurant booknig Mockup](docs/images/mockup-image-restaurant.jpg)
 
@@ -29,7 +29,7 @@ Restaurant Booking System is a Django web application designed for managing rest
 - **Font Awesome**: For icons used in the navigation bar and footer.
 - **TODO - MAYBE** - **jQuery**: For front-end interaction and user interface elements.
 
-## TODO - UPDATE IMAGE - Supported screens and browsers
+## OK - UPDATE IMAGE - Supported screens and browsers
 The website was developed and tested on Google Chrome. It's working correctly for Small screen sizes, like Galaxy Fold, as well as for large screens.
 ![Responsive design](docs/images/responsive-design.png)
 *Image was generated using this [techsini.com website](https://techsini.com/multi-mockup/index.php)
@@ -67,7 +67,7 @@ To deploy the project, follow these steps:
 2. Push your code to the Heroku remote repository: ```"git push"```
 3. Deploy the app on Heroku either by manually deploying through the Heroku dashboard or by enabling automatic deployment for the main branch.
 
-## Features
+## TODO - Features
 ### Existing Features
 - __User Features__
   - **Make Reservations**: Users can book tables for their desired time and date.
@@ -83,13 +83,17 @@ To deploy the project, follow these steps:
 ### Future Enhancements
 - __User Features__
   - **Update User details**: User can update own details like Name, password and email address.
-  - **Avabiltiy**: On selecting reservation date and time, be inforwed about avaialabe tables for the date and time (avaialabe 0-49%, bussy 50-79%, almost full %80-%99, full 100%). 
+  - **Avabiltiy**: On selecting reservation date and time, be informed about thorugh the day avability (avaialabe 0-49%, bussy 50-79%, almost full %80-%99, full 100%). 
   - **Advanced avabiltiy**: - A feature to display a calendar view of table availability, allowing users to easily see and book available slots for different dates and times.
+  - **Get Notfied**: - Receive notifications about upcoming reservations on the morning of the reservation day and a preferred time in advance.
+  - **Automate Preferences**: Automatically reserve suitable tables based on guest preferences. If preferences cannot be fully met, guests will be notified.
 
 - __Staff Features__
   - **Manage Reservations**: View and manage all reservations made by users by non admin - user custom interface.
   - **View Table Availability**: Check table availability for any given time slot by users by non admin - user custom interface.
   - **Manage Tables**: Add, update, or remove tables and their details by non admin - user custom interface.
+  - **Restaurant Table Plan Layout**: Manage the restaurant's table reservations for efficient reservation handling and table assignments.
+  - **Custom reservation times**: Apply custom reservation times based on party size and bumper/servixwe time.
 
 
 ## OK - Authentication
@@ -104,36 +108,36 @@ To deploy the project, follow these steps:
 ## Structure
 
 - __Navigation Bar__
-  - The fully responsive navigation bar is present on all pages, providing links to Home, Menu, Make a Reservation, My Reservations, Contact, Logged in as user, 
-Profile and Logout. It ensures easy navigation across devices and maintains a consistent user experience.
+  - The fully responsive navigation bar is present on all pages, providing links to Home, Menu. For signed in user navigation bar show lins to Make a Reservation, My Reservations, Contact, Profile and Sign out. For not signed in user navigation bar show lins to Sign in, Sign up and Make Reservation which leads to Sign in.
+Profile and Log out. It ensures easy navigation across devices and maintains a consistent user experience.
 
-  ![Nav Bar](https://example.com/navigation-bar-image.png)
+  ![Nav Bar](docs/images/navigation-bar-image.png)
 
 - __Reservation Management__
   - Customers can make, view, update, and cancel reservations through a user-friendly interface. This feature helps users to manage their dining plans effectively and receive confirmation emails for their bookings.
 
-  ![Reservation Management](https://example.com/reservation-management-image.png)
+  ![Reservation Management](docs/images/reservation-management-image.png)
 
 - __Admin Dashboard__
   - The staff dashboard allows users to view and manage all reservations, including adding or updating table information. It provides an overview of current bookings and table availability to assist staff in daily operations.
 
-  ![Admin Dashboard](https://example.com/admin-dashboard-image.png)
+  ![Admin Dashboard](docs/images/admin-dashboard-image.png)
 
 - __Custom Signup and Login__
   - Users can sign up with email verification to ensure valid accounts. The custom signup form is designed to collect essential user details and facilitate secure login and registration processes.
 
-  ![Custom Signup](https://example.com/custom-signup-image.png)
+  ![Custom Signup](docs/images/custom-signup-image.png)
 
 - __Email Notifications__
   - Automated email notifications are sent to users upon reservation creation, update, or cancellation. This feature ensures that users receive timely updates and confirmations about their reservations.
 
-  ![Email Notifications](https://example.com/email-notifications-image.png)
+  ![Email Notifications](docs/images/email-notifications-image.png)
 
 - __Footer__
   - The footer includes links to social media profiles and contact information. It encourages users to stay connected and provides easy access to additional resources.
   - For development purposes, phone numbers and email addresses links use fake or reserved domains to prevent accidental emails or real interactions (e.g., info@example.com).
 
-  ![Footer](https://example.com/footer-image.png)
+  ![Footer](docs/images/footer-image.png)
 
 
 ## REVISIT - Development Process
@@ -165,6 +169,8 @@ The development process for this project involved several stages, each addressin
 
 ## REVISE - User Stories
 - **As a user, I want to be able to register an account**: Users should be able to create an account with email verification to ensure valid email addresses and secure their accounts.
+- **TABLE**
+
 - **As a user, I want to be able to log in and log out securely**: Users should be able to log in with their credentials and log out, with proper redirection after authentication and logout.
 - **As a user, I want to be able to book a table**: Users should be able to select a date, time, and number of guests to reserve a table, and receive a confirmation of their reservation.
 - **As a user, I want to view and manage my reservations**: Users should be able to view their existing reservations, and cancel or modify them as needed.
@@ -205,7 +211,17 @@ The development process for this project involved several stages, each addressin
   - **Problem**: The Flatpickr datepicker appears oversized and doesn't fit well on smaller screens, making the user experience cumbersome.  
   - **Issue**: The cause is likely due to Flatpickr’s default styling, which isn’t fully responsive out of the box.  
   - **Solution**: The Flatpickr calendar is now hidden on smaller screens. Future plans include implementing responsive adjustments or integrating a mobile-friendly datepicker.
-  
+
+ - **Bootstrap Content Off-Center**
+  - **Problem**: Some content of the website is off-center on screens larger than 1200px.
+  - **Issue**: This misalignment can lead to an unprofessional appearance and negatively affect user experience.
+  - **Solution**: Ensure that the correct Bootstrap grid classes are applied. Use container-fluid or adjust margins and padding to center the content properly. Additionally, inspect any custom CSS that may interfere with Bootstrap’s default styling.
+
+  - **Advanced booking - Preferences**
+  - **Problem**: The system doesn't consistently accommodate all guest preferences (e.g., quiet area, outdoor seating, etc.).
+  - **Issue**: Some preferences are ignored or incorrectly applied during table assignment, leading to unsatisfactory guest experiences.
+  - **Solution**: Implement more complex booking logic that ensures preferences are properly respected, along with extensive testing to verify correct behavior.
+
 ### KEEP UPDATING - Unsolved Bugs
 - **Handling simultaneous reservations with the same table**  
   - **Problem**: There's currently no mechanism in place to prevent two users from reserving the same table at the same time.  
@@ -231,10 +247,12 @@ The development process for this project involved several stages, each addressin
   
 
 
-## Testing
+## TODO - Testing
 ### Code validation 
 - **HTML**: No errors were found when passing through the [W3C validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fyour-site-url.com).
 - **CSS**: No errors were found when passing through the [Jigsaw validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fdjango-restaurant-web-and-book-565ecd4fe61b.herokuapp.com%2Fstatic%2Fcss%2Fstyle.css&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en).
+- **JavaScript**: Errors or potential problems were identified with JSHint. New JavaScript features (ES6) settings is turned on. Results show no errors. Metrics identified areas for code improvement, but due to time constraints, I couldn't address them fully. Future updates will optimize the code and possibly split it into multiple files.
+- **Pyton**: Code passes flake8 and pylint validaation with 100% sucess validating manage.py and all *.py modules.
 
 ### TODO - Test Cases
 ...

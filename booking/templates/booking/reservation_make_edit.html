@@ -57,7 +57,7 @@
                     </div>
                     {% endif %}
                 </div>
-
+                <h3>Preferences</h3>
                 <!-- Other preference fields -->
                 <div class="form-group">
                     {{ form.is_quiet.label_tag }}
@@ -98,7 +98,7 @@
                     </div>
                     {% endif %}
                 </div>
-
+                <p><strong>Please Note:</strong> While we will do our best to accommodate your preferences, we cannot guarantee them.</p>
                 <div class="text-center mt-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{% url 'user_reservations' %}" class="btn btn-cancel">Cancel Changes</a>

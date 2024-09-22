@@ -69,11 +69,11 @@ class UserReservationsView(generic.ListView):
 
     def get_queryset(self):
         now = timezone.now()
-        # Filter for future reservations and exclude those with status 2 or 3
+        # Filter for future reservations, exclude those with status 2 or 3, and order by reservation date and time
         return Reservation.objects.filter(
             user=self.request.user,
             reservation_date__gt=now
-        ).exclude(status__in=[2, 3])
+        ).exclude(status__in=[2, 3]).order_by('reservation_date')
 
 
 """

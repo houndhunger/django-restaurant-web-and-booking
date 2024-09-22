@@ -21,17 +21,19 @@ def handle_reservation_logic(form, user, original_reservation):
     reservation_end = reservation_date + timedelta(hours=2)
 
     preferences = {
-        'is_quiet': form.cleaned_data.get('is_quiet') == 'yes',
-        'is_outside': form.cleaned_data.get('is_outside') == 'yes',
-        'has_bench_seating': form.cleaned_data.get('has_bench_seating') == 'yes',
-        'has_disabled_access': form.cleaned_data.get('has_disabled_access') == 'yes'
+        'is_quiet': form.cleaned_data.get('is_quiet'),
+        'is_outside': form.cleaned_data.get('is_outside'),
+        'has_bench_seating': form.cleaned_data.get('has_bench_seating'),
+        'has_disabled_access': form.cleaned_data.get('has_disabled_access')
     }
 
     # Start with all tables and filter based on preferences
     tables = Table.objects.all()
     for key, value in preferences.items():
-        if value:
+        if value == 'yes':
             tables = tables.filter(**{key: True})
+        elif value == 'no':
+            tables = tables.filter(**{key: False})
 
     # #
     # # ALLOW overlapping by using an empty queryset
@@ -53,7 +55,7 @@ def handle_reservation_logic(form, user, original_reservation):
     # #
 
     if overlapping_reservations.exists():
-        form.add_error(None, 'You already have an overlapping reservation for this time.'
+        form.add_error(None, 'You already have an overlapping reservation for this time. '
                              'Please, for larger groups, contact the restaurant staff directly.')
         return None, None  # Return early to display the form error
 

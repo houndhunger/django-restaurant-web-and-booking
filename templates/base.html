@@ -62,20 +62,6 @@
                             href="{% url 'restaurant_menu' %}">Menu</a>
                     </li>
                     {% if user.is_authenticated %}
-                        {% if is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == manage_reservations_url %}active{% endif %}"
-                            href="{% url 'manage_reservations' %}">Manage Reservations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == manage_tables_url %}active{% endif %}"
-                            href="{% url 'manage_tables' %}">Manage Tables</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == make_reservation_url %}active{% endif %}"
-                            href="{% url 'make_reservation' %}">Make a Reservation</a>
-                    </li>
-                        {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == make_reservation_url %}active{% endif %}"
                             href="{% url 'make_reservation' %}">Make a Reservation</a>
@@ -84,7 +70,6 @@
                         <a class="nav-link {% if request.path == user_reservations_url %}active{% endif %}"
                             href="{{ user_reservations_url }}">My Reservations</a>
                     </li>
-                        {% endif %}
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == account_login_url %}active{% endif %}"

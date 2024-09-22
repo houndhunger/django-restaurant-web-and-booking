@@ -22,48 +22,10 @@ from .utils.reservation_utils import check_email_unique, handle_reservation_logi
 from allauth.account.views import SignupView
 
 
-"""
-View to list all reservations (staff, not guest)
-"""
-class ManageReservationsView(UserPassesTestMixin, generic.ListView):
-    model = Reservation
-    queryset = Reservation.objects.all()
-    template_name = "booking/reservations_list.html"
-    paginate_by = 3
-
-    def test_func(self):
-        # Ensure that the user is staff
-        return self.request.user.is_staff
-
-    def handle_no_permission(self):
-        # Optionally redirect non-staff users to another page
-        from django.shortcuts import redirect
-        return redirect('home')
-
-
-"""
-View to list all tables (staff, not guest)
-"""
-class ManageTablesView(UserPassesTestMixin, generic.ListView):
-    model = Table
-    queryset = Reservation.objects.all()
-    template_name = "booking/tables_list.html"
-    paginate_by = 12
-
-    def test_func(self):
-        # Ensure that the user is staff
-        return self.request.user.is_staff
-
-    def handle_no_permission(self):
-        # Optionally redirect non-staff users to another page
-        from django.shortcuts import redirect
-        return redirect('home')
-
-
-"""
-View to list the reservations for the currently logged-in user
-"""
 class UserReservationsView(generic.ListView):
+    """
+    View to list the reservations for the currently logged-in user
+    """
     model = Reservation
     template_name = 'booking/user_reservations.html'
     paginate_by = 3
@@ -87,10 +49,10 @@ DAYS_ORDER = {
     'sun': 6,
 }
 
-"""
-Base View for Make and Edit reservation
-"""
 class BaseReservationView(LoginRequiredMixin):
+    """
+    Base View for Make and Edit reservation
+    """
     model = Reservation
     form_class = ReservationForm
     template_name = 'booking/reservation_make_edit.html'
@@ -156,21 +118,20 @@ class BaseReservationView(LoginRequiredMixin):
         ).order_by('day_sort_order')
 
 
-"""
-View to make a new reservation
-"""
 class MakeReservationView(BaseReservationView, CreateView):
+    """
+    View to make a new reservation
+    """
     header = 'Make a Reservation'
 
     def form_valid(self, form):
-        print("MakeReservationView: form_valid RUNS")
         return self.handle_form(form)
 
 
-"""
-View to edit an existing reservation
-"""
 class EditReservationView(BaseReservationView, UpdateView):
+    """
+    View to edit an existing reservation
+    """
     header = 'Edit Reservation'
 
     def form_valid(self, form):
@@ -183,10 +144,10 @@ class EditReservationView(BaseReservationView, UpdateView):
         return kwargs
 
 
-"""
-View to preview reservation
-"""
-class ReservationPreviewView(DetailView):
+class ReservationPreviewView(LoginRequiredMixin, DetailView):
+    """
+    View to preview reservation
+    """
     model = Reservation
     template_name = 'booking/reservation_preview.html'
     context_object_name = 'reservation'
@@ -199,16 +160,17 @@ class ReservationPreviewView(DetailView):
         return reservation
 
 
-"""
-View to delete a reservation
-"""
-class DeleteReservationView(View):
+class DeleteReservationView(LoginRequiredMixin, View):
+    """
+    View to delete a reservation
+    """
     template_name = 'booking/reservation_delete.html'
     success_url = reverse_lazy('user_reservations')
 
     def get(self, request, *args, **kwargs):
         reservation = self.get_object()
-        return render(request, self.template_name, {'reservation': reservation})
+        return render(request, self.template_name, 
+        {'reservation': reservation})
 
     def post(self, request, *args, **kwargs):
         reservation = self.get_object()
@@ -218,12 +180,14 @@ class DeleteReservationView(View):
         return redirect(self.success_url)
 
     def get_object(self):
-        return get_object_or_404(Reservation, id=self.kwargs['pk'], user=self.request.user)
+        return get_object_or_404(Reservation, id=self.kwargs['pk'], 
+            user=self.request.user)
 
-"""
-View to Signup
-"""
+
 class CustomSignupView(SignupView):
+    """
+    View to Signup
+    """
     form_class = CustomSignupForm
     template_name = 'signup.html'
 
@@ -233,19 +197,19 @@ class CustomSignupView(SignupView):
             # If email is not unique, add an error message
             form.add_error('email', 'The email address is already in use.')
             return self.form_invalid(form)
-        
+
         # If email is unique, proceed with form processing
         return super().form_valid(form)
 
     def get_success_url(self):
         # Redirect to a success page or home page after successful signup
-        return reverse_lazy('home')  # Adjust 'home' to the appropriate URL name
+        return reverse_lazy('home')  # Adjust 'home' to the appropriate URL
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['email_feedback'] = self.request.GET.get('email_feedback', '')
         return context
-    
+
     def non_field_errors(self):
         # Customize non-field errors to remove `__all__:` prefix.
         errors = super().non_field_errors()

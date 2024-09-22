@@ -177,29 +177,3 @@ def check_email_unique(request):
         is_unique = not User.objects.filter(email=email).exists()
         return JsonResponse({'is_unique': is_unique})
     return JsonResponse({'error': 'Invalid request'}, status=400)
-
-    # In reservation_utils.py
-
-
-"""
-Get avaialable tables
-"""
-@csrf_exempt
-def get_available_tables(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            date = data.get('date')
-
-            if date:
-                # Your logic to fetch available tables based on the date
-                available_tables = Table.objects.filter(reservation_date=date)
-                tables_list = [{'number': table.number} for table in available_tables]
-                return JsonResponse({'tables': tables_list})
-            
-            return JsonResponse({'error': 'Date is required'}, status=400)
-        except Exception as e:
-            #print(f"Error: {e}")  # Log the error
-            return JsonResponse({'error': 'Internal Server Error'}, status=500)
-    
-    return JsonResponse({'error': 'Invalid request method'}, status=405)

@@ -13,6 +13,46 @@ class SiteSettings(models.Model):
     def __str__(self):
         return f"{self.site.domain} Settings"
 
+
+# Days of the week choices
+DAYS_OF_WEEK = [
+    ('mon', 'Monday'),
+    ('tue', 'Tuesday'),
+    ('wed', 'Wednesday'),
+    ('thu', 'Thursday'),
+    ('fri', 'Friday'),
+    ('sat', 'Saturday'),
+    ('sun', 'Sunday'),
+]
+
+"""
+Opening Time model
+"""
+class OpeningTime(models.Model):
+    day_of_week = models.CharField(max_length=3, choices=DAYS_OF_WEEK)
+    open_time = models.TimeField()
+    close_time = models.TimeField()
+
+    class Meta:
+        verbose_name = 'Opening Time'
+        verbose_name_plural = 'Opening Times'
+        ordering = ['day_of_week']
+
+    def __str__(self):
+        return f"{self.day_of_week}: {self.open_time} - {self.close_time}"
+
+
+"""
+Reservation Time Span model
+"""
+class ReservationTimeSpan(models.Model):
+    party_size = models.PositiveIntegerField()  # Size of the party
+    duration = models.DurationField()  # Duration of the reservation
+
+    def __str__(self):
+        return f"Party Size: {self.party_size}, Duration: {self.duration}"
+
+
 """
 Table model
 """
@@ -30,6 +70,7 @@ class Table(models.Model):
 
     def __str__(self):
         return f"Table {self.table_number} (Zone {self.zone})"
+
 
 # Reservation status choices
 RESERVATION_STATUS_CHOICES = (
@@ -58,7 +99,6 @@ class Reservation(models.Model):
     guest_count = models.PositiveIntegerField()
     reservation_date = models.DateTimeField()
     duration = models.DurationField(default=timedelta(hours=2))
-    #reservation_end = models.DateTimeField(editable=False, null=True)
     tables = models.ManyToManyField(Table)  # Multiple tables can be reserved for one reservation
     note = models.TextField(blank=True, null=True)
     status = models.IntegerField(choices=RESERVATION_STATUS_CHOICES, default=0)
@@ -68,30 +108,19 @@ class Reservation(models.Model):
     edited_by = models.ForeignKey(User, related_name='edited_%(class)s_set', on_delete=models.SET_NULL, null=True, editable=False)
 
     def save(self, *args, **kwargs):
-        # if not self.pk:  # Check if the object is being created
-        #     self.reservation_end = self.reservation_date + self.duration
         super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["-created_on"]
 
-    # @property
-    # def reservation_end(self):
-    #     """Calculate the end time of the reservation."""
-    #     return getattr(self, '_reservation_end', self.reservation_date + self.duration)  # Ensure you define 'duration' in your form or model
-
     def is_conflicting(self, new_reservation):
-        """
-        Check if the new reservation conflicts with this reservation.
-        """
+        # Check if the new reservation conflicts with this reservation.
         new_end_time = new_reservation.reservation_date + new_reservation.duration
         return (self.reservation_date < new_end_time) and (self.reservation_end > new_reservation.reservation_date)
 
     @staticmethod
     def check_table_availability(tables, start_time, end_time):
-        """
         # Check if any of the given tables are available for the specified time range.
-        """
         overlapping_reservations = Reservation.objects.filter(
             tables__in=tables,
             reservation_date__lt=end_time,

@@ -2,9 +2,8 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
-from django.views.generic import TemplateView
-#from .models import SiteSettings
-from booking.models import SiteSettings
+from django.views.generic import TemplateView, ListView
+from booking.models import SiteSettings, OpeningTime
 
 """
 View to welcome which is now home - index.html
@@ -61,3 +60,19 @@ def contact(request):
     return render(request, 'restaurant/contact.html', {
         'site_settings': site_settings,
     })
+
+
+class OpeningTimesView(ListView):
+    model = OpeningTime
+    template_name = 'restaurant/opening_times.html'
+    context_object_name = 'opening_times'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['opening_times'] = self.get_queryset()
+        context['show_opening_time_table'] = True  # Control table visibility
+        context['loaded_through_opening_times'] = True  # Control sumary visibility - details and sumary will be hidden
+        return context
+
+    def get_queryset(self):
+        return OpeningTime.objects.all().order_by('day_of_week')

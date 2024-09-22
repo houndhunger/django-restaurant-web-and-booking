@@ -8,7 +8,7 @@ from django.views import generic
 from django.views.generic import View, TemplateView, DetailView, UpdateView, DeleteView, CreateView
 from datetime import datetime, timedelta
 from django.contrib import messages
-from .models import Reservation 
+from .models import Reservation, OpeningTime
 
 # Models and forms
 from .models import Reservation, Table
@@ -124,7 +124,13 @@ class BaseReservationView(LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = self.header  # Use a header value from child classes
+        context['opening_times'] = self.get_queryset() # Get opening times
+        context['show_opening_time_table'] = context['opening_times']  # Control visibility
         return context
+
+    def get_queryset(self):
+        return OpeningTime.objects.all().order_by('day_of_week')
+
 
 
 

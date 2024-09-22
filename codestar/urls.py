@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
-from .views import RestaurantMenuView, HomeView
+from .views import HomeView, RestaurantMenuView, OpeningTimesView
 from . import views
 
 # for debug toolbar
@@ -32,6 +32,7 @@ urlpatterns = [
     path("", include("booking.urls"), name='booking-urls'),
     path('welcome/', HomeView.as_view(), name='welcome'),
     path('menu/', RestaurantMenuView.as_view(), name='restaurant_menu'),
+    path('open/', OpeningTimesView.as_view(), name='opening_times'),
     path('contact/', views.contact, name='contact'),
 ]
 

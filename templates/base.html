@@ -1,6 +1,7 @@
 {% load static %}
 {% url 'home' as home_url %}
 {% url 'restaurant_menu' as restaurant_menu_url %}
+{% url 'opening_times' as opening_times_url %}
 {% url 'contact' as contact_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
@@ -90,6 +91,10 @@
                             href="{% url 'account_login' %}">Make a Reservation</a>
                     </li>
                     {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == opening_times_url %}active{% endif %}"
+                            href="{% url 'opening_times' %}">Opennig times</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == contact_url %}active{% endif %}"
                             href="{% url 'contact' %}">Contact</a>

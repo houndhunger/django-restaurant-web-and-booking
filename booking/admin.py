@@ -103,7 +103,7 @@ Admin Configuration for Reservations
 """
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'reservation_date', 'guest_count', 'status', 'assigned_tables', 'created_on')
+    list_display = ('user', 'reservation_date', 'reservation_end_date', 'guest_count', 'status', 'assigned_tables', 'created_on')
     search_fields = ['user__username', 'reservation_date', 'guest_count', 'status']
     
     # Order of filters in the admin panel, with dropdowns for Hour, Table Number, and Zone
@@ -115,4 +115,3 @@ class ReservationAdmin(admin.ModelAdmin):
     def assigned_tables(self, obj):
         return ", ".join(f"Table {table.table_number} (Z{table.zone})" for table in obj.tables.all())
     assigned_tables.short_description = 'Assigned Tables'
-

@@ -30,6 +30,7 @@ def handle_reservation_logic(form, user, original_reservation):
     try:
         time_span = ReservationTimeSpan.objects.get(guest_count=guest_count)
         reservation_end = reservation_date + time_span.duration  # Use the duration from ReservationTimeSpan
+        reservation.reservation_end_date = reservation_end
     except ReservationTimeSpan.DoesNotExist:
         form.add_error(None, 'Please contact the restaurant for large party sizes.')
         return None, None  # Return early to display the form error

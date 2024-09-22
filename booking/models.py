@@ -98,8 +98,9 @@ class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     guest_count = models.PositiveIntegerField()
     reservation_date = models.DateTimeField()
+    reservation_end_date = models.DateTimeField(null=True, blank=True)
     duration = models.DurationField(default=timedelta(hours=2))
-    tables = models.ManyToManyField(Table)  # Multiple tables can be reserved for one reservation
+    tables = models.ManyToManyField(Table)
     note = models.TextField(blank=True, null=True)
     status = models.IntegerField(choices=RESERVATION_STATUS_CHOICES, default=0)
     created_on = models.DateTimeField(auto_now_add=True)

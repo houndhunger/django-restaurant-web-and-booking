@@ -1,0 +1,28 @@
+
+<!-- Opennig Time Table Section -->
+{% if not loaded_through_opening_times %}
+<details class="opening-times-section" open>
+        <summary class="opening-time-title">Opening Times</summary>
+{% endif %}
+    <table class="table opening-time-table {% if show_opening_time_table %}show-opening-time-table{% endif %}">
+
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Open Time</th>
+                <th>Close Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for opening_time in opening_times %}
+            <tr>
+                <td>{{ opening_time.get_day_of_week_display }}</td>
+                <td>{{ opening_time.open_time|time:"H:i" }}</td>
+                <td>{{ opening_time.close_time|time:"H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% if not loaded_through_opening_times %}
+</details>
+{% endif %}

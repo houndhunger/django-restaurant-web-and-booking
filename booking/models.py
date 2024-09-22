@@ -46,11 +46,11 @@ class OpeningTime(models.Model):
 Reservation Time Span model
 """
 class ReservationTimeSpan(models.Model):
-    party_size = models.PositiveIntegerField()  # Size of the party
+    guest_count = models.PositiveIntegerField()  # Size of the party
     duration = models.DurationField()  # Duration of the reservation
 
     def __str__(self):
-        return f"Party Size: {self.party_size}, Duration: {self.duration}"
+        return f"Party Size: {self.guest_count}, Duration: {self.duration}"
 
 
 """

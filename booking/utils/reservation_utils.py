@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from datetime import timedelta
 
-from booking.models import Table, Reservation
+from booking.models import Table, Reservation, OpeningTime, ReservationTimeSpan
 
 
 """
@@ -23,7 +23,24 @@ def handle_reservation_logic(form, user, original_reservation):
     reservation.status = 1  # Set status to 'Confirmed'
 
     reservation_date = reservation.reservation_date
-    reservation_end = reservation_date + timedelta(hours=2)
+
+    # Ensure guest_count is defined from the reservation
+    guest_count = reservation.guest_count
+
+    try:
+        time_span = ReservationTimeSpan.objects.get(guest_count=guest_count)
+        reservation_end = reservation_date + time_span.duration  # Use the duration from ReservationTimeSpan
+    except ReservationTimeSpan.DoesNotExist:
+        form.add_error(None, 'Please contact the restaurant for large party sizes.')
+        return None, None  # Return early to display the form error
+
+    # Get the reservation day as abbreviation
+    reservation_day = reservation.reservation_date.strftime('%a').lower()  
+    opening_time = OpeningTime.objects.filter(day_of_week=reservation_day).first()
+
+    if not opening_time or not (opening_time.open_time <= reservation_date.time() <= opening_time.close_time):
+        form.add_error(None, 'The restaurant is closed at the time of your reservation.')
+        return None, None  # Return early to display the form error
 
     preferences = {
         'is_quiet': form.cleaned_data.get('is_quiet'),
@@ -108,7 +125,6 @@ def handle_reservation_logic(form, user, original_reservation):
     # Select the zone with the most available capacity
     if zone_capacity:
         optimal_zone = max(zone_capacity, key=zone_capacity.get)
-
         # Filter available tables within the selected zone
         zone_tables = available_tables.filter(zone=optimal_zone)
 
@@ -122,10 +138,6 @@ def handle_reservation_logic(form, user, original_reservation):
             else:
                 assigned_tables.append(table)
                 remaining_guests -= table.capacity  # Reduce remaining guest count
-
-    # # If guests remain unseated after checking all available tables
-    # if remaining_guests > 0:
-    #     raise forms.ValidationError("Not enough available tables for the selected date and preferences.")
 
     # If guests remain unseated after checking all available tables
     if remaining_guests > 0:

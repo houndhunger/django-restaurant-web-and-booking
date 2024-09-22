@@ -28,9 +28,9 @@ class OpeningTimeAdmin(admin.ModelAdmin):
 """
 @admin.register(ReservationTimeSpan)
 class ReservationTimeSpanAdmin(admin.ModelAdmin):
-    list_display = ('party_size', 'duration')
-    list_filter = ('party_size',)
-    search_fields = ('party_size',)
+    list_display = ('guest_count', 'duration')
+    list_filter = ('guest_count',)
+    search_fields = ('guest_count',)
 
 """
 Admin Configuration - Tables

@@ -1,30 +1,39 @@
 /* Define CSS Variables */
 :root {
     /* colour palete */
-    --colour-1: #2E3D30; /* hsl(128, 14%, 21%) */
-    --colour-1B: #3d5140; /* hsl(128, 14%, 28%) */
-    --colour-3B: #576b5a; /* hsl(128, 10%, 38%) */
-    --colour-2: #ce845f; /* hsl(20, 53%, 59%) */
-    --colour-3: #bd3c2e; /* hsl(6, 61%, 46%) */
-    --colour-4: #e0bea4; /* hsl(26, 49%, 76%) */
-    --colour-4B: #51463d; /* hsl(27, 14%, 28%) */  
-    --colour-5: #ab9b59; /* hsl(48, 33%, 51%) */
+    --colour-1: #2E3D30;
+    /* hsl(128, 14%, 21%) */
+    --colour-1B: #3d5140;
+    /* hsl(128, 14%, 28%) */
+    --colour-3B: #576b5a;
+    /* hsl(128, 10%, 38%) */
+    --colour-2: #ce845f;
+    /* hsl(20, 53%, 59%) */
+    --colour-3: #bd3c2e;
+    /* hsl(6, 61%, 46%) */
+    --colour-4: #e0bea4;
+    /* hsl(26, 49%, 76%) */
+    --colour-4B: #51463d;
+    /* hsl(27, 14%, 28%) */
+    --colour-5: #ab9b59;
+    /* hsl(48, 33%, 51%) */
 
     /* colour variables */
-    --page-bg-colour: var(--colour-1); 
+    --page-bg-colour: var(--colour-1);
     --light-txt-colour: #ededed;
     --accent-1-colour: var(--colour-2);
     --accent-2-colour: var(--colour-3);
-    --head-bg-colour: var(--colour-4);;
+    --head-bg-colour: var(--colour-4);
+    ;
     --content-bg-colour: var(--colour-1B);
     --content-bg-colour-alt1: var(--colour-4B);
-    --main-border: var(--colour-3B);                     
+    --main-border: var(--colour-3B);
 
-    --hover-1-colour: var(--accent-1-colour);      
-    --hover-2-colour: var(--accent-2-colour);     
-    --form-bg-colour: var(--page-bg-colour);       
-    --form-border: var(--main-border);             
-    --form-focus-border: var(--accent-1-colour);    
+    --hover-1-colour: var(--accent-1-colour);
+    --hover-2-colour: var(--accent-2-colour);
+    --form-bg-colour: var(--page-bg-colour);
+    --form-border: var(--main-border);
+    --form-focus-border: var(--accent-1-colour);
 }
 
 /* General Styles */
@@ -97,7 +106,7 @@ a,
     border: 1px solid var(--content-bg-colour);
     background-color: var(--content-bg-colour);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 30px 20px;
     margin-bottom: 20px;
     border-radius: 0;
 }
@@ -140,6 +149,7 @@ a,
     left: -2px;
     background-color: var(--accent-1-colour);
     padding: 5px 10px;
+    margin: 10px 0px;
     border-radius: 0;
 }
 
@@ -249,9 +259,7 @@ button,
 
 /* Forms */
 .login-form,
-.signup-form,
-.reservation-form {
-    max-width: 600px;
+.signup-form {
     margin-bottom: 20px;
     padding: 30px;
     background-color: var(--content-bg-colour);
@@ -339,4 +347,56 @@ button,
     padding: 10px;
     border-radius: 0px;
 
+}
+
+/* Opening Time table & Table Styles */
+.table {
+    width: 100%;
+    margin: 20px 0;
+    background-color: var(--content-bg-colour);
+    color: var(--light-txt-colour);
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    border: 1px solid var(--main-border);
+    text-align: left;
+}
+
+.table th {
+    background-color: var(--head-bg-colour);
+    color: rgba(0, 0, 0, .9);
+}
+
+/* Hide the table by default */
+.opening-time-table {
+    display: none;
+}
+
+/* Class to show the table when needed */
+.show-opening-time-table {
+    display: table;
+    /* Show the table */
+}
+
+.opening-times-section {
+    margin: 20px 0;
+    /* Adjust as needed */
+}
+
+.opening-time-title {
+    cursor: pointer;
+    /* Change cursor to indicate it's clickable */
+    margin-bottom: 10px;
+    /* Space below the title */
+    font-size: 1.5rem;
+    /* Adjust font size */
+}
+
+/* Add spacing above the table */
+.opening-time-table {
+    margin-top: 10px;
+    /* Space above the table */
 }

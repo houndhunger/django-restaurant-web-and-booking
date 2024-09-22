@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
+from django.db.models import Case, When, Value
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.generic import View, TemplateView, DetailView, UpdateView, DeleteView, CreateView
@@ -76,6 +77,16 @@ class UserReservationsView(generic.ListView):
         ).exclude(status__in=[2, 3]).order_by('reservation_date')
 
 
+DAYS_ORDER = {
+    'mon': 0,
+    'tue': 1,
+    'wed': 2,
+    'thu': 3,
+    'fri': 4,
+    'sat': 5,
+    'sun': 6,
+}
+
 """
 Base View for Make and Edit reservation
 """
@@ -85,10 +96,6 @@ class BaseReservationView(LoginRequiredMixin):
     template_name = 'booking/reservation_make_edit.html'
 
     def handle_form(self, form, original_reservation=None):
-        # # Check for existing errors in the form
-        # if not form.is_valid():
-        #     return self.form_invalid(form)
-
         try:
             reservation, available_tables = handle_reservation_logic(form, self.request.user, original_reservation)
             
@@ -120,16 +127,33 @@ class BaseReservationView(LoginRequiredMixin):
 
         return self.render_to_response(self.get_context_data(form=form))
 
-    # to display coresponding header
+    # Display corresponding header and Opening Times
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header'] = self.header  # Use a header value from child classes
        
-        # Retrieve OpeningTime objects and add to the context
-        context['opening_times'] = OpeningTime.objects.all().order_by('day_of_week')
+        # Retrieve OpeningTime objects sorted by actual day of the week
+        context['opening_times'] = self.get_opening_times()
         context['show_opening_time_table'] = context['opening_times']  # Control visibility
 
         return context
+
+    def get_opening_times(self):
+        # Custom sorting by day_of_week using Django's Case-When
+        ordering_case = Case(
+            When(day_of_week='mon', then=Value(0)),
+            When(day_of_week='tue', then=Value(1)),
+            When(day_of_week='wed', then=Value(2)),
+            When(day_of_week='thu', then=Value(3)),
+            When(day_of_week='fri', then=Value(4)),
+            When(day_of_week='sat', then=Value(5)),
+            When(day_of_week='sun', then=Value(6)),
+        )
+
+        # Return the queryset ordered by the mapped values for day_of_week
+        return OpeningTime.objects.annotate(
+            day_sort_order=ordering_case
+        ).order_by('day_sort_order')
 
 
 """

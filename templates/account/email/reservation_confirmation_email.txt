@@ -1,0 +1,12 @@
+Subject: Reservation Confirmation
+
+Dear {{ user.get_full_name|default:user.username }},
+
+Thank you for your reservation!
+
+Your reservation has been confirmed for {{ reservation.guest_count }} guests on {{ reservation.reservation_date }}.
+
+We look forward to serving you.
+
+Best regards,
+Your Restaurant Team

@@ -1,12 +1,17 @@
 from django import forms
 from django.db.models import Q
-from datetime import timedelta
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
-from booking.models import Table, Reservation
+from django.conf import settings
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+
+from datetime import timedelta
+
+from booking.models import Table, Reservation
 
 
 """
@@ -131,13 +136,20 @@ def handle_reservation_logic(form, user, original_reservation):
     reservation.save()
     reservation.tables.set(assigned_tables)
 
-    # print(f"assigned_tables: {assigned_tables}")
+    # Send confirmation email
+    email_subject = 'Reservation Confirmation'
+    email_body = render_to_string('account/email/reservation_confirmation_email.txt', {
+        'user': user,
+        'reservation': reservation,
+    })
 
-    # print(f"AAA reservation id: {reservation.id}")
-    # print(f"AAA reservation date: {reservation.reservation_date}")
-    # print(f"AAA reservation status: {reservation.status}")
-    # print(f"AAA reservation guest_count: {reservation.guest_count}")
-    # print(f"AAA reservation tables: {reservation.tables.all()}")  # This will list associated tables
+    send_mail(
+        subject=email_subject,
+        message=email_body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
 
     return reservation, assigned_tables
 

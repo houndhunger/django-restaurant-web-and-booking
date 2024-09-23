@@ -17,7 +17,7 @@
                                     <h2 class="card-title">Reservation for {{ reservation.guest_count }} Guests</h2>
                                 </div>
                             </div>
-                            <p class="card-text mt-3"><strong>Date:</strong> {{ reservation.reservation_date|date:"F j, Y, g:i a" }}</p>
+                            <p class="card-text mt-3"><strong>Date:</strong> {{ reservation.reservation_date|date:"F j, Y, H:i" }}</p>
                             <hr />
                             
                             <p class="card-text h6"><strong>Status:</strong> {{ reservation.get_status_display }}</p>

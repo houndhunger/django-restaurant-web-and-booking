@@ -3,18 +3,20 @@ from datetime import timedelta
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 
-"""
-Site Settings model
-"""
+
 class SiteSettings(models.Model):
+    """
+    Site Settings model
+    """
     site = models.OneToOneField(Site, on_delete=models.CASCADE)
     contact_email = models.EmailField(max_length=254)
-    phone_number = models.CharField(max_length=15, default='0000000000') # Assuming a 15-character limit for the phone number
+    # Assuming a 15-character limit for the phone number
+    phone_number = models.CharField(max_length=15, default='0000000000')
+
     def __str__(self):
         return f"{self.site.domain} Settings"
 
 
-# Days of the week choices
 DAYS_OF_WEEK = [
     ('mon', 'Monday'),
     ('tue', 'Tuesday'),
@@ -25,10 +27,11 @@ DAYS_OF_WEEK = [
     ('sun', 'Sunday'),
 ]
 
-"""
-Opening Time model
-"""
+
 class OpeningTime(models.Model):
+    """
+    Opening Time model
+    """
     day_of_week = models.CharField(max_length=3, choices=DAYS_OF_WEEK)
     open_time = models.TimeField()
     close_time = models.TimeField()
@@ -42,10 +45,10 @@ class OpeningTime(models.Model):
         return f"{self.day_of_week}: {self.open_time} - {self.close_time}"
 
 
-"""
-Reservation Time Span model
-"""
 class ReservationTimeSpan(models.Model):
+    """
+    Reservation Time Span model
+    """
     guest_count = models.PositiveIntegerField()  # Size of the party
     duration = models.DurationField()  # Duration of the reservation
 
@@ -53,20 +56,24 @@ class ReservationTimeSpan(models.Model):
         return f"Party Size: {self.guest_count}, Duration: {self.duration}"
 
 
-"""
-Table model
-"""
 class Table(models.Model):
+    """
+    Table model
+    """
     table_number = models.IntegerField(unique=True)
     zone = models.IntegerField()
     capacity = models.IntegerField()
-    vip_category = models.IntegerField(choices=[(1, 'Standard'), (2, 'Premium'), (3, 'VIP')])
+    vip_category = models.IntegerField(choices=[
+        (1, 'Standard'), (2, 'Premium'), (3, 'VIP')
+    ])
     is_quiet = models.BooleanField(default=False)
     is_outside = models.BooleanField(default=False)
     has_bench_seating = models.BooleanField(default=False)
     has_disabled_access = models.BooleanField(default=False)
     note = models.CharField(max_length=255, blank=True, null=True)
-    adjacent_tables = models.ManyToManyField('self', blank=True, symmetrical=True)  # Removed related_name
+    adjacent_tables = models.ManyToManyField(
+        'self', blank=True, symmetrical=True
+    )
 
     def __str__(self):
         return f"Table {self.table_number} (Zone {self.zone})"
@@ -80,20 +87,25 @@ RESERVATION_STATUS_CHOICES = (
     (3, "Deleted"),
 )
 
-"""
-Reservation model
-"""
+
 class Reservation(models.Model):
+    """
+    Reservation model
+    """
     PREFERENCE_CHOICES = [
         ('no_preference', 'No Preference'),
         ('yes', 'Yes'),
         ('no', 'No'),
     ]
 
-    is_quiet = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
-    is_outside = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
-    has_bench_seating = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
-    has_disabled_access = models.CharField(max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    is_quiet = models.CharField(
+        max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    is_outside = models.CharField(
+        max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    has_bench_seating = models.CharField(
+        max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
+    has_disabled_access = models.CharField(
+        max_length=20, choices=PREFERENCE_CHOICES, default='no_preference')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     guest_count = models.PositiveIntegerField()
@@ -105,8 +117,14 @@ class Reservation(models.Model):
     status = models.IntegerField(choices=RESERVATION_STATUS_CHOICES, default=0)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, related_name='created_%(class)s_set', on_delete=models.SET_NULL, null=True, editable=False)
-    edited_by = models.ForeignKey(User, related_name='edited_%(class)s_set', on_delete=models.SET_NULL, null=True, editable=False)
+    created_by = models.ForeignKey(
+        User, related_name='created_%(class)s_set', on_delete=models.SET_NULL,
+        null=True, editable=False
+    )
+    edited_by = models.ForeignKey(
+        User, related_name='edited_%(class)s_set', on_delete=models.SET_NULL,
+        null=True, editable=False
+    )
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -115,13 +133,19 @@ class Reservation(models.Model):
         ordering = ["-created_on"]
 
     def is_conflicting(self, new_reservation):
-        # Check if the new reservation conflicts with this reservation.
-        new_end_time = new_reservation.reservation_date + new_reservation.duration
-        return (self.reservation_date < new_end_time) and (self.reservation_end > new_reservation.reservation_date)
+        # Check if the new reservation conflicts with this reservation
+        new_end_time = (
+            new_reservation.reservation_date +
+            new_reservation.duration
+        )
+        + new_reservation.duration
+        return (
+            self.reservation_date < new_end_time) and (
+            self.reservation_end > new_reservation.reservation_date)
 
     @staticmethod
     def check_table_availability(tables, start_time, end_time):
-        # Check if any of the given tables are available for the specified time range.
+        # Check if any of the tables are available for the specified time range
         overlapping_reservations = Reservation.objects.filter(
             tables__in=tables,
             reservation_date__lt=end_time,
@@ -131,4 +155,5 @@ class Reservation(models.Model):
         return not overlapping_reservations
 
     def __str__(self):
-        return f"Reservation by {self.user.username} on {self.reservation_date}"
+        return f"Reservation by {self.user.username}"
+        "on {self.reservation_date}"

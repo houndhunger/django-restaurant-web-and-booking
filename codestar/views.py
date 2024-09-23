@@ -5,32 +5,33 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView
 from booking.models import SiteSettings, OpeningTime
 
-"""
-View to welcome which is now home - index.html
-"""
+
 def welcome_view(request):
+    """
+    View to welcome which is now home - index.html
+    """
     return render(request, 'index.html')
 
-"""
-Home view - index.html
-"""
+
 class HomeView(TemplateView):
+    """
+    Home view - index.html
+    """
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        site_settings = SiteSettings.objects.first()  # Ensure the site settings exist
+        site_settings = SiteSettings.objects.first()
         context['site_settings'] = site_settings
         return context
 
-"""
-View to display restaurant menu
-"""
+
 class RestaurantMenuView(TemplateView):
+    """
+    View to display restaurant menu
+    """
     template_name = 'restaurant/restaurant_menu.html'
 
-# def restaurant_menu(request):
-#     return render(request, 'restaurant/restaurant_menu.html')
 
 def contact(request):
     site_settings = SiteSettings.objects.first()
@@ -43,10 +44,14 @@ def contact(request):
         last_name = request.POST['last_name']
         email = request.POST['email']
         message = request.POST['message']
-        
+
         # Prepare the message
-        full_message = f"From Dino Restaurant Booking System:\n\nMessage from {first_name} {last_name}, Email: {email}\n\n{message}"
-        
+        full_message = (
+            f"From Dino Restaurant Booking System:\n\n"
+            f"Message from {first_name} {last_name}, "
+            f"Email: {email}\n\n{message}"
+        )
+
         # Send the email
         send_mail(
             'Contact Form Submission',
@@ -54,7 +59,7 @@ def contact(request):
             settings.DEFAULT_FROM_EMAIL,
             ['daniel.pribula@gmail.com'],  # Your email address
         )
-        
+
         return HttpResponse('Thank you for your message!')
 
     return render(request, 'restaurant/contact.html', {
@@ -70,8 +75,10 @@ class OpeningTimesView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['opening_times'] = self.get_queryset()
-        context['show_opening_time_table'] = True  # Control table visibility
-        context['loaded_through_opening_times'] = True  # Control sumary visibility - details and sumary will be hidden
+        # Control table visibility
+        context['show_opening_time_table'] = True
+        # Control sumary visibility - details and sumary will be hidden
+        context['loaded_through_opening_times'] = True
         return context
 
     def get_queryset(self):

@@ -6,19 +6,15 @@ from django.db.models import Q
 from django.db.models import Case, When, Value
 from django.urls import reverse_lazy, reverse
 from django.views import generic
-from django.views.generic import View, TemplateView, DetailView, UpdateView, DeleteView, CreateView
+from django.views.generic import (
+    View, TemplateView, DetailView, UpdateView, DeleteView, CreateView)
 from datetime import datetime, timedelta
 from django.contrib import messages
 from .models import Reservation, OpeningTime
-
-# Models and forms
 from .models import Reservation, Table
 from .forms import ReservationForm, CustomSignupForm
-
-# Utilities
-from .utils.reservation_utils import check_email_unique, handle_reservation_logic
-
-# Allauth
+from .utils.reservation_utils import (
+    check_email_unique, handle_reservation_logic)
 from allauth.account.views import SignupView
 
 
@@ -32,7 +28,8 @@ class UserReservationsView(generic.ListView):
 
     def get_queryset(self):
         now = timezone.now()
-        # Filter for future reservations, exclude those with status 2 or 3, and order by reservation date and time
+        # Filter for future reservations, exclude those with
+        # status 2 or 3, and order by reservation date and time
         return Reservation.objects.filter(
             user=self.request.user,
             reservation_date__gt=now
@@ -49,6 +46,7 @@ DAYS_ORDER = {
     'sun': 6,
 }
 
+
 class BaseReservationView(LoginRequiredMixin):
     """
     Base View for Make and Edit reservation
@@ -59,30 +57,34 @@ class BaseReservationView(LoginRequiredMixin):
 
     def handle_form(self, form, original_reservation=None):
         try:
-            reservation, available_tables = handle_reservation_logic(form, self.request.user, original_reservation)
-            
-            # If reservation is None, form has an error (e.g., overlapping reservation)
+            reservation, available_tables = handle_reservation_logic(
+                form, self.request.user, original_reservation)
+
+            # If reservation is None, form has an error
             if reservation is None:
-                return self.form_invalid(form)  # Return the form with the error displayed
-            
+                return self.form_invalid(form)
+
             # Save the reservation and assigned tables
             reservation.save()
             reservation.tables.set(available_tables[:reservation.guest_count])
-            return redirect(reverse('preview_reservation', kwargs={'pk': reservation.pk}))
+            return redirect(
+                reverse('preview_reservation', kwargs={'pk': reservation.pk})
+            )
 
         except forms.ValidationError as e:
-            form.add_error(None, str(e))  # Add the error message to the form
+            # Add the error message to the form
+            form.add_error(None, str(e))
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        # Retain the submitted date value for Flatpickr
-        form.data = form.data.copy()  # Copy the form data to modify it
+        form.data = form.data.copy()
 
         if 'reservation_date' in form.data:
             # Format the date to match 'Y/m/d H:i'
             try:
                 date_str = form.data['reservation_date']
-                formatted_date = datetime.strptime(date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
+                formatted_date = datetime.strptime(
+                    date_str, '%d %b %Y, %H:%M').strftime('%Y/%m/%d %H:%M')
                 form.data['reservation_date'] = formatted_date
             except ValueError:
                 pass  # In case the date format is not what we expect
@@ -92,12 +94,12 @@ class BaseReservationView(LoginRequiredMixin):
     # Display corresponding header and Opening Times
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['header'] = self.header  # Use a header value from child classes
-       
+        # Use a header value from child classes
+        context['header'] = self.header
         # Retrieve OpeningTime objects sorted by actual day of the week
         context['opening_times'] = self.get_opening_times()
-        context['show_opening_time_table'] = context['opening_times']  # Control visibility
-
+        # Control visibility
+        context['show_opening_time_table'] = context['opening_times']
         return context
 
     def get_opening_times(self):
@@ -135,12 +137,15 @@ class EditReservationView(BaseReservationView, UpdateView):
     header = 'Edit Reservation'
 
     def form_valid(self, form):
-        original_reservation = self.get_object()  # Retrieve the original reservation
-        return self.handle_form(form, original_reservation)  # Pass it to handle_form
+        # Retrieve the original reservation
+        original_reservation = self.get_object()
+        # Pass it to handle_form
+        return self.handle_form(form, original_reservation)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.get_object()  # Pass reservation instance to the form
+        # Pass reservation instance to the form
+        kwargs['instance'] = self.get_object()
         return kwargs
 
 
@@ -169,19 +174,20 @@ class DeleteReservationView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         reservation = self.get_object()
-        return render(request, self.template_name, 
-        {'reservation': reservation})
+        return render(
+            request, self.template_name, {'reservation': reservation})
 
     def post(self, request, *args, **kwargs):
         reservation = self.get_object()
-        # Change the status to 3 (indicating it's "deleted" but not actually removed)
+        # Change the status to 3 (indicating it's "deleted"
+        # but not actually removed)
         reservation.status = 3
         reservation.save()
         return redirect(self.success_url)
 
     def get_object(self):
-        return get_object_or_404(Reservation, id=self.kwargs['pk'], 
-            user=self.request.user)
+        return get_object_or_404(
+            Reservation, id=self.kwargs['pk'], user=self.request.user)
 
 
 class CustomSignupView(SignupView):

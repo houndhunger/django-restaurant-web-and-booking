@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+
+# for testing
+import sys
+
 if os.path.isfile('env.py'):
     import env
 
@@ -29,8 +33,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['8000-houndhunger-djangoresta-bv2xsltcc4y.ws.codeinstitute-ide.net',
-                '.herokuapp.com']
+ALLOWED_HOSTS = [
+    '8000-houndhunger-djangoresta-bv2xsltcc4y.ws.codeinstitute-ide.net',
+    '.herokuapp.com'
+                ]
 
 # Application definition
 
@@ -80,7 +86,8 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATE = True
 # URL where users are redirected to confirm their email
 ACCOUNT_EMAIL_CONFIRMATION_URL = '/accounts/confirm-email/'
 
-# URL to redirect to after a successful email confirmation, in case no user is logged in.
+# URL to redirect to after a successful email confirmation,
+# in case no user is logged in.
 # URL where users are redirected after email confirmation
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/welcome/'
 
@@ -152,7 +159,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
         'OPTIONS': {
-            'user_attributes': ('username', 'email', 'first_name', 'last_name'),
+            'user_attributes': (
+                'username', 'email', 'first_name', 'last_name'
+            ),
         },
     },
     {
@@ -166,10 +175,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # # For development
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-#For production
+# For production
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -203,7 +213,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Disable the toolbar when running tests
-import sys
+
+
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 if not TESTING:
@@ -217,5 +228,5 @@ if not TESTING:
     ]
 
     DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: False,  # Disable toolbar
-}
+        'SHOW_TOOLBAR_CALLBACK': lambda request: False,
+    }

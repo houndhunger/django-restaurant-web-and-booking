@@ -11,7 +11,7 @@ from django.views.generic import (
 from datetime import datetime, timedelta
 from django.contrib import messages
 from .models import Reservation, OpeningTime
-from .models import Reservation, Table
+from .models import Reservation, Table, ReservationTimeSpan
 from .forms import ReservationForm, CustomSignupForm
 from .utils.reservation_utils import (
     check_email_unique, handle_reservation_logic)
@@ -57,6 +57,25 @@ class BaseReservationView(LoginRequiredMixin):
 
     def handle_form(self, form, original_reservation=None):
         try:
+            # Get reservation date and guest count from the form
+            reservation_date = form.cleaned_data.get('reservation_date')
+            guest_count = form.cleaned_data.get('guest_count')
+
+            # Calculate reservation_end_date based on guest_count
+            reservation_time_span = ReservationTimeSpan.objects.get(
+                guest_count=guest_count
+            )
+            reservation_end_date = (
+                reservation_date + reservation_time_span.duration
+            )
+
+            # Create reservation instance
+            reservation = form.save(commit=False)
+            reservation.reservation_end_date = reservation_end_date
+            reservation.user = self.request.user
+            reservation.status = 1  # Set status to 'Confirmed'
+
+            # Call the existing handle_reservation_logic function
             reservation, available_tables = handle_reservation_logic(
                 form, self.request.user, original_reservation)
 
@@ -71,6 +90,9 @@ class BaseReservationView(LoginRequiredMixin):
                 reverse('preview_reservation', kwargs={'pk': reservation.pk})
             )
 
+        except ReservationTimeSpan.DoesNotExist:
+            form.add_error(None, "Invalid guest count for reservation.")
+            return self.form_invalid(form)
         except forms.ValidationError as e:
             # Add the error message to the form
             form.add_error(None, str(e))
@@ -139,7 +161,7 @@ class EditReservationView(BaseReservationView, UpdateView):
     def form_valid(self, form):
         # Retrieve the original reservation
         original_reservation = self.get_object()
-        # Pass it to handle_form
+        # Pass it to handle_form - custom method
         return self.handle_form(form, original_reservation)
 
     def get_form_kwargs(self):

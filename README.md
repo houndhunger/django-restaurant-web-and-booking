@@ -42,7 +42,7 @@ The website was developed and tested on Google Chrome. It's working correctly fo
 - Email service for sending confirmation emails
 
 ### OK - Steps to Set Up
-- __Clone the Repository__
+- **Clone the Repository**
   ```bash
   git clone https://github.com/houndhunger/django-restaurant-web-and-booking.git
   cd django-restaurant-web-and-booking
@@ -66,76 +66,73 @@ To deploy the project, follow these steps:
 1. Ensure that you have configured your environment variables in the Heroku dashboard.
 2. Push your code to the Heroku remote repository: ```"git push"```
 3. Deploy the app on Heroku either by manually deploying through the Heroku dashboard or by enabling automatic deployment for the main branch.
+## DONE - Features
 
-## TODO - Features
 ### Existing Features
-- __User Features__
+- **User Features**
   - **Make Reservations**: Users can book tables for their desired time and date.
   - **View Reservations**: Users can view and manage their existing reservations.
   - **Update Reservations**: Users can update their reservation details if necessary.
   - **Cancel Reservations**: Users can cancel their reservations if plans change.
+  - **Receive Email Notifications**: Users will receive automatic email confirmations after making, editing, or canceling reservations.
+  - **Automate Preferences**: The system will automatically reserve suitable tables based on guest preferences and notify guests if their preferences cannot be fully met.
 
-- __TODO - Staff Features__
-  - **Manage Reservations**: View and manage all reservations made by users using admin interface.
-  - **View Table Availability**: Check table availability for any given time slot by users using admin interface.
-  - **Manage Tables**: Add, update, or remove tables and their details using admin interface.
+- **Staff Features**
+  - **Manage Reservations**: Staff can view and manage all reservations made by users through the admin interface.
+  - **View Table Availability**: Staff can check table availability for any given time slot via the admin interface.
+  - **Manage Tables**: Staff can add, update, or remove tables and their details using the admin interface.
+  - **Custom Reservation Times**: Apply custom reservation times based on party size and buffer/service time.
 
 ### Future Enhancements
-- __User Features__
-  - **Update User details**: User can update own details like Name, password and email address.
-  - **Avabiltiy**: On selecting reservation date and time, be informed about thorugh the day avability (avaialabe 0-49%, bussy 50-79%, almost full %80-%99, full 100%). 
-  - **Advanced avabiltiy**: - A feature to display a calendar view of table availability, allowing users to easily see and book available slots for different dates and times.
-  - **Get Notfied**: - Receive notifications about upcoming reservations on the morning of the reservation day and a preferred time in advance.
-  - **Automate Preferences**: Automatically reserve suitable tables based on guest preferences. If preferences cannot be fully met, guests will be notified.
+- **User Features**
+  - **Update Profile Information**: Users will have the ability to manage their personal information, including name, password, and email address, for better reservation details through a dedicated profile page.
+  - **Receive Email Notifications and Reminders**: Users will receive automatic email reminders a day before the booking and notifications about upcoming reservations on the morning of their reservation day at a preferred time.
+  - **View Reservation Statistics**: Admins will generate reports to analyze trends such as peak hours and busy days, enabling data-driven decision-making.
+  - **Availability Indicators**: Users will see real-time availability (0-49% available, 50-79% busy, 80-99% almost full, and 100% full) when selecting reservation dates and times.
+  - **Calendar View of Availability**: Users will have a calendar view displaying available slots for different dates and times for easier booking.
 
-- __Staff Features__
-  - **Manage Reservations**: View and manage all reservations made by users by non admin - user custom interface.
-  - **View Table Availability**: Check table availability for any given time slot by users by non admin - user custom interface.
-  - **Manage Tables**: Add, update, or remove tables and their details by non admin - user custom interface.
+### Future Enhancements
+- **Staff Features**: 
+  - **Manage Reservations - non-admin interfce**: View and manage all reservations made by users through a non-admin user custom interface.
+  - **View Table Availability - non-admin interfce**: Check table availability for any given time slot through a non-admin user custom interface.
+  - **Manage Tables - non-admin interfce**: Add, update, or remove tables and their details through a non-admin user custom interface.
+  - **Enhacced management of Reservations**: Staff will have enhanced tools to efficiently view, approve, and modify reservations made by users through an intuitive admin interface.
+  - **View Reservation Statistics**: Staff will be able to generate detailed reports on reservation patterns, helping to identify peak times and improve service efficiency.
+  - **Communication Tools**: Staff will have access to communication tools to directly notify users about their reservation status, changes, or special promotions.
   - **Restaurant Table Plan Layout**: Manage the restaurant's table reservations for efficient reservation handling and table assignments.
-  - **Custom reservation times**: Apply custom reservation times based on party size and bumper/servixwe time.
 
 
-## OK - Authentication
-- **Custom Signup**: Users can sign up with email verification to ensure valid email addresses.
-- **Email-based Authentication**: Login is handled via email and password, removing the need for a username.
-- **Email Confirmation**: After signup, users must confirm their email by following a link sent to their inbox before accessing the site’s features.
-- **Login Redirects**: Upon successful login, users are redirected to the welcome page.
-- **Logout Redirects**: Users are redirected to the homepage upon logging out.
-- **Password Reset**: Users can reset their password via a link sent to their registered email address.
-- **Secure Authentication**: Django’s built-in authentication methods, along with password validators, ensure strong security.
-
-## Structure
+## OK - Structure
 
 ### Interaction Design
 
-- __Navigation Bar__
+- **Navigation Bar**
   - The fully responsive navigation bar is present on all pages, providing links to Home, Menu. For signed in user navigation bar show lins to Make a Reservation, My Reservations, Contact, Profile and Sign out. For not signed in user navigation bar show lins to Sign in, Sign up and Make Reservation which leads to Sign in.
 Profile and Log out. It ensures easy navigation across devices and maintains a consistent user experience.
 
   ![Nav Bar](docs/images/navigation-bar-image.png)
 
-- __Reservation Management__
+- **Reservation Management**
   - Customers can make, view, update, and cancel reservations through a user-friendly interface. This feature helps users to manage their dining plans effectively and receive confirmation emails for their bookings.
 
   ![Reservation Management](docs/images/reservation-management-image.png)
 
-- __Admin Dashboard__
+- **Admin Dashboard**
   - The staff dashboard allows users to view and manage all reservations, including adding or updating table information. It provides an overview of current bookings and table availability to assist staff in daily operations.
 
   ![Admin Dashboard](docs/images/admin-dashboard-image.png)
 
-- __Custom Signup and Login__
+- **Custom Signup and Login**
   - Users can sign up with email verification to ensure valid accounts. The custom signup form is designed to collect essential user details and facilitate secure login and registration processes.
 
   ![Custom Signup](docs/images/custom-signup-image.png)
 
-- __Email Notifications__
+- **Email Notifications**
   - Automated email notifications are sent to users upon reservation creation, update, or cancellation. This feature ensures that users receive timely updates and confirmations about their reservations.
 
   ![Email Notifications](docs/images/email-notifications-image.png)
 
-- __Footer__
+- **Footer**
   - The footer includes links to social media profiles and contact information. It encourages users to stay connected and provides easy access to additional resources.
   - For development purposes, phone numbers and email addresses links use fake or reserved domains to prevent accidental emails or real interactions (e.g., info@example.com).
 
@@ -167,30 +164,47 @@ The development process for this project involved several stages, each addressin
   - Added Gmail email notification functionality.
 
 - **Advanced Features**: 
-  - Implemented AJAX functionality for checking table availability on reservation dates.
   - Improved reservation logic in `ReservationUpdateView` to ensure accurate data handling and table assignment.
-  - Added staff role management for reservations, allowing staff to effectively manage and oversee reservations within the system.
 
 - **Ongoing Refinements**: 
   - Continued working on improving the table reservation logic and fixing logical errors.
-  - Addressed issues related to URL reversal and reservation preview redirection.
+  - Added staff role management for reservations, allowing staff to effectively manage and oversee reservations within the system.
+  - Enhancing the guest experience by making it easier to identify available reservations based on busy days and guest preferences.
 
 ## REVISE - User Stories
-- **As a user, I want to be able to register an account**: Users should be able to create an account with email verification to ensure valid email addresses and secure their accounts.
-- **TABLE**
 
-- **As a user, I want to be able to log in and log out securely**: Users should be able to log in with their credentials and log out, with proper redirection after authentication and logout.
-- **As a user, I want to be able to book a table**: Users should be able to select a date, time, and number of guests to reserve a table, and receive a confirmation of their reservation.
-- **As a user, I want to view and manage my reservations**: Users should be able to view their existing reservations, and cancel or modify them as needed.
-- **As an admin, I want to manage reservations**: Admins should be able to view, approve, and manage all reservations from an administrative interface.
-- **As an admin, I want to view statistics on reservations**: Admins should be able to generate and view reports on reservation statistics, such as peak times and reservation trends.
-- **As a user, I want to receive email notifications**: Users should receive email confirmations for their reservations and notifications for any changes or updates.
-- **As a user, I want to receive reminders for my upcoming reservations**: Users should receive reminders a day before their reservation to ensure they remember their booking.
-- **As a user, I want to update my profile information**: Users should be able to update their personal information and manage their account settings.
-- **As a user, I want to interact with the website on different devices**: The website should be fully responsive, allowing users to interact with it seamlessly on desktops, tablets, and mobile devices.
+- **As a user, I want to be able to register an account**:
+  -**Problem:** Users need a way to create an account with verified email addresses to ensure security and validity.
+  -**Action:** Implement an account registration system that includes email verification as part of the process.
+  -**Outcome:** Users can successfully create an account with a verified email address, ensuring that only valid emails are used.
+
+- **As a user, I want to log in and log out securely**
+  -**Problem:** Users need to securely log in and out of the system to access and manage their reservations.
+  -**Action:** Users log in using their email and password and can log out when done.
+  -**Outcome:** After successful authentication, users are redirected to their dashboard. On logout, they are redirected to the homepage.
+
+- **As a user, I want to book a table**
+  -**Problem:** Users want to reserve a table for a specific date, time, and party size.
+  -**Action:** Users fill out a reservation form, selecting a date, time, guest count, and seating preferences (e.g., quiet, outside seating).
+  -**Outcome:** If available, the reservation is confirmed, and a confirmation message is displayed to the user.
+
+- **As a user, I want to view and manage my reservations**
+  -**Problem:** Users need the ability to manage their existing reservations, including making changes or cancellations.
+  -**Action:** Users view their reservations on the "My Reservations" page, where they can edit or cancel them as needed.
+  -**Outcome:** Users can modify or cancel their bookings with immediate feedback on changes.
+
+- **As a user, I want to interact with the website on different devices**
+  -**Problem:** Users need to access and navigate the booking system from various devices, such as desktops, tablets, and smartphones.
+  -**Action:** The website is designed to be responsive, adjusting layouts and components based on the device's screen size.
+  -**Outcome:** Users have a seamless experience across all devices, ensuring easy reservation management on the go.
+
+- **As an admin, I want to manage reservations**
+  - **Problem:** Admins need to edit, or cancel reservations to manage the restaurant's capacity efficiently.
+  - **Action:** Admins can access the dashboard to handle all reservations and modify them as necessary.
+  - **Outcome:** The restaurant's reservation system is kept organized, allowing smooth operation and customer satisfaction.
 
 ## Bugs and Issues
-### KEEP UPDATING - Solved Bugs
+### DONE - Solved Bugs
 - **Problem with mixing native Django forms and Allauth forms**  
   - **Problem**: There was a conflict when using both native Django forms and Allauth forms in the same project. This caused authentication and form validation issues, such as failing to log in users or improper form handling.  
   - **Solution**: The problem was resolved by exclusively using Allauth forms for user authentication, registration, and account management. This ensured consistent handling of user sessions and authentication processes across the app.
@@ -215,60 +229,79 @@ The development process for this project involved several stages, each addressin
   - **Issue**: The `reservation_preview` view was not correctly set up in the URL patterns.  
   - **Solution**: Created the `reservation_preview` view and linked it properly in the URL patterns. Fixed the redirect by ensuring the correct path and `pk` argument were passed.
 
-- **Flatpickr is too large for small screens**  
-  - **Problem**: The Flatpickr datepicker appears oversized and doesn't fit well on smaller screens, making the user experience cumbersome.  
-  - **Issue**: The cause is likely due to Flatpickr’s default styling, which isn’t fully responsive out of the box.  
-  - **Solution**: The Flatpickr calendar is now hidden on smaller screens. Future plans include implementing responsive adjustments or integrating a mobile-friendly datepicker.
-
- - **Bootstrap Content Off-Center**
+- **Bootstrap Content Off-Center**
   - **Problem**: Some content of the website is off-center on screens larger than 1200px.
   - **Issue**: This misalignment can lead to an unprofessional appearance and negatively affect user experience.
-  - **Solution**: Bad css styling with fixed width.
+  - **Solution**: Bad css styling with fixed width. Removing fixed width on specifc class div solved the issue.
+
+- **Table reservation: Works with logical errors, needs checking**  
+  - **Problem:** The table reservation system logic is overcomplicated and prone to logical errors, requiring simplification and validation.  
+  - **Issue:** Complex logic involving table assignment, zones, and advanced features has led to inconsistent behavior, especially with overlapping reservations or large group bookings.  
+  - **Solution:** The logic was stripped down to a simpler approach, assigning tables one by one in sequence. Advanced features such as zone management and other priorities were reintroduced incrementally, ensuring the system remains functional with a clear foundation.
+
+- **Improper form error handling on table unavailability**  
+  - **Problem:** When no tables are available for a given reservation, the error message does not clearly indicate the specific issue. It shows a generic error.  
+  - **Issue:** Users receive a vague response when their reservation cannot be processed due to unavailable tables, leading to confusion and poor user experience.  
+  - **Solution:** Customized error messages are now implemented, providing clear and specific feedback when tables are unavailable, depending on the issue (e.g., fully booked, out of openning hours).  
+
+- **Handling simultaneous reservations with the same table**
+  - **Problem:** Previously, there was no mechanism to prevent two users from reserving the same table at the same time.
+  - **Action:** The view logic was updated to filter only available tables for the selected reservation time, preventing double bookings.
+  - **Outcome:** The system now efficiently handles simultaneous reservation requests, ensuring no table is double-booked during overlapping time slots.
+
+### REVISIT - Unsolved Bugs
+   **Flatpickr is too large for small screens**  
+  - **Problem**: The Flatpickr datepicker appears oversized and doesn't fit well on smaller screens, making the user experience cumbersome.  
+  - **Issue**: The cause is likely due to Flatpickr’s default styling, which isn’t fully responsive out of the box.  
+  - **Solution**: Future plans include implementing responsive adjustments or integrating a mobile-friendly datepicker.
 
   - **Advanced booking - Preferences**
   - **Problem**: The system doesn't consistently accommodate all guest preferences (e.g., quiet area, outdoor seating, etc.).
   - **Issue**: Some preferences are ignored or incorrectly applied during table assignment, leading to unsatisfactory guest experiences.
   - **Solution**: Implement more complex booking logic that ensures preferences are properly respected, along with extensive testing to verify correct behavior.
 
-### KEEP UPDATING - Unsolved Bugs
-- **Handling simultaneous reservations with the same table**  
-  - **Problem**: There's currently no mechanism in place to prevent two users from reserving the same table at the same time.  
-  - **Status**: Needs further development of a locking mechanism or real-time conflict detection to prevent double bookings.
-
-- **Improper form error handling on table unavailability**  
-  - **Problem**: When no tables are available for a given reservation, the error message does not clearly indicate the specific issue. It shows a generic error.  
-  - **Status**: Requires better error message customization to provide more user-friendly feedback in such cases.
-
-- **Table reservation: Works with logical errors, needs checking**  
-  - **Problem**: The table reservation system logic is overcomplicated and needs simplifying and fixing.  
-  - **Status**: Requires thorough validation of the basic logic handling the available tables, as well as advanced logic in edge cases where reservations overlap or large groups are split across tables.
-
-- **AJAX Table Check on Reservation Date**  
-  - **Problem**: AJAX functionality for checking table availability on reservation date was not working.  
-  - **Issue**: The implementation was incomplete and needed further development.  
-  - **Solution**: Finalized the AJAX functionality to correctly check table availability and integrate it into the reservation process.
-
-    - **Flatpickr dasn't pop up warning message**  
+- **Flatpickr dasn't pop up warning message**  
   - **Problem**: The Flatpickr widget doesn't consistently pop up a warning message when invalid input is entered for the minutes field, particularly when the input does not follow the 5-minute increment rule.  
-  - **Issue**: Flatpickr allows manual input if allowInput: true is set, but it doesn't automatically enforce validation or display warnings for values that don't align with the defined minuteIncrement. Without additional validation logic, the widget may not always catch invalid inputs.
+  - **Issue**: Flatpickr allows manual input if allowInput: true is set, but it doesn't automatically enforce validation or display warnings for values that don't align with the defined minute Increment. Without additional validation logic, the widget may not always catch invalid inputs.
   - **Solution**: Implement custom validation using Flatpickr's onClose or onValueUpdate events to manually validate time inputs. Ensure that invalid entries outside the allowed 5-minute increments trigger a warning message consistently. Alternatively, handle input validation via the form's submission logic or create an inline error display mechanism.
   
-
-
 ## TODO - Testing
 ### Code validation 
-- **HTML**: No errors were found when passing through the [W3C validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fyour-site-url.com).
-- **CSS**: No errors were found when passing through the [Jigsaw validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fdjango-restaurant-web-and-book-565ecd4fe61b.herokuapp.com%2Fstatic%2Fcss%2Fstyle.css&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en).
-- **JavaScript**: Errors or potential problems were identified with JSHint. New JavaScript features (ES6) settings is turned on. Results show no errors. Metrics identified areas for code improvement, but due to time constraints, I couldn't address them fully. Future updates will optimize the code and possibly split it into multiple files.
-jshint.com
-- **Pyton**: Code passes flake8 and pylint validaation with 100% sucess validating manage.py and all *.py modules.
-https://pep8ci.herokuapp.com/
+- **HTML**: Following paths have been validated and no errors were found when passing through the [W3C validator](https://validator.w3.org/).
+  - [app/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/)
+  - [app/menu/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/menu/)  
+  - [app/reservation/make/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/reservation/make/)  
+  - [app/reservations/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/reservations/)  
+  - [app/open/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/open/)  
+  - [app/contact/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/contact/)  
+  - [app/accounts/logout/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/accounts/logout/)  
+  - [app/accounts/login/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/accounts/login/)  
+  - [app/reservation/make/](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/reservation/make/)  
+  - app/reservation/###/edit/ 
+  - app/reservation/###/preview/
+  - app/delete-reservation/###/
+
+- **CSS**: Following file have been validated and no errors were found when passing through the [Jigsaw validator](https://jigsaw.w3.org/css-validator/).
+static/css/style.csshttps://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/static/css/style.css)
+
+- **JavaScript**: Following file have been validated and no errors were found when passing through the [jshint.com](https://jshint.com/). New JavaScript features (ES6) settings is turned on. Results show no errors.
+[static/css/style.css](https://django-restaurant-web-and-book-565ecd4fe61b.herokuapp.com/static/js/flatpickr.js)
+
+- **Pyton**: Code passes [pep8ci](https://pep8ci.herokuapp.com/) validation with 100% sucess validating following files:
+- [booking/reservation_utils.py](booking/utils/reservation_utils.py)  
+- [booking/admin.py](booking/admin.py)  
+- [booking/forms.py](booking/forms.py)  
+- [booking/urls.py](booking/urls.py)  
+- [booking/views.py](booking/views.py)  
+- [codestar/settings.py](codestar/settings.py)  
+- [codestar/urls.py](codestar/urls.py)  
+- [codestar/views.py](codestar/views.py)
 
 ### TODO - Test Cases
 ...
 
 ## OK - Credits
-- **Mentor**: Thanks to my mentor for their guidance and support throughout the development of this project.
+- **Mentor**: Thanks to my mentor for his guidance and support throughout the development of this project.
 - **Code Institute Tutor Service**: Special thanks to the Code Institute Tutor Service for their assistance and valuable feedback.
 - **ChatGPT Service**: Appreciation to ChatGPT for providing helpful advice and code suggestions during the project development.
 

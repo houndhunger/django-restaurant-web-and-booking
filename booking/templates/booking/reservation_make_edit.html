@@ -3,8 +3,8 @@
 
 {% block styles %}
 <!-- flatpickr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -42,6 +42,7 @@
                                 {{ form.reservation_date.errors }}
                             </div>
                             {% endif %}
+                            <p>*Reservation time must be in 15-minute increments.</p>
                         </div>
 
                         <!-- Guest count field -->
@@ -119,62 +120,10 @@
 </div>
 {% endblock %}
 {% block javascript %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        const flatpickrInstance = flatpickr("#id_reservation_date", {
-            enableTime: true,
-            dateFormat: "Y/m/d H:i",
-            time_24hr: true,
-            minuteIncrement: 15, // Set minute increment to 15
-            allowInput: false, // Disallow manual input
-            onChange: function (selectedDates, dateStr, instance) {
-                const selectedDate = selectedDates[0];
-                //console.log('Selected Date Object:', selectedDate);
-                //console.log('Selected Date String:', dateStr);
-
-                const formattedDate = selectedDate ? selectedDate.toISOString() : '';
-                //console.log('Formatted Date (ISO):', formattedDate);
-
-                // Custom validation for 15-minute increments
-                const minutes = selectedDate.getMinutes();
-                if (minutes % 15 !== 0) {
-                    alert("Please select a time in 15-minute increments.");
-                    instance.clear(); // Clear the input if invalid
-                }
-            },
-        });
-
-        // Set the initial date value from the form
-        const initialDateValue = reservationDateInput.value;
-        if (initialDateValue) {
-            console.log('Setting Date Value:', initialDateValue);
-            flatpickrInstance.setDate(initialDateValue, false);
-        }
-
-        // Function to hide/show flatpickr calendar based on screen width
-        function handleCalendarVisibility() {
-            const screenWidth = window.innerWidth;
-            const calendar = document.querySelector('.flatpickr-calendar');
-
-            if (calendar) {
-                if (screenWidth < 425) {
-                    calendar.style.display = 'none'; // Hide calendar on small screens
-                } else {
-                    calendar.style.display = 'inline'; // Show calendar on larger screens
-                }
-            } else {
-                console.error('flatpickr-calendar not found!');
-            }
-        }
-
-        // Add event listener for window resize
-        window.addEventListener('resize', function () {
-            handleCalendarVisibility(); // Recheck on window resize
-        });
-    });
-</script>
+<script src="{% static 'js/flatpickr.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+{% endblock %}
+{% block endstyles %}
 <style>
     /* Flatpickr calendar */
     .flatpickr-calendar {

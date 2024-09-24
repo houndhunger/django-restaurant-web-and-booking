@@ -1,8 +1,10 @@
+"""
+Django Admin Configuration for the booking app.
+"""
+
 from django.contrib import admin
-from .models import Reservation, Table, OpeningTime, ReservationTimeSpan
-from django_summernote.admin import SummernoteModelAdmin
-from .models import SiteSettings
 from django.utils.translation import gettext_lazy as _
+from .models import Reservation, Table, OpeningTime, ReservationTimeSpan, SiteSettings
 
 
 @admin.register(SiteSettings)
@@ -26,7 +28,7 @@ class OpeningTimeAdmin(admin.ModelAdmin):
 @admin.register(ReservationTimeSpan)
 class ReservationTimeSpanAdmin(admin.ModelAdmin):
     """
-     Admin Configuration for Reservation Time Spans
+    Admin Configuration for Reservation Time Spans
     """
     list_display = ('guest_count', 'duration')
     list_filter = ('guest_count',)
@@ -41,16 +43,19 @@ class TableAdmin(admin.ModelAdmin):
     list_display = (
         'table_number', 'formatted_zone', 'capacity',
         'vip_category', 'is_quiet', 'is_outside', 'note'
-        )
+    )
     search_fields = ('table_number', 'zone')
     list_filter = (
         'vip_category', 'is_quiet', 'is_outside',
         'has_bench_seating', 'has_disabled_access'
-        )
+    )
 
     def formatted_zone(self, obj):
+        """
+        Display the formatted zone in the admin panel.
+        """
         return f"Zone {obj.zone}"
-    # This is the display name in the admin panel
+
     formatted_zone.short_description = 'Zone'
 
 
@@ -62,10 +67,15 @@ class HourFilter(admin.SimpleListFilter):
     parameter_name = 'reservation_hour'
 
     def lookups(self, request, model_admin):
-        # Provide a dropdown list in HH:00 format
+        """
+        Provide a dropdown list in HH:00 format.
+        """
         return [(str(i), f"{i:02}:00") for i in range(24)]
 
     def queryset(self, request, queryset):
+        """
+        Return filtered queryset based on selected hour.
+        """
         if self.value():
             return queryset.filter(reservation_date__hour=self.value())
         return queryset
@@ -79,14 +89,19 @@ class TableNumberFilter(admin.SimpleListFilter):
     parameter_name = 'table_number'
 
     def lookups(self, request, model_admin):
-        # Fetch all tables ordered by table number
+        """
+        Fetch all tables ordered by table number.
+        """
         tables = Table.objects.all().order_by('table_number')
-        # Dropdown with sorted table numbers
         return [(table.pk, f"Table {table.table_number}") for table in tables]
 
     def queryset(self, request, queryset):
+        """
+        Return filtered queryset based on selected table number.
+        """
         if self.value():
             return queryset.filter(tables__pk=self.value())
+        return queryset
 
 
 class ZoneFilter(admin.SimpleListFilter):
@@ -97,14 +112,16 @@ class ZoneFilter(admin.SimpleListFilter):
     parameter_name = 'zone'
 
     def lookups(self, request, model_admin):
-        # Get all available zones from the tables
-        zones = Table.objects.values_list(
-            'zone', flat=True
-            ).distinct().order_by('zone')
-        # Dropdown with unique zones
+        """
+        Get all available zones from the tables.
+        """
+        zones = Table.objects.values_list('zone', flat=True).distinct().order_by('zone')
         return [(zone, f"Zone {zone}") for zone in zones]
 
     def queryset(self, request, queryset):
+        """
+        Return filtered queryset based on selected zone.
+        """
         if self.value():
             return queryset.filter(tables__zone=self.value())
         return queryset
@@ -123,18 +140,17 @@ class ReservationAdmin(admin.ModelAdmin):
         'user__username', 'reservation_date',
         'guest_count', 'status'
     ]
-
-    # Order of filters in the admin panel, with dropdowns
-    # for Hour, Table Number and Zone
     list_filter = (
         'status', 'reservation_date', 'created_on',
         HourFilter, TableNumberFilter, ZoneFilter
     )
-
     date_hierarchy = 'reservation_date'
     readonly_fields = ('created_on', 'updated_on', 'created_by', 'edited_by')
 
     def assigned_tables(self, obj):
+        """
+        Return a list of assigned tables.
+        """
         tables_list = [
             f"Table {table.table_number} (Z{table.zone})"
             for table in obj.tables.all()

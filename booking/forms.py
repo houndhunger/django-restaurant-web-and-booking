@@ -6,7 +6,7 @@ from allauth.account.forms import SignupForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from booking.models import ReservationTimeSpan
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from .utils.reservation_utils import format_duration
 
 
@@ -86,8 +86,6 @@ class ReservationForm(forms.ModelForm):
 
     guest_count = forms.IntegerField(required=True)
 
-    print("AAAA guest_count: ", guest_count)
-
     class Meta:
         model = Reservation
         exclude = ['user']  # Exclude user from the form
@@ -125,9 +123,6 @@ class ReservationForm(forms.ModelForm):
         reservation_date = cleaned_data.get('reservation_date')
         guest_count = cleaned_data.get('guest_count')
 
-        print("CCCC guest_count: ", guest_count)
-        print("CCCC reservation_date:", reservation_date)
-
         original_reservation = (
             self.instance if self.instance.pk else None
         )
@@ -155,7 +150,7 @@ class ReservationForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Please contact the restaurant for large party sizes.'
             )
-
+        
         # FORBID Find overlapping reservations considering a 2-hour overlap
         overlapping_reservations = Reservation.objects.filter(
             Q(reservation_date__lt=cleaned_data['reservation_end_date']) &
@@ -182,57 +177,66 @@ class ReservationForm(forms.ModelForm):
                 'The restaurant is closed at the time of your reservation.'
             )
 
-        if opening_time.open_time < opening_time.close_time:
-            # Same day open and close logic
-            reservation_fits_in = (
+        # Logic for calculating reservation_fits_start and reservation_fits_end
+        if opening_time.close_time >= time(4, 00):
+            reservation_fits_start = (
                 opening_time.open_time <= reservation_date.time() <=
                 opening_time.close_time
             )
-            is_within_closing_hours = (
-                reservation_end.time() <= opening_time.close_time
+            reservation_fits_end = (
+                reservation_date.time() <= reservation_end.time() <=
+                opening_time.close_time
             )
         else:
-            # Overnight open and close logic
-            overnight_closing_time = (
-                datetime.combine(
-                    reservation_date.date(),
-                    opening_time.close_time) + timedelta(days=1)
-                ).time()
-
-            reservation_fits_in = (
-                reservation_date.time() >= opening_time.open_time or
-                reservation_date.time() <= overnight_closing_time
+            reservation_fits_start = (
+                opening_time.open_time <= reservation_date.time() <=
+                time(23, 59)
             )
-            is_within_closing_hours = (
-                reservation_end.time() <= overnight_closing_time
+            reservation_fits_end = (
+                reservation_date.time() <= reservation_end.time() <=
+                time(23, 59)
             )
 
-        # Raise validation error if the reservation time is before
-        # the restaurant opens
+        print("AA opening_time.open_time: ", opening_time.open_time)
+        print("AA opening_time.close_time: ", opening_time.close_time)
+        print("AA reservation_date.time(): ", reservation_date.time())
+        print("AA reservation_end.time(): ", reservation_end.time())
+        print("AA reservation_fits_start: ", reservation_fits_start)
+        print("AA reservation_fits_end: ", reservation_fits_end)
+        print("AA time(23, 59): ", time(23, 59))
+        print("XXX: ", opening_time.close_time <= time(23, 59))
+        print("XXX: ", opening_time.close_time >= time(4, 00))
+
+        # Raise validation error if the reservation time
+        # is before the restaurant opens
         if reservation_date.time() < opening_time.open_time:
             raise forms.ValidationError(
-                f"The restaurant is not yet open. Reservations cannot "
-                "start before {reservation_time_span}."
+                f"The restaurant is not yet open. Reservations cannot start "
+                f"before {opening_time.open_time.strftime('%H:%M')}."
             )
 
         # Raise validation error if the reservation does not fit
         # within opening hours
-        if not reservation_fits_in:
+        if not reservation_fits_start:
             raise forms.ValidationError(
                 f"Reservations must start between "
                 f"{opening_time.open_time.strftime('%H:%M')} and "
                 f"{opening_time.close_time.strftime('%H:%M')}."
             )
 
-        # Raise validation error if the reservation end time
-        # is past the closing time
-        if not is_within_closing_hours:
-            raise forms.ValidationError(
-                f"Reservation cannot end after "
-                f"{overnight_closing_time.strftime('%H:%M')}. "
-                f"For a party of {guest_count}, please allow at least "
-                f"{format_duration(reservation_time_span.duration)}."
-            )
+        # Raise validation error if the reservation end time is past 23:59
+        if not reservation_fits_end:
+            if opening_time.close_time <= time(23, 59):
+                raise forms.ValidationError(
+                    f"Reservations must finish by closing time "
+                    f"{opening_time.close_time.strftime('%H:%M')}. "
+                    f"Larger parties require more time."
+                )
+            else:
+                raise forms.ValidationError(
+                    f"Reservations must end before midnight. Larger parties "
+                    f"require more time."
+                )
 
         # Check if the minutes are a multiple of 15
         if reservation_date.minute % 15 != 0:

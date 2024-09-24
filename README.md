@@ -107,6 +107,8 @@ To deploy the project, follow these steps:
 
 ## Structure
 
+### Interaction Design
+
 - __Navigation Bar__
   - The fully responsive navigation bar is present on all pages, providing links to Home, Menu. For signed in user navigation bar show lins to Make a Reservation, My Reservations, Contact, Profile and Sign out. For not signed in user navigation bar show lins to Sign in, Sign up and Make Reservation which leads to Sign in.
 Profile and Log out. It ensures easy navigation across devices and maintains a consistent user experience.
@@ -139,7 +141,13 @@ Profile and Log out. It ensures easy navigation across devices and maintains a c
 
   ![Footer](docs/images/footer-image.png)
 
+### Information Design
 
+- **Entity-Relationship Diagram (ERD)**  
+  - The following ERD outlines the relationships between models in the system:
+
+  ![Email Notifications](docs/images/erd.png)
+  
 ## REVISIT - Development Process
 The development process for this project involved several stages, each addressing different aspects of functionality and user experience:
 
@@ -215,7 +223,7 @@ The development process for this project involved several stages, each addressin
  - **Bootstrap Content Off-Center**
   - **Problem**: Some content of the website is off-center on screens larger than 1200px.
   - **Issue**: This misalignment can lead to an unprofessional appearance and negatively affect user experience.
-  - **Solution**: Ensure that the correct Bootstrap grid classes are applied. Use container-fluid or adjust margins and padding to center the content properly. Additionally, inspect any custom CSS that may interfere with Bootstrap’s default styling.
+  - **Solution**: Bad css styling with fixed width.
 
   - **Advanced booking - Preferences**
   - **Problem**: The system doesn't consistently accommodate all guest preferences (e.g., quiet area, outdoor seating, etc.).
@@ -252,7 +260,9 @@ The development process for this project involved several stages, each addressin
 - **HTML**: No errors were found when passing through the [W3C validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fyour-site-url.com).
 - **CSS**: No errors were found when passing through the [Jigsaw validator](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fdjango-restaurant-web-and-book-565ecd4fe61b.herokuapp.com%2Fstatic%2Fcss%2Fstyle.css&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en).
 - **JavaScript**: Errors or potential problems were identified with JSHint. New JavaScript features (ES6) settings is turned on. Results show no errors. Metrics identified areas for code improvement, but due to time constraints, I couldn't address them fully. Future updates will optimize the code and possibly split it into multiple files.
+jshint.com
 - **Pyton**: Code passes flake8 and pylint validaation with 100% sucess validating manage.py and all *.py modules.
+https://pep8ci.herokuapp.com/
 
 ### TODO - Test Cases
 ...

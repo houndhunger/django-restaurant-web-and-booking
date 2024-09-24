@@ -36,6 +36,10 @@
     --form-focus-border: var(--accent-1-colour);
 }
 
+.google-maps {
+    width: 100%;
+}
+
 /* General Styles */
 body {
     background-color: var(--page-bg-colour);

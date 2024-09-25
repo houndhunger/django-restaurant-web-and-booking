@@ -150,12 +150,18 @@ class ReservationForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Please contact the restaurant for large party sizes.'
             )
-        
-        # FORBID Find overlapping reservations considering a 2-hour overlap
+
+        # Check for overlapping reservations based on the length
+        # of the new and only include confirmed reservations
+        # (status "Confirmed").
         overlapping_reservations = Reservation.objects.filter(
             Q(reservation_date__lt=cleaned_data['reservation_end_date']) &
             Q(reservation_end_date__gt=reservation_date)
-        ).exclude(pk=original_reservation.pk if original_reservation else None)
+        ).exclude(
+            pk=original_reservation.pk if original_reservation else None
+        ).filter(
+            status=1  # Filter to include only reservations that are confirmed
+        )
 
         if overlapping_reservations.exists():
             raise forms.ValidationError(

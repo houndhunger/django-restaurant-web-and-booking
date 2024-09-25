@@ -27,7 +27,6 @@
                     {% if user.is_authenticated %}
 
                     {% else %}
-                    
                     <p class="text-center">Please <a class="link {% if request.path == signup_url %}active{% endif %}" href="{{ signup_url }}">Sign up</a> to make a reservation.</p>
                     <p class="text-center">Or <a class="link {% if request.path == login_url %}active{% endif %}" href="{{ login_url }}">Login</a>.
                     {% endif %}

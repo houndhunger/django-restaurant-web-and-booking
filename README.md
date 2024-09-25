@@ -227,9 +227,9 @@ The development process for this project involved several stages, each addressin
 | | | |
 |:-|:-|:-|
 | User clicks on "My Reservations" in the navigation menu, which leads to user's reservations | "My Reservations" page is paginated, user can click "NEXT »" at the bottom of the page, which leads user to next page | User clicks "Amend" Reservation for relevant reservation, which leads user to "Edit Reservation" page |
-| ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/edit-a-reservation-full-page.png) |
+| ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/edit-a-reservation-full-page.png) |git add
 | User can edit reservation and submit it by clicking on "Submit" button | Alternatively user in "My Reservations" can "Delete Reservation" by clicking on "Delete Reservation" button, which leads user to "Delete Reservation" page. Here user can confirm the deletion by clicking on "Yes, Delete" button. | Then the user is redirected to the My Reservations page |
-| ![blank](docs/images/reservation-preview-page2.png) | ![](docs/images/delete-reservation-page.png) | ![](docs/images/my-reservations-page-after-delete.png) |
+| ![Reservation preview](docs/images/reservation-preview-page2.png) | ![](docs/images/delete-reservation-page.png) | ![](docs/images/my-reservations-page-after-delete.png) |
 
 - **As a user, I want to interact with the website on different devices**
   - **Problem:** Users need to access and navigate the booking system from various devices, such as desktops, tablets, and smartphones.
@@ -352,7 +352,134 @@ The development process for this project involved several stages, each addressin
   - [codestar/views.py](codestar/views.py)
 
 ### Test Cases
-...
+#### Manual Testing
+Here are the key manual tests performed on the reservation booking system:
+
+1. **Make a Reservation**
+    - **Test**: Create a new reservation with valid data.
+    - **Expected Result**: Reservation is created and visible under "My Reservations".
+    - **Steps**: 
+
+| | | | |
+|:-|:-|:-|:-|
+| 1. Log in to the system. | 2. Navigate to "Make a Reservation". | 3. Fill in reservation details (date & time, guest count, note, preferences). | 4. Submit and check if the reservation is successfully saved. |
+| ![Sign in](docs/images/sign-in-page.png) | ![Make reservation](docs/images/make-a-reservation-full-page.png) | ![Fill in reservation details](docs/images/make-a-reservation-full-filled-page.png) | ![My reservations](docs/images/my-reservations-page.png) |
+
+2. **Edit Reservation**
+    - **Test**: Edit an existing reservation.
+    - **Expected Result**: Updated details are saved and displayed correctly.
+    - **Steps**:
+
+| | | | |
+|:-|:-|:-|:-|
+|  1. Go to "My Reservations". | 2. Select an existing reservation | 3. Modify reservation details (e.g., guest count) | 4. Submit and verify the changes. |
+| ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/edit-a-reservation-full-page.png) | ![Reservation preview](docs/images/reservation-preview-page2.png) |
+
+
+
+3. **Delete Reservation**
+    - **Test**: Delete an existing reservation.
+    - **Expected Result**: Reservation is deleted and no longer visible in "My Reservations".
+    - **Steps**:
+
+| | | | |
+|:-|:-|:-|:-|
+|   1. Access "My Reservations". | 2. "Amend Reservaton". |3. Choose "Delete" and confirm the action. | 4. User is redirected to "My Reservations". |
+| ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/delete-reservation-page.png) | ![Reservation preview](docs/images/my-reservations-page-after-delete.png) |
+
+
+
+4. **Reservation Overlap Check**
+   - **Test**: Attempt to book a reservation that overlaps with an existing one.
+   - **Steps**:
+     1. Try to book a reservation that conflicts with a current reservation.
+     2. Submit the form.
+   - **Expected Result**: Error message is displayed about overlapping reservations.
+
+5. **Reservation Time Outside Operating Hours**
+   - **Test**: Attempt to make a reservation outside the restaurant's opening hours.
+   - **Steps**:
+     1. Select a time before opening or after closing hours.
+     2. Submit the form.
+   - **Expected Result**: Error message indicating that the reservation is outside operating hours.
+
+6. **Guest Count Limit**
+   - **Test**: Attempt to book a reservation exceeding the maximum guest limit.
+   - **Steps**:
+     1. Select a large guest count beyond the allowed limit.
+     2. Submit the form.
+   - **Expected Result**: Error message that the guest count exceeds the limit.
+
+7. **Reservation Confirmation Email**
+   - **Test**: Verify if a confirmation email is sent after booking.
+   - **Steps**:
+     1. Create a reservation.
+     2. Check the email inbox for a confirmation message.
+   - **Expected Result**: Confirmation email is received with reservation details.
+
+#### Manual Testing (Handling Invalid Inputs)
+1. **Invalid Reservation Date**
+   - **Test**: Attempt to book a reservation with an invalid or past date.
+   - **Steps**: 
+     1. Select a date in the past or an invalid date (e.g., 31st February).
+     2. Submit the form.
+   - **Expected Result**: Error message indicating that the selected date is invalid or cannot be in the past.
+
+2. **Invalid Reservation Time**
+   - **Test**: Try to book a reservation with a time outside the restaurant's operating hours.
+   - **Steps**:
+     1. Select a time that is either too early or too late (before midnight or after 23:59).
+     2. Submit the form.
+   - **Expected Result**: Error message indicating that the reservation time is outside the allowed hours.
+
+3. **Exceed Maximum Guest Limit**
+   - **Test**: Input a guest count exceeding the maximum allowed capacity.
+   - **Steps**:
+     1. Enter a guest count larger than the allowed maximum.
+     2. Submit the form.
+   - **Expected Result**: Error message indicating the guest count exceeds the restaurant's capacity.
+
+4. **Empty Required Fields**
+   - **Test**: Leave required fields (date, time, guest count) empty.
+   - **Steps**:
+     1. Try to submit the reservation form without filling in any required fields.
+   - **Expected Result**: Form validation error for each missing field.
+
+5. **Non-Numeric Guest Count**
+   - **Test**: Enter a non-numeric value for the guest count field.
+   - **Steps**:
+     1. Enter text or symbols in the guest count field.
+     2. Submit the form.
+   - **Expected Result**: Error message indicating that the guest count must be a number.
+
+6. **Overlapping Reservations**
+   - **Test**: Try to book a reservation that conflicts with an existing one.
+   - **Steps**:
+     1. Book a reservation at the same time and for the same table as an existing reservation.
+     2. Submit the form.
+   - **Expected Result**: Error message indicating the reservation overlaps with an existing one.
+
+7. **SQL Injection Attempt**
+   - **Test**: Try injecting SQL commands into input fields to test for security vulnerabilities.
+   - **Steps**:
+     1. Enter an SQL query (e.g., `'; DROP TABLE reservations; --`) into any text input field.
+     2. Submit the form.
+   - **Expected Result**: Input is sanitized, and no SQL injection occurs.
+   - **Explanation**: Django's ORM uses parameterized queries to escape user inputs, treating them as plain text. This prevents any SQL commands from executing, ensuring that no damage occurs to the database.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Credits
 - **Mentor**: Thanks to my mentor for his guidance and support throughout the development of this project.

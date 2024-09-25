@@ -197,16 +197,6 @@ class ReservationForm(forms.ModelForm):
                 time(23, 59)
             )
 
-        print("AA opening_time.open_time: ", opening_time.open_time)
-        print("AA opening_time.close_time: ", opening_time.close_time)
-        print("AA reservation_date.time(): ", reservation_date.time())
-        print("AA reservation_end.time(): ", reservation_end.time())
-        print("AA reservation_fits_start: ", reservation_fits_start)
-        print("AA reservation_fits_end: ", reservation_fits_end)
-        print("AA time(23, 59): ", time(23, 59))
-        print("XXX: ", opening_time.close_time <= time(23, 59))
-        print("XXX: ", opening_time.close_time >= time(4, 00))
-
         # Raise validation error if the reservation time
         # is before the restaurant opens
         if reservation_date.time() < opening_time.open_time:

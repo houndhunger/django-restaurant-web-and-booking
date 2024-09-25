@@ -36,6 +36,10 @@
     --form-focus-border: var(--accent-1-colour);
 }
 
+.google-maps {
+    width: 100%;
+}
+
 /* General Styles */
 body {
     background-color: var(--page-bg-colour);
@@ -195,6 +199,10 @@ a,
     background: var(--content-bg-colour);
     transform: skew(15deg);
     z-index: 100;
+}
+
+.lead {
+    margin-bottom: 0.5rem;
 }
 
 /* Links and Buttons */
@@ -378,25 +386,20 @@ button,
 /* Class to show the table when needed */
 .show-opening-time-table {
     display: table;
-    /* Show the table */
 }
 
 .opening-times-section {
     margin: 20px 0;
-    /* Adjust as needed */
 }
 
 .opening-time-title {
     cursor: pointer;
     /* Change cursor to indicate it's clickable */
     margin-bottom: 10px;
-    /* Space below the title */
     font-size: 1.5rem;
-    /* Adjust font size */
 }
 
 /* Add spacing above the table */
 .opening-time-table {
     margin-top: 10px;
-    /* Space above the table */
 }

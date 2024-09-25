@@ -12,6 +12,8 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     """
     Admin Configuration - Sites
     """
+    verbose_name = "Site Setting"  # Singular name
+    verbose_name_plural = "Site Setting"  # Plural name
     list_display = ['site', 'contact_email', 'phone_number']
 
 

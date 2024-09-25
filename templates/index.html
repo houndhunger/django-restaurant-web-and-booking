@@ -17,7 +17,6 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title text-center reservation-title">Make a Reservation</h2>
-                    {% if user.is_authenticated %}
                     <form method="post" action="{% url 'make_reservation' %}">
                         {% csrf_token %}
                         {{ form.as_p }}
@@ -25,7 +24,10 @@
                             <button type="submit" class="btn btn-primary">Reserve a Table</button>
                         </div>
                     </form>
+                    {% if user.is_authenticated %}
+
                     {% else %}
+                    
                     <p class="text-center">Please <a class="link {% if request.path == signup_url %}active{% endif %}" href="{{ signup_url }}">Sign up</a> to make a reservation.</p>
                     <p class="text-center">Or <a class="link {% if request.path == login_url %}active{% endif %}" href="{{ login_url }}">Login</a>.
                     {% endif %}

@@ -13,6 +13,9 @@ class SiteSettings(models.Model):
     # Assuming a 15-character limit for the phone number
     phone_number = models.CharField(max_length=15, default='0000000000')
 
+    class Meta:
+        verbose_name_plural = "Site Settings"  # Plural name
+
     def __str__(self):
         return f"{self.site.domain} Settings"
 

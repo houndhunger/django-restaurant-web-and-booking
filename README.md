@@ -139,7 +139,7 @@ Profile and Log out. It ensures easy navigation across devices and maintains a c
 - **Email Notifications**
   - Automated email notifications are sent to users upon reservation creation, update, or cancellation. This feature ensures that users receive timely updates and confirmations about their reservations.
 
- ![Email Notifications](docs/images/email-notifications-image.png)
+ ![Email Notifications](docs/images/email-notifications-sign-up.png)
 
 - **Footer**
   - The footer includes links to social media profiles and contact information. It encourages users to stay connected and provides easy access to additional resources.
@@ -191,7 +191,7 @@ The development process for this project involved several stages, each addressin
 | User opens the Home page | User clicks Sign up link in the navigation menu or on the home page, which leads user to Sign Up page | Fills the Sign up page |
 | ![Home page](docs/images/home-page.png) | ![Sign up](docs/images/sign-up-page.png) | ![Fill Sign up](docs/images/sign-up-filled-page.png) |
 | Submits the Sign up page by clicking "Sign up" button, which leads user to Verify Your Email Address page | User will receive a notification email, with activation link | By clicking on the notification link, the user will open the Confirm Email Address page |
-| ![Verify Your Email Address](docs/images/verify-your-email-address-page.png) | ![blank](docs/images/email-notifications-image-2.png) | ![Confirm Email Address](docs/images/confirm-email-address-page.png) |
+| ![Verify Your Email Address](docs/images/verify-your-email-address-page.png) | ![blank](docs/images/email-notifications-sign-up.png) | ![Confirm Email Address](docs/images/confirm-email-address-page.png) |
 | By clicking on the "Confirm" button, the user will finish sign up process landing on the Home page |  |  |
 | ![blank](docs/images/home-page.png) | ![blank](docs/images/blank.png) | ![blank](docs/images/blank.png) |
 
@@ -252,7 +252,7 @@ The development process for this project involved several stages, each addressin
 
 | | | |
 |:-|:-|:-|
-| Admin dashobard leads to | Booking - Reservations | Editing reservation (f.e. top reservation) |
+| Admin dashobard leads to | Booking - Reservations | Editing reservation (as example  top reservation) |
 | ![Admin home](docs/images/admin-dashboard-page.png) | ![Table page](docs/images/admin-reservations.png) | ![Small device](docs/images/admin-reservation1.png) |
 | Staff with admin can proceed with changes, f.e. changing reservation "Status" to "Deleted" | Or change "Assigned Tables" (f.e. reservation second form the top) |  |
 | ![Status changed to deleted](docs/images/admin-reservations-mark-deleted.png) | ![Table changed](docs/images/admin-reservations-table-changed.png) | ![blank](docs/images/blank.png) |
@@ -318,6 +318,14 @@ The development process for this project involved several stages, each addressin
   - **Problem**: The Flatpickr widget doesn't consistently pop up a warning message when invalid input is entered for the minutes field, particularly when the input does not follow the 5-minute increment rule.  
   - **Issue**: Flatpickr allows manual input if allowInput: true is set, but it doesn't automatically enforce validation or display warnings for values that don't align with the defined minute Increment. Without additional validation logic, the widget may not always catch invalid inputs.
   - **Solution**: Implement custom validation using Flatpickr's onClose or onValueUpdate events to manually validate time inputs. Ensure that invalid entries outside the allowed 5-minute increments trigger a warning message consistently. Alternatively, handle input validation via the form's submission logic or create an inline error display mechanism.
+
+- **Overvalidation of Guest Count**
+  - **Problem**: Two warnings are raised for a similar issue regarding guest count validation, causing confusion. The hardcoded limit of 12 guests leads to false validation, particularly when the logic in `clean_guest_count(self)` and `clean(self)` approaches the same conclusion differently.
+  - **Issue**: Running both validation methods results in redundant error messages. The hardcoded limit of 12 guests should be dynamic and not fixed, as it may change in the future.
+  - **Solution**: Refactor the validation logic to consolidate the checks into one method, ensuring that a single, clear warning is raised for guest counts exceeding the limit. Utilize a configuration variable instead of a hardcoded value for the guest limit.
+
+
+
   
 ## Testing
 ### Code validation 
@@ -387,105 +395,76 @@ Here are the key manual tests performed on the reservation booking system:
 |   1. Access "My Reservations". | 2. "Amend Reservaton". |3. Choose "Delete" and confirm the action. | 4. User is redirected to "My Reservations". |
 | ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/delete-reservation-page.png) | ![Reservation preview](docs/images/my-reservations-page-after-delete.png) |
 
-
-
 4. **Reservation Overlap Check**
    - **Test**: Attempt to book a reservation that overlaps with an existing one.
-   - **Steps**:
-     1. Try to book a reservation that conflicts with a current reservation.
-     2. Submit the form.
    - **Expected Result**: Error message is displayed about overlapping reservations.
+   - **Steps**:
+
+| | |
+|:-|:-|
+|   1. Try to book a reservation that conflicts with a current reservation. | 2. Submit the form. |
+| ![My Reservations](docs/images/my-reservations-page-full.png) | ![Reservation preview](docs/images/make-a-reservation-full-overlapping.png) |
 
 5. **Reservation Time Outside Operating Hours**
    - **Test**: Attempt to make a reservation outside the restaurant's opening hours.
-   - **Steps**:
-     1. Select a time before opening or after closing hours.
-     2. Submit the form.
    - **Expected Result**: Error message indicating that the reservation is outside operating hours.
-
-6. **Guest Count Limit**
-   - **Test**: Attempt to book a reservation exceeding the maximum guest limit.
    - **Steps**:
-     1. Select a large guest count beyond the allowed limit.
-     2. Submit the form.
-   - **Expected Result**: Error message that the guest count exceeds the limit.
 
-7. **Reservation Confirmation Email**
+| | |
+|:-|:-|
+|   1. Select a time before opening or after closing hours. | 2. Submit the form. |
+| ![Reservation time before opennig hours](docs/images/make-a-reservation-full-out-hours-select.png) | ![Reservation time before opennig hours error](docs/images/make-a-reservation-full-out-hours-error-message.png) |
+
+6. **Reservation Time Near Closing Time**
+   - **Test**: Attempt to make a reservation near the restaurant's closing time.
+   - **Expected Result**: Error message indicating that the reservation is too close to the restaurant's closing time.
+   - **Steps**:
+
+| | |
+|:-|:-|
+| Select a time near the restaurant's closing time. | Submit the form. |
+| ![Reservation time near closing time](docs/images/make-a-reservation-full-too-late-select.png) | ![Reservation time near closing time error](docs/images/make-a-reservation-full-too-late-error.png) |
+
+7. **Guest Count Limit**
+   - **Test**: Attempt to book a reservation exceeding the maximum guest limit.
+   - **Expected Result**: Error message that the guest count exceeds the limit.
+   - **Steps**:
+
+| | |
+|:-|:-|
+|   1. Select a large guest count beyond the allowed limit. | 2. Submit the form. |
+| ![Large guest count](docs/images/make-a-reservation-full-large-guest-count-select.png) | ![Large guest count error](docs/images/make-a-reservation-full-large-guest-count-error-message.png) |
+
+8. **Reservation Confirmation Email**
    - **Test**: Verify if a confirmation email is sent after booking.
    - **Steps**:
+   - **Expected Result**: Confirmation email is received with reservation details.
      1. Create a reservation.
      2. Check the email inbox for a confirmation message.
-   - **Expected Result**: Confirmation email is received with reservation details.
 
-#### Manual Testing (Handling Invalid Inputs)
-1. **Invalid Reservation Date**
+| | | |
+|:-|:-|:-|
+|   1. Select a large guest count beyond the allowed limit. | 2. Submit the form. | Confirmation email is received with reservation details. |
+| ![Create a reservation](docs/images/make-a-reservation-full-filled-page.png) | ![Submit the form](docs/images/reservation-preview-page.png) | ![Confirmation email](docs/images/email-notifications-reservation.png) |
+
+9. **Invalid Reservation Date**
    - **Test**: Attempt to book a reservation with an invalid or past date.
    - **Steps**: 
      1. Select a date in the past or an invalid date (e.g., 31st February).
      2. Submit the form.
    - **Expected Result**: Error message indicating that the selected date is invalid or cannot be in the past.
+![Reservation in past error](docs/images/make-a-reservation-strip-in-past-error-message.png)
 
-2. **Invalid Reservation Time**
-   - **Test**: Try to book a reservation with a time outside the restaurant's operating hours.
-   - **Steps**:
-     1. Select a time that is either too early or too late (before midnight or after 23:59).
-     2. Submit the form.
-   - **Expected Result**: Error message indicating that the reservation time is outside the allowed hours.
-
-3. **Exceed Maximum Guest Limit**
-   - **Test**: Input a guest count exceeding the maximum allowed capacity.
-   - **Steps**:
-     1. Enter a guest count larger than the allowed maximum.
-     2. Submit the form.
-   - **Expected Result**: Error message indicating the guest count exceeds the restaurant's capacity.
-
-4. **Empty Required Fields**
-   - **Test**: Leave required fields (date, time, guest count) empty.
-   - **Steps**:
-     1. Try to submit the reservation form without filling in any required fields.
-   - **Expected Result**: Form validation error for each missing field.
-
-5. **Non-Numeric Guest Count**
+10. **Non-Numeric Guest Count**
    - **Test**: Enter a non-numeric value for the guest count field.
-   - **Steps**:
-     1. Enter text or symbols in the guest count field.
-     2. Submit the form.
-   - **Expected Result**: Error message indicating that the guest count must be a number.
-
-6. **Overlapping Reservations**
-   - **Test**: Try to book a reservation that conflicts with an existing one.
-   - **Steps**:
-     1. Book a reservation at the same time and for the same table as an existing reservation.
-     2. Submit the form.
-   - **Expected Result**: Error message indicating the reservation overlaps with an existing one.
-
-7. **SQL Injection Attempt**
-   - **Test**: Try injecting SQL commands into input fields to test for security vulnerabilities.
-   - **Steps**:
-     1. Enter an SQL query (e.g., `'; DROP TABLE reservations; --`) into any text input field.
-     2. Submit the form.
-   - **Expected Result**: Input is sanitized, and no SQL injection occurs.
-   - **Explanation**: Django's ORM uses parameterized queries to escape user inputs, treating them as plain text. This prevents any SQL commands from executing, ensuring that no damage occurs to the database.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   - **Expected Result**: Input is validated by the framework, preventing non-numeric values from being accepted.
+   - **Explanation**: Django handles this by using form validation. If the guest count field is defined as an `IntegerField` in the model or form, Django will automatically enforce that only numeric input is accepted. When the form is submitted, Django's validation checks for the type of data entered. If a non-numeric value is detected, an error message is generated, and the form is not processed, ensuring that only valid data is stored in the database.
+![Guest count error](docs/images/make-a-reservation-strip-invalid-guest-count-error-message.png)
 
 ## Credits
 - **Mentor**: Thanks to my mentor for his guidance and support throughout the development of this project.
-- **Code Institute Tutor Service**: Special thanks to the Code Institute Tutor Service for their assistance and valuable feedback.
+- **Code Institute Tutor Service**: Special thanks to the Code Institute Tutor Service for their assistance in difficult times and valuable feedback .
 - **ChatGPT Service**: Appreciation to ChatGPT for providing helpful advice and code suggestions during the project development.
-
 
 ## License
 This project is open-source and available under the MIT License. Feel free to fork, modify, and distribute the code for educational or commercial purposes.

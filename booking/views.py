@@ -18,7 +18,7 @@ from .utils.reservation_utils import (
 from allauth.account.views import SignupView
 
 
-class UserReservationsView(generic.ListView):
+class UserReservationsView(LoginRequiredMixin, generic.ListView):
     """
     View to list the reservations for the currently logged-in user
     """

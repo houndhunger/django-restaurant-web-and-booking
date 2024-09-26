@@ -118,7 +118,7 @@ class BaseReservationView(LoginRequiredMixin):
         context = super().get_context_data(**kwargs)
         # Use a header value from child classes
         context['header'] = self.header
-        # Retrieve OpeningTime objects sorted by actual day of the week
+        # Retrieve OpeningTime objects sorted by the actual day of the week
         context['opening_times'] = self.get_opening_times()
         # Control visibility
         context['show_opening_time_table'] = context['opening_times']
@@ -136,7 +136,7 @@ class BaseReservationView(LoginRequiredMixin):
             When(day_of_week='sun', then=Value(6)),
         )
 
-        # Return the queryset ordered by the mapped values for day_of_week
+        # Return the quer yset ordered by the mapped values for day_of_week
         return OpeningTime.objects.annotate(
             day_sort_order=ordering_case
         ).order_by('day_sort_order')

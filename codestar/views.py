@@ -77,7 +77,7 @@ class OpeningTimesView(ListView):
         context['opening_times'] = self.get_queryset()
         # Control table visibility
         context['show_opening_time_table'] = True
-        # Control sumary visibility - details and sumary will be hidden
+        # Control summary visibility - details and sumary will be hidden
         context['loaded_through_opening_times'] = True
         return context
 

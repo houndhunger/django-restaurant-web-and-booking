@@ -2,7 +2,7 @@
 
 ## Purpose of the Project
 
-Restaurant Booking System is a Django web application created for Dino Bar and Restaurant designed to manage restaurant reservations. The application provides features for customers and staff to handle reservations, manage tables, and ensure a smooth dining experience.
+Restaurant Booking System is a Django web application developed for Dino Bar and Restaurant to manage restaurant reservations. The application provides features for customers and staff to handle reservations, manage tables, and ensure a smooth dining experience.
 
 ![Restaurant booknig Mockup](docs/images/mockup-image-restaurant.jpg)
 
@@ -188,9 +188,9 @@ The development process for this project involved several stages, each addressin
 
 | | | |
 |:-|:-|:-|
-| User opens the Home page | User clicks Sign up link in the navigation menu or on the home page, which leads user to Sign Up page | Fills the Sign up page |
+| User opens the "Home page" | User clicks "Sign up" link in the navigation menu or on the home page, which leads user to "Sign Up" page | Fills the "Sign up" page |
 | ![Home page](docs/images/home-page.png) | ![Sign up](docs/images/sign-up-page.png) | ![Fill Sign up](docs/images/sign-up-filled-page.png) |
-| Submits the Sign up page by clicking "Sign up" button, which leads user to Verify Your Email Address page | User will receive a notification email, with activation link | By clicking on the notification link, the user will open the Confirm Email Address page |
+| Submits the "Sign up" page by clicking the "Sign up" button, which leads the user to the "Verify Your Email Address" page | User will receive a notification email, with an activation link | By clicking on the activation link, the user will open the "Confirm Email" Address page |
 | ![Verify Your Email Address](docs/images/verify-your-email-address-page.png) | ![blank](docs/images/email-notifications-sign-up.png) | ![Confirm Email Address](docs/images/confirm-email-address-page.png) |
 | By clicking on the "Confirm" button, the user will finish sign up process landing on the Home page |  |  |
 | ![blank](docs/images/home-page.png) | ![blank](docs/images/blank.png) | ![blank](docs/images/blank.png) |
@@ -204,7 +204,7 @@ The development process for this project involved several stages, each addressin
 |:-|:-|:-|
 | User opens the Home page | User clicks on Sign in the navigation menu, which leads user to Sign In page | Fills the Sign in page 
 | ![Home page](docs/images/home-page.png) | ![Sign up](docs/images/sign-up-page.png) | ![Fill Sign up](docs/images/sign-in-filled-page.png) |
-| By clicking on the Sign In button, the user will finish up securely sign-in process landing on the Home page showing navigation menu for authenticated user | User clicks on Sign out in navigation menu, which leads user to Sign Out page | By clicking on "Sign Out" button, the user will finish the secured Sign Out process landing on the Home page |
+| By clicking on the "Sign In" button, the user will finish up the secure sign-in process landing on the "Home page" showing a navigation menu for authenticated users | The user clicks on "Sign out" in the navigation menu, which leads the user to "Sign Out" page | By clicking on "Sign Out" button, the user will finish the secured "Sign Out" process landing on the "Home page" |
  ![Home page - logged in](docs/images/home-authenticated-page.png) | ![Home page](docs/images/sign-out-page.png) | ![Home page](docs/images/home-page.png) |
 
 - **As a user, I want to book a table**
@@ -214,9 +214,9 @@ The development process for this project involved several stages, each addressin
 
 | | | |
 |:-|:-|:-|
-| User opens the Home page | User clicks on Make a Reservation in the navigation menu, which leads user to Make a Reservation page | Fills the Make a Reservation page |
+| User opens the Home page | User clicks on "Make a Reservation" in the navigation menu, which leads user to "Make a Reservation" page | Fills the "Make a Reservation" page |
 | ![Home page](docs/images/home-page.png) | ![Make a Reservation](docs/images/make-a-reservation-full-page.png) | ![Fill Make a Reservation](docs/images/make-a-reservation-full-filled-page.png) |
-| By clicking on Submit button, user will submit Reservation and landing on Reservation Preview | User clicks on My Reservation button, which leads user to Sign Out page |  |
+| By clicking on the "Submit" button, the user will submit a reservation and be forwarded to "Reservation Preview" | User clicks on the "My Reservation" button, which leads the user to the "Sign Out" page |  |
 | ![Home page - logged in](docs/images/reservation-preview-page.png) | ![My Reservations](docs/images/my-reservations-page.png) |  |
 
 - **As a user, I want to view and manage my reservations**
@@ -226,9 +226,9 @@ The development process for this project involved several stages, each addressin
 
 | | | |
 |:-|:-|:-|
-| User clicks on "My Reservations" in the navigation menu, which leads to user's reservations | "My Reservations" page is paginated, user can click "NEXT »" at the bottom of the page, which leads user to next page | User clicks "Amend" Reservation for relevant reservation, which leads user to "Edit Reservation" page |
+| User clicks on "My Reservations" in the navigation menu, which leads to the user's reservations | "My Reservations" page is paginated, user can click "NEXT »" at the bottom of the page, which leads user to the next page | User clicks "Amend" Reservation for relevant reservation, which leads user to "Edit Reservation" page |
 | ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/edit-a-reservation-full-page.png) |git add
-| User can edit reservation and submit it by clicking on "Submit" button | Alternatively user in "My Reservations" can "Delete Reservation" by clicking on "Delete Reservation" button, which leads user to "Delete Reservation" page. Here user can confirm the deletion by clicking on "Yes, Delete" button. | Then the user is redirected to the My Reservations page |
+| The user can edit the reservation and submit it by clicking on the "Submit" button | Alternatively user in "My Reservations" can "Delete Reservation" by clicking on the "Delete Reservation" button, which leads the user to "Delete Reservation" page. Here user can confirm the deletion by clicking on "Yes, Delete" button. | Then the user is redirected to the My Reservations page |
 | ![Reservation preview](docs/images/reservation-preview-page2.png) | ![](docs/images/delete-reservation-page.png) | ![](docs/images/my-reservations-page-after-delete.png) |
 
 - **As a user, I want to interact with the website on different devices**
@@ -246,15 +246,15 @@ The development process for this project involved several stages, each addressin
 | ![Medium (MD) -Tablet](docs/images/make-a-reservation-full-page-980px.png) | ![Small (SM) - Phones](docs/images/make-a-reservation-full-page-760px.png) | ![Extra small (XS) - Phones (portrait) col](docs/images/make-a-reservation-full-page-570px.png) |
 
 - **As an admin, I want to manage reservations**
-  - **Problem:** Admin need to edit or cancel reservations to manage the restaurant's capacity efficiently.
+  - **Problem:** Admin needs to edit or cancel reservations to manage the restaurant's capacity efficiently.
   - **Action:** Admin can access the dashboard to handle all reservations and modify them as necessary.
   - **Outcome:** The restaurant's reservation system is kept organized, allowing smooth operation and customer satisfaction.
 
 | | | |
 |:-|:-|:-|
-| Admin dashobard leads to | Booking - Reservations | Editing reservation (as example  top reservation) |
+| Admin dashboard leads to | "Booking" - "Reservations" | Editing reservation (as example  top reservation) |
 | ![Admin home](docs/images/admin-dashboard-page.png) | ![Table page](docs/images/admin-reservations.png) | ![Small device](docs/images/admin-reservation1.png) |
-| Staff with admin can proceed with changes, f.e. changing reservation "Status" to "Deleted" | Or change "Assigned Tables" (f.e. reservation second form the top) |  |
+| Staff with admin can proceed with changes, f.e. changing reservation "Status" to "Deleted" | Or change "Assigned Tables" (f.e. reservation second from the top) |  |
 | ![Status changed to deleted](docs/images/admin-reservations-mark-deleted.png) | ![Table changed](docs/images/admin-reservations-table-changed.png) | ![blank](docs/images/blank.png) |
 
 ## Bugs and Issues
@@ -294,7 +294,7 @@ The development process for this project involved several stages, each addressin
   - **Solution:** The logic was stripped down to a simpler approach, assigning tables one by one in sequence. Advanced features such as zone management and other priorities were reintroduced incrementally, ensuring the system remains functional with a clear foundation.
 
 - **Improper form error handling on table unavailability**  
-  - **Problem:** When no tables are available for a given reservation, the error message does not clearly indicate the specific issue. It shows a generic error.  
+  - **Problem:** When no tables are available for a given reservation, the error message does not indicate the specific issue. It shows a generic error.  
   - **Issue:** Users receive a vague response when their reservation cannot be processed due to unavailable tables, leading to confusion and poor user experience.  
   - **Solution:** Customized error messages are now implemented, providing clear and specific feedback when tables are unavailable, depending on the issue (e.g., fully booked, out of opening hours).  
 
@@ -307,7 +307,7 @@ The development process for this project involved several stages, each addressin
    **Flatpickr is too large for small screens**  
   - **Problem**: The Flatpickr date picker appears oversized and doesn't fit well on smaller screens, making the user experience cumbersome.  
   - **Issue**: The cause is likely due to Flatpickr’s default styling, which isn’t fully responsive out of the box.  
-  - **Solution**: Future plans include implementing responsive adjustments or integrating a mobile-friendly date picker.
+  - **Solution**: Plans include implementing responsive adjustments or integrating a mobile-friendly date picker.
 
   - **Advanced booking - Preferences**
   - **Problem**: The system doesn't consistently accommodate all guest preferences (e.g., quiet area, outdoor seating, etc.).
@@ -320,7 +320,7 @@ The development process for this project involved several stages, each addressin
   - **Solution**: Implement custom validation using Flatpickr's onClose or onValueUpdate events to manually validate time inputs. Ensure that invalid entries outside the allowed 5-minute increments trigger a warning message consistently. Alternatively, handle input validation via the form's submission logic or create an inline error display mechanism.
 
 - **Overvalidation of Guest Count**
-  - **Problem**: Two warnings are raised for a similar issue regarding guest count validation, causing confusion. The hardcoded limit of 12 guests leads to false validation, particularly when the logic in `clean_guest_count(self)` and `clean(self)` approaches the same conclusion differently.
+  - **Problem**: Two warnings are raised for a similar issue regarding guest count validation, confusing. The hardcoded limit of 12 guests leads to false validation, particularly when the logic in `clean_guest_count(self)` and `clean(self)` approaches the same conclusion differently.
   - **Issue**: Running both validation methods results in redundant error messages. The hardcoded limit of 12 guests should be dynamic and not fixed, as it may change in the future.
   - **Solution**: Refactor the validation logic to consolidate the checks into one method, ensuring that a single, clear warning is raised for guest counts exceeding the limit. Utilize a configuration variable instead of a hardcoded value for the guest limit.
 
@@ -392,12 +392,12 @@ Here are the key manual tests performed on the reservation booking system:
 
 | | | | |
 |:-|:-|:-|:-|
-|   1. Access "My Reservations". | 2. "Amend Reservaton". |3. Choose "Delete" and confirm the action. | 4. User is redirected to "My Reservations". |
+|   1. Access "My Reservations". | 2. "Amend Reservation". |3. Choose "Delete" and confirm the action. | 4. The user is redirected to "My Reservations". |
 | ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/delete-reservation-page.png) | ![Reservation preview](docs/images/my-reservations-page-after-delete.png) |
 
 4. **Reservation Overlap Check**
    - **Test**: Attempt to book a reservation that overlaps with an existing one.
-   - **Expected Result**: Error message is displayed about overlapping reservations.
+   - **Expected Result**: An error message is displayed about overlapping reservations.
    - **Steps**:
 
 | | |
@@ -413,7 +413,7 @@ Here are the key manual tests performed on the reservation booking system:
 | | |
 |:-|:-|
 |   1. Select a time before opening or after closing hours. | 2. Submit the form. |
-| ![Reservation time before opennig hours](docs/images/make-a-reservation-full-out-hours-select.png) | ![Reservation time before opennig hours error](docs/images/make-a-reservation-full-out-hours-error-message.png) |
+| ![Reservation time before opening hours](docs/images/make-a-reservation-full-out-hours-select.png) | ![Reservation time before opening hours error](docs/images/make-a-reservation-full-out-hours-error-message.png) |
 
 6. **Reservation Time Near Closing Time**
    - **Test**: Attempt to make a reservation near the restaurant's closing time.
@@ -463,8 +463,9 @@ Here are the key manual tests performed on the reservation booking system:
 
 ## Credits
 - **Mentor**: Thanks to my mentor for his guidance and support throughout the development of this project.
-- **Code Institute Tutor Service**: Special thanks to the Code Institute Tutor Service for their assistance in difficult times and valuable feedback .
+- **Code Institute Tutor Service**: Special thanks to the Code Institute Tutor Service for their assistance in difficult times and valuable feedback.
 - **ChatGPT Service**: Appreciation to ChatGPT for providing helpful advice and code suggestions during the project development.
+- **Family**: A heartfelt thank you to my wife, who lovingly took on all the household responsibilities, allowing me the time and focus to work on this project. Her constant support and understanding made this possible.
 
 ## License
 This project is open-source and available under the MIT License. Feel free to fork, modify, and distribute the code for educational or commercial purposes.

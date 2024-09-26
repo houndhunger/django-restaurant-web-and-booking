@@ -99,17 +99,17 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Sign out</a>
+                        <a class="nav-link" href="{% url 'account_logout' %}">Sign Out</a>
                     </li>
 
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == account_login_url %}active{% endif %}"
-                            href="{% url 'account_login' %}">Sign in</a>
+                            href="{% url 'account_login' %}">Sign In</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == account_signup_url %}active{% endif %}"
-                            href="{% url 'account_signup' %}">Sign up</a>
+                            href="{% url 'account_signup' %}">Sign Up</a>
                     </li>
                     {% endif %}
                 </ul>

@@ -85,7 +85,7 @@ To deploy the project, follow these steps:
   - **Make Reservations**: Users can book tables for their desired time and date.
   - **View Reservations**: Users can view and manage their existing reservations.
   - **Update Reservations**: Users can update their reservation details if necessary.
-  - **Cancel Reservations**: Users can cancel their reservations if plans change.
+  - **Cancel Reservations**: Users can cancel their reservations if plans change. Reservation
   - **Receive Email Notifications**: Users will receive automatic email confirmations after making, editing, or cancelling reservations.
   - **Automate Preferences**: The system will automatically reserve suitable tables based on guest preferences and notify guests if their preferences cannot be fully met.
 
@@ -94,6 +94,7 @@ To deploy the project, follow these steps:
   - **View Table Availability**: Staff can check table availability for any given time slot via the admin interface.
   - **Manage Tables**: Staff can add, update, or remove tables and their details using the admin interface.
   - **Custom Reservation Times**: Apply custom reservation times based on party size and buffer/service time.
+   - **Reservation Deletion Policy**: Instead of being permanently deleted, reservations marked as "Deleted" remain in the system for statistical purposes.
 
 ### Future Enhancements
 - **User Features**
@@ -116,11 +117,10 @@ To deploy the project, follow these steps:
 ## Structure
 ### Interaction Design
 - **Navigation Bar**
-  - The fully responsive navigation bar is present on all pages, providing links to Home, and Menu. For signed-in users, the navigation bar shows links to Make a Reservation, My Reservations, Contact, Profile and Sign out. For those not signed in user navigation bar shows links to Sign in, Sign up and Make Reservation which leads to Sign in.
+  - The fully responsive navigation bar is present on all pages, providing links to Home, and Menu. For signed-in users, the navigation bar shows links to Make a Reservation, "My Reservations", Contact and "Sign Out". For those not signed in user navigation bar shows links to "Sign In", "Sign Up" and "Make Reservation" which leads to "Sign In".
 Profile and Log out. It ensures easy navigation across devices and maintains a consistent user experience.
 
  ![Nav Bar](docs/images/navigation-bar-image.png)
-
 - **Reservation Management**
   - Customers can make, view, update, and cancel reservations through a user-friendly interface. This feature helps users to manage their dining plans effectively and receive confirmation emails for their bookings.
 
@@ -188,11 +188,11 @@ The development process for this project involved several stages, each addressin
 
 | | | |
 |:-|:-|:-|
-| User opens the "Home page" | User clicks "Sign up" link in the navigation menu or on the home page, which leads user to "Sign Up" page | Fills the "Sign up" page |
-| ![Home page](docs/images/home-page.png) | ![Sign up](docs/images/sign-up-page.png) | ![Fill Sign up](docs/images/sign-up-filled-page.png) |
-| Submits the "Sign up" page by clicking the "Sign up" button, which leads the user to the "Verify Your Email Address" page | User will receive a notification email, with an activation link | By clicking on the activation link, the user will open the "Confirm Email" Address page |
+| User opens the "Home page" | User clicks "Sign Up" link in the navigation menu or on the "Home page", which leads user to "Sign Up" page | Fills the "Sign Up" page |
+| ![Home page](docs/images/home-page.png) | ![Sign Up](docs/images/sign-up-page.png) | ![Fill Sign Up](docs/images/sign-up-filled-page.png) |
+| Submits the "Sign Up" page by clicking the "Sign Up" button, which leads the user to the "Verify Your Email Address" page | User will receive a notification email, with an activation link | By clicking on the activation link, the user will open the "Confirm Email Address" page |
 | ![Verify Your Email Address](docs/images/verify-your-email-address-page.png) | ![blank](docs/images/email-notifications-sign-up.png) | ![Confirm Email Address](docs/images/confirm-email-address-page.png) |
-| By clicking on the "Confirm" button, the user will finish sign up process landing on the Home page |  |  |
+| By clicking on the "Confirm" button, the user will finish sign up process landing on the "Home page" |  |  |
 | ![blank](docs/images/home-page.png) | ![blank](docs/images/blank.png) | ![blank](docs/images/blank.png) |
 
 - **As a user, I want to log in and log out securely**
@@ -202,9 +202,9 @@ The development process for this project involved several stages, each addressin
 
 | | | |
 |:-|:-|:-|
-| User opens the Home page | User clicks on Sign in the navigation menu, which leads user to Sign In page | Fills the Sign in page 
-| ![Home page](docs/images/home-page.png) | ![Sign up](docs/images/sign-up-page.png) | ![Fill Sign up](docs/images/sign-in-filled-page.png) |
-| By clicking on the "Sign In" button, the user will finish up the secure sign-in process landing on the "Home page" showing a navigation menu for authenticated users | The user clicks on "Sign out" in the navigation menu, which leads the user to "Sign Out" page | By clicking on "Sign Out" button, the user will finish the secured "Sign Out" process landing on the "Home page" |
+| User opens the "Home page" | User clicks on "Sign In" the navigation menu, which leads user to "Sign In" page | Fills the "Sign In" page 
+| ![Home page](docs/images/home-page.png) | ![Sign Up](docs/images/sign-up-page.png) | ![Fill Sign Up](docs/images/sign-in-filled-page.png) |
+| By clicking on the "Sign In" button, the user will finish up the secure sign-in process landing on the "Home page" showing a navigation menu for authenticated users | The user clicks on "Sign Out" in the navigation menu, which leads the user to "Sign Out" page | By clicking on "Sign Out" button, the user will finish the secured "Sign Out" process landing on the "Home page" |
  ![Home page - logged in](docs/images/home-authenticated-page.png) | ![Home page](docs/images/sign-out-page.png) | ![Home page](docs/images/home-page.png) |
 
 - **As a user, I want to book a table**
@@ -228,7 +228,7 @@ The development process for this project involved several stages, each addressin
 |:-|:-|:-|
 | User clicks on "My Reservations" in the navigation menu, which leads to the user's reservations | "My Reservations" page is paginated, user can click "NEXT »" at the bottom of the page, which leads user to the next page | User clicks "Amend" Reservation for relevant reservation, which leads user to "Edit Reservation" page |
 | ![My Reservations](docs/images/my-reservations-page-full.png) | ![My Reservations next page](docs/images/my-reservations-page-next.png) | ![Edit reservation](docs/images/edit-a-reservation-full-page.png) |git add
-| The user can edit the reservation and submit it by clicking on the "Submit" button | Alternatively user in "My Reservations" can "Delete Reservation" by clicking on the "Delete Reservation" button, which leads the user to "Delete Reservation" page. Here user can confirm the deletion by clicking on "Yes, Delete" button. | Then the user is redirected to the My Reservations page |
+| The user can edit the reservation and submit it by clicking on the "Submit" button | Alternatively user in "My Reservations" can "Delete Reservation" by clicking on the "Delete Reservation" button, which leads the user to "Delete Reservation" page. Here user can confirm the deletion by clicking on "Yes, Delete" button. | Then the user is redirected to the "My Reservations" page |
 | ![Reservation preview](docs/images/reservation-preview-page2.png) | ![](docs/images/delete-reservation-page.png) | ![](docs/images/my-reservations-page-after-delete.png) |
 
 - **As a user, I want to interact with the website on different devices**
@@ -239,7 +239,7 @@ The development process for this project involved several stages, each addressin
 | | | |
 |:-|:-|:-|
  | XXL - Larger desktops - 1400px and above (1920px)| Extra large (XL) - Large desktops  - 1200px - 1399px (1390px) | Large (LG) - Desktops - 992px - 1199px (1180px) |
-| ![XXL Larger desktops](docs/images/make-a-reservation-full-page.png) | ![Extra large (XL) Large desktops](docs/images/my-reservations-page-full-1390px.png) | ![Large (LG)Large (LG) Desktops](docs/images/my-reservations-page-full-1180px.png) |
+| ![XXL Larger desktops](docs/images/my-reservations-page-full.png) | ![Extra large (XL) Large desktops](docs/images/my-reservations-page-full-1390px.png) | ![Large (LG)Large (LG) Desktops](docs/images/my-reservations-page-full-1180px.png) |
 | ![XXL Larger desktops](docs/images/make-a-reservation-full-page.png) | ![Extra large (XL) Large desktops](docs/images/make-a-reservation-full-page-1180px.png) | ![Large (LG)Large (LG) Desktops](docs/images/make-a-reservation-full-page-1390px.png) |
 | Medium (MD) -Tablets - 768px - 991px (980px)| Small (SM) - Phones (landscape)  - 576px - 767px (760px) | Extra small (XS) - Phones (portrait) col - 0px - 575px (570px) |
 | ![Medium (MD) -Tablet](docs/images/my-reservations-page-full-980px.png) | ![Small (SM) - Phones](docs/images/my-reservations-page-full-760px.png) | ![Extra small (XS) - Phones (portrait) col](docs/images/my-reservations-page-full-570px.png) |
@@ -303,7 +303,7 @@ The development process for this project involved several stages, each addressin
   - **Action:** The view logic was updated to filter only available tables for the selected reservation time, preventing double bookings.
   - **Outcome:** The system now efficiently handles simultaneous reservation requests, ensuring no table is double-booked during overlapping time slots.
 
-### REVISIT - Unsolved Bugs
+### Unsolved Bugs
    **Flatpickr is too large for small screens**  
   - **Problem**: The Flatpickr date picker appears oversized and doesn't fit well on smaller screens, making the user experience cumbersome.  
   - **Issue**: The cause is likely due to Flatpickr’s default styling, which isn’t fully responsive out of the box.  
@@ -371,7 +371,7 @@ Here are the key manual tests performed on the reservation booking system:
 | | | | |
 |:-|:-|:-|:-|
 | 1. Log in to the system. | 2. Navigate to "Make a Reservation". | 3. Fill in reservation details (date & time, guest count, note, preferences). | 4. Submit and check if the reservation is successfully saved. |
-| ![Sign in](docs/images/sign-in-page.png) | ![Make reservation](docs/images/make-a-reservation-full-page.png) | ![Fill in reservation details](docs/images/make-a-reservation-full-filled-page.png) | ![My reservations](docs/images/my-reservations-page.png) |
+| ![Sign In](docs/images/sign-in-page.png) | ![Make reservation](docs/images/make-a-reservation-full-page.png) | ![Fill in reservation details](docs/images/make-a-reservation-full-filled-page.png) | ![My reservations](docs/images/my-reservations-page.png) |
 
 2. **Edit Reservation**
     - **Test**: Edit an existing reservation.

@@ -57,10 +57,11 @@ def contact(request):
             'Contact Form Submission',
             full_message,
             settings.DEFAULT_FROM_EMAIL,
-            ['daniel.pribula@gmail.com'],  # Your email address
+            [site_settings.contact_email],  # Your email address
         )
 
-        return HttpResponse('Thank you for your message!')
+        # Redirect to thank you page
+        return render(request, 'restaurant/thank_you.html')
 
     return render(request, 'restaurant/contact.html', {
         'site_settings': site_settings,
